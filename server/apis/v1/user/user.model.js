@@ -1,69 +1,68 @@
-let mongoose    = require('mongoose');
+'use strict';
 
-const ACCOUNT_STATUS = ['approved','not-approved'];
-const USER_ROLES = ['owner', 'admin', 'manager', 'user'];
+let mongoose    	= require('mongoose');
+let bcrypt 			= require('bcrypt');
+let service 		= require('../../services/app.services');
 
-let userSchema = new mongoose.Schema({
-    name : {
-        type: String,
-        required : [true, 'Name is required']
-    },
-    email : {
-        type: String,
+var UserSchema = mongoose.Schema({
+    userName : {
+		type: String,
 		lowercase: true,
 		unique  : true,
-		required : [true,"Email is required"]
+		required : [true, "User Name is required should not be null"]
     },
-    password: {
+	password: {
 		type: String,
-		required : [true,"Password is required"]
+		required : [true,"Password is required should not be null"]
 	},
-    status : {
-        type : String,
-        enum : ACCOUNT_STATUS,
-        default : ACCOUNT_STATUS[0],
-    },
-    role : {
-        type : String,
-        enum : USER_ROLES,
-        default: USER_ROLES[3]
-    },
-    picture : {
-        type : String
-    },
-    creationDate : {
-        type : Date,
-        default: Date.now
-    }
+	picture : {
+		type : String
+	},
+	role: {
+		type: String,
+		required : [true,"Role is required should not be null"],
+		enum: service.userRoles
+	},
+	createAt : {
+		type : Date,
+		default : Date.now()
+	}
 });
 
-userSchema.path('email').validate( function (email) {
-    let regex_email = /^[a-zA-Z0-9.!#$%&’*+\/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-    let isEmailValid = regex_email.test(email);
-    if(isEmailValid)
-    return true;
-    return false;
-}, "Invalid email address")
+
+/**
+ * Validations
+ */
+
+UserSchema
+	.path('userName')
+	.validate(function (userName) {
+		var isValid = userName.split(' ');
+		if(isValid.length >= 2)
+		return false;
+		return true;
+	}, "No space allowed between username");	
 
 
-// var SALT_FACTOR = 10;
+/**
+ * Pre-save hook
+ */
+var SALT_FACTOR = 10;
 
-// UserSchema.pre("save", function (next) {
-// 	var user = this;
-// 	console.log("Is modified Password : ",this.isModified("password"));
-//     if (!this.isModified("password")) {
-//         return next();
-// 	}
-// 	bcrypt.hash(user.password, SALT_FACTOR, function(err, hash) {
-// 		if (err) {
-// 			console.log(":: Error in generating Hash Password : ",err);
-// 			var hashError = new Error("Unexpcted error")
-// 			next(hashError);
-// 		}
-// 		user.password = hash;
-// 		next();
-// 	});
-// });
+UserSchema.pre("save", function (next) {
+	var user = this;
+    if (!this.isModified("password")) {
+        return next();
+	}
+	bcrypt.hash(user.password, SALT_FACTOR, function(err, hash) {
+		if (err) {
+			var hashError = new Error("Unexpcted error")
+			next(hashError);
+		}
+		user.password = hash;
+		next();
+	});
+});
 
 
-module.exports = mongoose.model("user", userSchema);
+module.exports = mongoose.model('User', UserSchema);

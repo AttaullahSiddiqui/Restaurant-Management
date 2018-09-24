@@ -1,0 +1,90 @@
+<nav class="sidebar" [ngClass]="{sidebarPushRight: isActive}">
+  <div class="list-group">
+    <a class="list-group-item" [routerLink]="['/']">
+        <i class="fa fa-fw fa-dashboard"></i>&nbsp; Dashboard
+    </a>
+    <div class="nested-menu">
+        <a class="list-group-item" (click)="addExpandClass('menu')">
+            <span><i class="fa" [ngClass]="menuIcon"></i>&nbsp; Menu </span>
+        </a>
+        <li class="nested" [class.expand]="showMenu === 'menu'">
+            <ul class="submenu">
+                <li>
+                    <a href="javascript:void(0)" [routerLink]="['/menu/items']"><span>Items</span></a>
+                </li>
+                <li>
+                    <a href="javascript:void(0)" [routerLink]="['/menu/categories']"><span>Categories</span></a>
+                </li>
+            </ul>
+        </li>
+    </div>
+    <div class="nested-menu">
+        <a class="list-group-item" (click)="addExpandClass('bill')">
+            <span><i class="fa" [ngClass]="menuIcon"></i>&nbsp; Bill </span>
+        </a>
+        <li class="nested" [class.expand]="showMenu === 'bill'">
+            <ul class="submenu">
+                <li>
+                    <a href="javascript:void(0)"><span>New Bill</span></a>
+                </li>
+                <li>
+                    <a href="javascript:void(0)"><span>Bill Received</span></a>
+                </li>
+                <li>
+                    <a href="javascript:void(0)"><span>Pending Bill</span></a>
+                </li>
+            </ul>
+        </li>
+    </div>
+    <a class="list-group-item">
+        <i class="fa fa-fw fa-bar-chart-o"></i>&nbsp; Users
+    </a>
+    <a class="list-group-item">
+        <i class="fa fa-fw fa-bar-chart-o"></i>&nbsp; Expenses
+    </a>
+    <div class="nested-menu">
+        <a class="list-group-item" (click)="addExpandClass('onlineOrders')">
+            <span><i class="fa" [ngClass]="menuIcon"></i>&nbsp; Online Orders </span>
+        </a>
+        <li class="nested" [class.expand]="showMenu === 'onlineOrders'">
+            <ul class="submenu">
+                <li>
+                    <a href="javascript:void(0)"><span>New Orders</span>
+                    <span> 2 </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="javascript:void(0)"><span>Pending</span></a>
+                </li>
+                <li>
+                    <a href="javascript:void(0)"><span>Completed</span></a>
+                </li>
+            </ul>
+        </li>
+    </div>
+    <a class="list-group-item">
+        <i class="fa fa-fw fa-bar-chart-o"></i>&nbsp; Staff
+    </a>
+    <!-- <a class="list-group-item">
+        <i class="fa fa-fw fa-table"></i>&nbsp; Tables
+    </a>
+    <a class="list-group-item">
+        <i class="fa fa-fw fa-edit"></i>&nbsp; Forms
+    </a>
+    <a class="list-group-item">
+        <i class="fa fa-fw fa-desktop"></i>&nbsp; Bootstrap Element
+    </a>
+    <a class="list-group-item">
+        <i class="fa fa-fw fa-wrench"></i>&nbsp; Bootstrap Grid
+    </a>
+    <a class="list-group-item">
+        <i class="fa fa-th-list"></i>&nbsp; Component
+    </a>
+    <a class="list-group-item">
+        <i class="fa fa-file-o"></i>&nbsp; Blank Page
+    </a>
+    <a class="list-group-item more-themes" href="http://www.strapui.com/" >
+        More Theme
+    </a> -->
+  </div>
+</nav>

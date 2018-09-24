@@ -1,0 +1,51 @@
+$topnav-background-color: #222;
+:host {
+    .navbar {
+        background-color: $topnav-background-color;
+        .navbar-brand-logo{
+            height: 32px;
+            border-radius: 50px;
+            margin-left: 5px;
+        }
+        .navbar-brand {
+            color: #fff;
+            cursor: pointer;
+        }
+        .nav-item > a {
+            color: #999;
+            &:hover {
+                color: #fff;
+            }
+        }
+    }
+    .messages {
+        width: 300px;
+        .media {
+            border-bottom: 1px solid #ddd;
+            padding: 5px 10px;
+            &:last-child {
+                border-bottom: none;
+            }
+        }
+        .media-body {
+            h5 {
+                font-size: 13px;
+                font-weight: 600;
+            }
+            .small {
+                margin: 0;
+            }
+            .last {
+                font-size: 12px;
+                margin: 0;
+            }
+        }
+    }
+    .notification-nos{
+        color: yellow;
+        position: absolute;
+        margin-top: -10px;
+        font-size: 18px;
+        padding-left: 10px;
+    }
+}

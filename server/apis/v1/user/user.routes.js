@@ -1,30 +1,23 @@
 'use strict';
-let express = require('express');
-let userCtrl = require('./user.controller');
+
+let express     = require('express');
+let userCtrl    = require('./user.controller');
+let service     = require('../../../core/app.service');
 
 let router  = express.Router();
 
 module.exports = function (){
 
     // :: Prefix Path --- '/api/v1/user' 
-    
-    router.post('/login', function(req, res){
 
-    })
-
-  // router.post('/register', userCtrl.register)
-
-   router.get('/me', function(req, res){
-
-   })
-
-   router.put('/update-status', function(req, res){
-
-   })
-
-   router.put('/update-role', function(req, res){
-
-   });
+    /* Users API*/
+    router.post('/auth/me',        service.validateToken, userCtrl.getUserDetails)
+    router.post('/new',            userCtrl.createUser);
+    router.post('/login',          userCtrl.authUser);
+    router.put('/changepassword',  service.validateToken, userCtrl.changePassword);
+    router.put('/updaterole',      userCtrl.updateRole);
+    router.get('/all',             userCtrl.getAllUsers);
+    router.delete('/remove',       userCtrl.removeUser);
    
     return router;
 };

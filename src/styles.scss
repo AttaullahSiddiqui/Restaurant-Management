@@ -1,1 +1,77 @@
 /* You can add global styles to this file, and also import other style files */
+.main-container {
+    margin-top: 56px;
+    margin-left: 235px;
+    padding: 15px;
+    -ms-overflow-x: hidden;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    position: relative;
+    overflow: hidden;
+}
+@media screen and (max-width: 992px) {
+    .main-container {
+        margin-left: 0px !important;
+    }
+}
+@media screen and (max-width: 767px) {
+    .mt-15-sm {
+        margin-top: 15px;
+    }
+}
+.mr-zero{
+    margin-right: 0 !important;
+}
+.mt-5{
+    margin-top: 5px;
+}
+.mt-10{
+    margin-top: 10px;
+}
+.mt-15{
+    margin-top: 15px;
+}
+.mr-5{
+    margin-right: 5px;
+}
+.mr-10{
+    margin-right: 10px;
+}
+.ml-5{
+    margin-left: 5px;
+}
+.ml-10{
+    margin-left: 10px;
+}
+.ml-20{
+    margin-left: 20px;
+}
+.pt-5{
+    padding-top:  5px;
+}
+.pt-10{
+    padding-top:  10px;
+}
+.pt-15{
+    padding-top:  15px;
+}
+.pt-20{
+    padding-top:  20px;
+}
+.form-center{
+    margin: 0 auto;
+    padding-top: 90px;
+}
+.error{
+    color: red;
+    margin-top: 10px;
+}
+.no-border-top{
+    border-top: none !important;
+}
+.full-width{
+    width: 100%
+}
+.pointer{
+    cursor: pointer;
+}

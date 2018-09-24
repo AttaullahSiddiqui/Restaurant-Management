@@ -10,9 +10,11 @@ let http        = require('http');
 let mongoose    = require('mongoose');
 let helmet      = require('helmet');
 let cors        = require('cors') //:: TODO
+
+
 let responseHandler = require('./utils/responseHandler');
 let appRoutes       = require('./routes/v1/app.routes')();
-let CONFIG      = require('./app.config');
+let CONFIG          = require('./app.config');
 
 
 /*TODO
