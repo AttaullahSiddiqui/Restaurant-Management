@@ -66,12 +66,35 @@
     color: red;
     margin-top: 10px;
 }
-.no-border-top{
-    border-top: none !important;
-}
 .full-width{
     width: 100%
 }
 .pointer{
     cursor: pointer;
+}
+.bd-none{
+    border: none !important;
+}
+.bd-top{
+    border-top: none !important;
+}
+.bd-bottom{
+    border-bottom: none !important;
+}
+.bd-left{
+    border-left: none !important;
+}
+.bd-right{
+    border-right: none !important;
+}
+.bd-tl{
+    border-top: none !important;
+    border-left: none !important;
+}
+.bd-tr{
+    border-top: none !important;
+    border-right: none !important;
+}
+.v-align{
+    vertical-align: middle !important;
 }

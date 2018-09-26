@@ -12,6 +12,12 @@ const routes: Routes = [{
     },{
       path: 'menu',
       loadChildren: './menu/menu.module#MenuModule'
+    },{
+      path: 'feedback',
+      loadChildren: './app-errors/app-errors.module#AppErrorsModule'
+    },{
+      path: 'bill',
+      loadChildren: './bill/bill.module#BillModule'
     }]
   }, {
     path: '',
@@ -31,8 +37,3 @@ const routes: Routes = [{
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
-
-// , {
-//   path: '**',
-//   redirectTo: 'session/404'
-// }

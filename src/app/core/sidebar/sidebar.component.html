@@ -25,13 +25,10 @@
         <li class="nested" [class.expand]="showMenu === 'bill'">
             <ul class="submenu">
                 <li>
-                    <a href="javascript:void(0)"><span>New Bill</span></a>
+                    <a href="javascript:void(0)" [routerLink]="['/bill/create']"><span>New Bill</span></a>
                 </li>
                 <li>
-                    <a href="javascript:void(0)"><span>Bill Received</span></a>
-                </li>
-                <li>
-                    <a href="javascript:void(0)"><span>Pending Bill</span></a>
+                    <a href="javascript:void(0)" [routerLink]="['/bill/status']"><span>Status</span></a>
                 </li>
             </ul>
         </li>
@@ -65,6 +62,18 @@
     <a class="list-group-item">
         <i class="fa fa-fw fa-bar-chart-o"></i>&nbsp; Staff
     </a>
+    <div class="nested-menu">
+        <a class="list-group-item" (click)="addExpandClass('feedback')">
+            <span><i class="fa" [ngClass]="menuIcon"></i>&nbsp; Feedback </span>
+        </a>
+        <li class="nested" [class.expand]="showMenu === 'feedback'">
+            <ul class="submenu">
+                <li>
+                    <a href="javascript:void(0)" [routerLink]="['/feedback/report-problem']"><span>Report Problem</span></a>
+                </li>
+            </ul>
+        </li>
+    </div>
     <!-- <a class="list-group-item">
         <i class="fa fa-fw fa-table"></i>&nbsp; Tables
     </a>

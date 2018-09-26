@@ -1,0 +1,149 @@
+<div class="container">
+  <div class="table-responsive" style="max-height: 400px;">
+    <table class="table table-bordered bd-none">
+      <thead style="background: #c5bebe;">
+        <tr>
+          <th scope="col" class="text-center bd-tl" style="width: 50px;">#</th>
+          <th scope="col" class="bd-top" style="min-width: 250px;">Item Name</th>
+          <th scope="col" class="text-center bd-top" style="width: 110px;">Item Cost</th>
+          <th scope="col" class="text-center bd-top" style="width: 130px;min-width: 130px;">Quantity</th>
+          <th scope="col" class="text-center bd-tr" style="width: 110px;">Price</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="text-center bd-tl v-align">
+            <button type="button" class="fa fa-plus add-btn" placement="bottom" ngbTooltip="Add"></button>
+          </td>
+          <td>
+            <input id="typeahead-basic" type="text" class="form-control" [(ngModel)]="model" (selectItem)="myFunction($event)" [ngbTypeahead]="search"/>
+          </td>
+          <td class="text-center v-align">
+            - -
+          </td>
+          <td class="text-center">
+            <input type="number" class="form-control" placeholder="Quantity">
+          </td>
+          <td class="text-center v-align bd-tr">
+            - -
+          </td>
+        </tr>
+        <tr >
+          <td class="text-center bd-left v-align">
+            <button type="button" class="fa fa-times remove-btn" placement="bottom" ngbTooltip="Remove"></button>
+          </td>
+          <td>Mutton Karhai</td>
+          <td class="text-center">1600/kg</td>
+          <td class="text-center">1.5</td>
+          <td class="text-center bd-right">2400</td>
+        </tr>
+        <tr >
+          <td class="text-center bd-left v-align">
+              <button type="button" class="fa fa-times remove-btn" placement="bottom" ngbTooltip="Remove"></button>
+          </td>
+          <td>Chicken Karhai</td>
+          <td class="text-center">1000/kg</td>
+          <td class="text-center">2</td>
+          <td class="text-center bd-right">2000</td>
+        </tr>
+        <tr >
+          <td class="text-center bd-left v-align">
+              <button type="button" class="fa fa-times remove-btn" placement="bottom" ngbTooltip="Remove"></button>
+          </td>
+          <td>Chicken Karhai</td>
+          <td class="text-center">1000/kg</td>
+          <td class="text-center">2</td>
+          <td class="text-center bd-right">2000</td>
+        </tr>
+        <tr >
+          <td class="text-center bd-left v-align">
+              <button type="button" class="fa fa-times remove-btn" placement="bottom" ngbTooltip="Remove"></button>
+          </td>
+          <td>Chicken Karhai</td>
+          <td class="text-center">1000/kg</td>
+          <td class="text-center">2</td>
+          <td class="text-center bd-right">2000</td>
+        </tr>
+        <tr >
+          <td class="text-center bd-left v-align">
+              <button type="button" class="fa fa-times remove-btn" placement="bottom" ngbTooltip="Remove"></button>
+          </td>
+          <td>Chicken Karhai</td>
+          <td class="text-center">1000/kg</td>
+          <td class="text-center">2</td>
+          <td class="text-center bd-right">2000</td>
+        </tr>
+        <tr >
+          <td class="text-center bd-left v-align">
+              <button type="button" class="fa fa-times remove-btn" placement="bottom" ngbTooltip="Remove"></button>
+          </td>
+          <td>Chicken Karhai</td>
+          <td class="text-center">1000/kg</td>
+          <td class="text-center">2</td>
+          <td class="text-center bd-right">2000</td>
+        </tr>
+        <tr >
+          <td class="text-center bd-left v-align">
+              <button type="button" class="fa fa-times remove-btn" placement="bottom" ngbTooltip="Remove"></button>
+          </td>
+          <td>Chicken Karhai</td>
+          <td class="text-center">1000/kg</td>
+          <td class="text-center">2</td>
+          <td class="text-center bd-right">2000</td>
+        </tr>
+        <tr >
+          <td class="text-center bd-left v-align">
+              <button type="button" class="fa fa-times remove-btn" placement="bottom" ngbTooltip="Remove"></button>
+          </td>
+          <td>Chicken Karhai</td>
+          <td class="text-center">1000/kg</td>
+          <td class="text-center">2</td>
+          <td class="text-center bd-right">2000</td>
+        </tr>
+        <tr >
+          <td class="text-center bd-left v-align">
+              <button type="button" class="fa fa-times remove-btn" placement="bottom" ngbTooltip="Remove"></button>
+          </td>
+          <td>Chicken Karhai</td>
+          <td class="text-center">1000/kg</td>
+          <td class="text-center">2</td>
+          <td class="text-center bd-right">2000</td>
+        </tr>
+        <tr >
+          <td class="text-center bd-left v-align">
+              <button type="button" class="fa fa-times remove-btn" placement="bottom" ngbTooltip="Remove"></button>
+          </td>
+          <td>Beef Karhai</td>
+          <td class="text-center">1200/kg</td>
+          <td class="text-center">1</td>
+          <td class="text-center bd-right">1200</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="text-right mt-15" style="padding-right: 70px;">
+    <div>
+      <label style="font-size: 20px;font-weight: 600;">Total Items : </label>
+      <label style="font-size: 20px;font-weight: 600;min-width: 130px;"> 3 </label>
+    </div>
+    <div>
+      <label style="font-size: 20px;font-weight: 600;">Total Amount : </label>
+      <label style="font-size: 20px;font-weight: 600;min-width: 130px;"> 24000 </label>
+    </div>
+    <!-- <div class="form-check">
+      <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+      <label class="form-check-label" for="defaultCheck1">
+        Print Slip
+      </label>
+    </div> -->
+    <div>
+      <span style="padding-right: 35px;">
+        <input class="form-check-input" style="margin-top: 10px;" type="checkbox" value="" id="printSlip">
+        <label for="printSlip">
+          Print Slip
+        </label>
+      </span>
+      <button type="button" class="btn btn-primary">Generate Bill</button>
+    </div>
+  </div>
+</div>
