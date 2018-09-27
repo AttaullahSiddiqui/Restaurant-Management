@@ -6,15 +6,16 @@ import { MenuRoutingModule } from './menu-routing.module';
 import { ItemsComponent } from './items/items.component';
 import { CategoryComponent } from './category/category.component';
 
-/*Core Components*/
-import { FabButtonComponent } from '../core/fab-button/fab-button.component';
+/*Shared [Components/Pipes/Popups]*/
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   imports: [
     CommonModule,
     MenuRoutingModule,
-    FormsModule
+    FormsModule,
+    SharedModule
   ],
-  declarations: [ItemsComponent, CategoryComponent, FabButtonComponent]
+  declarations: [ItemsComponent, CategoryComponent]
 })
 export class MenuModule { }

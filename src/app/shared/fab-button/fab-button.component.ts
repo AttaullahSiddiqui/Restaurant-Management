@@ -1,4 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+
+export interface options {
+  position: string,
+  value: string
+}
 
 @Component({
   selector: 'app-fab-button',
@@ -6,7 +11,7 @@ import { Component, OnInit } from '@angular/core';
     <div class="container text-center">
       <div class="row">
         <div class="round hollow text-center chat-bot">
-          <a href="#" id="addClass">
+          <a id="addClass" [placement]="options.position" [ngbTooltip]="options.value">
             <i class="fa fa-plus"></i>
           </a>
         </div>
@@ -48,9 +53,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FabButtonComponent implements OnInit {
 
+  @Input() options: options;
+
   constructor() { }
 
   ngOnInit() {
+    if(!this.options || !this.options.value || !this.options.position){
+      throw new Error("Tooltip position and value is required");
+    }
   }
 
 }

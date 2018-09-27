@@ -9,7 +9,10 @@ import { AdminLayoutComponent } from './core/admin-layout/admin-layout.component
 import { AuthLayoutComponent } from './core/auth-layout/auth-layout.component';
 import { HeaderComponent } from './core/header/header.component';
 import { SidebarComponent } from './core/sidebar/sidebar.component';
-import { NotFound404Component } from './core/not-found404/not-found404.component';  
+import { NotFound404Component } from './core/not-found404/not-found404.component'; 
+
+/*Shared Module */
+import { SharedModule } from './shared/shared.module';
 
 
 @NgModule({
@@ -24,7 +27,8 @@ import { NotFound404Component } from './core/not-found404/not-found404.component
   imports: [
     BrowserAnimationsModule,
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    SharedModule
   ],
   providers: [],
   bootstrap: [AppComponent]

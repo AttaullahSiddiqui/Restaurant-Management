@@ -18,6 +18,9 @@ const routes: Routes = [{
     },{
       path: 'bill',
       loadChildren: './bill/bill.module#BillModule'
+    },{
+      path: 'branches',
+      loadChildren: './branch-info/branch-info.module#BranchInfoModule'
     }]
   }, {
     path: '',
