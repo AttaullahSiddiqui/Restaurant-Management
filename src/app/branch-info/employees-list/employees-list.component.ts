@@ -7,11 +7,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class EmployeesListComponent implements OnInit {
 
-  private fabBtnOptions = {
+  public fabBtnOptions = {
     position: 'top',
     value: 'Add'
   }
-  private page = 1;
+  public page = 1;
 
   constructor() { }
 
