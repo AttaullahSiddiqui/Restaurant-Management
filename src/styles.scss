@@ -1,5 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
 .main-container {
+    background: url(assets/background.jpg);
+    background-repeat: no-repeat;
+    min-height: 580px;
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
     margin-top: 56px;
     margin-left: 235px;
     padding: 15px;
