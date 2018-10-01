@@ -1,8 +1,14 @@
 
 <div class="container">
+  <!-- Search Bar -->
+    <div>
+        <button class="fa fa-search searchBtn"></button>
+        <input type="search" class="form-control col-md-4 col-sm-6 col-10 SearchTxt">
+    </div>
 
+    <!-- Items starts from here -->
     <div *ngFor="let category of arr">
-        <h1>{{category.categoryName}}</h1>
+        <u><h1>{{category.categoryName}}</h1></u>
         <div  class="row">
             <div *ngFor="let item of category.items" class="col-md-4 col-sm-6 col-xs-12 items container1">
                 <div class="itemStyle">
@@ -47,8 +53,5 @@
             </div>
     </ng-template>
           
-          <button class="btn btn-lg btn-outline-primary" (click)="open(content)">Launch demo modal</button>
-          <hr>
-          <pre>{{closeResult}}</pre>
 </div>
 

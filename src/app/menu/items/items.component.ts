@@ -110,7 +110,7 @@ export class ItemsComponent implements OnInit {
     },
   ]
 
-
+// Modal on edit and close click
   closeResult: string;
   open(content) {
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
@@ -129,4 +129,5 @@ export class ItemsComponent implements OnInit {
       return  `with: ${reason}`;
     }
   }
+
 }
