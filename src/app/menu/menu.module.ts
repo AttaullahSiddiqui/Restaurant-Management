@@ -7,7 +7,7 @@ import { ItemsComponent } from './items/items.component';
 import { CategoryComponent } from './category/category.component';
 
 /*Shared [Components/Pipes/Popups]*/
-import { SharedModule } from '../shared/shared.module';
+import { SharedModule } from '@app/shared';
 
 @NgModule({
   imports: [

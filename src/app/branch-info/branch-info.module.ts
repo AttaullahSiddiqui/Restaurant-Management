@@ -8,7 +8,7 @@ import { EmployeesListComponent } from './employees-list/employees-list.componen
 import { BranchesListComponent } from './branches-list/branches-list.component';
 
 /*Shared*/
-import { SharedModule } from '../shared/shared.module';
+import { SharedModule } from '@app/shared';
 
 
 @NgModule({
