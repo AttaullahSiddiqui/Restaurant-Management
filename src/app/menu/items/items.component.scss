@@ -100,16 +100,13 @@
   
   .container1:hover .overlay {
     height: 100%;
+    text-align: center;
   }
   
   .btns1 {
     height: 25px;
     width: 25px;
-    position: absolute;
     background: transparent;
-    top: 35%;
-    left: 45%;
-
     border: none;
     background: none;
     font-size: 22px;
@@ -118,11 +115,9 @@
   .btns2 {
     height: 25px;
     width: 25px;
-    position: absolute;
     background: transparent;
-    top: 35%;
-    left: 55%;
-
+    margin-top: 24px;
+    margin-right: 20px;
     border: none;
     background: none;
     font-size: 22px;
