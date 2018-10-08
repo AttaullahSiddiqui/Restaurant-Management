@@ -1,6 +1,6 @@
 'use strict';
 
-process.env.NODE_ENV = process.env.NODE_ENV || 'development';
+//process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
 let express     = require('express');
 let path        = require('path');
@@ -9,7 +9,7 @@ let bodyParser  = require('body-parser');
 let http        = require('http');
 let mongoose    = require('mongoose');
 let helmet      = require('helmet');
-let cors        = require('cors') //:: TODO
+//let cors        = require('cors') //:: TODO
 
 
 let responseHandler = require('./utils/responseHandler');
@@ -22,7 +22,7 @@ let CONFIG          = require('./app.config');
 
 */
 
-mongoose.connect(CONFIG.db['development']);
+mongoose.connect(CONFIG.db['development'], { useNewUrlParser: true });
 mongoose.connection.on('error', function(err){
   console.error("Connection Error on "+'development'+ " mode ",err);
   process.exit(-1);
@@ -35,10 +35,9 @@ mongoose.connection.on('connected', function() {
 
 
 let app = express();
+app.use(helmet()); 
+//app.use(logger('dev'));
 
-app.use(logger('dev'));
-//TODO Should not be comment out
-// app.use(helmet()); 
 // ::TODO Enable CORS (Should be remove)
 // app.use(cors()); // :: 
 /*app.use(function (req, res, next) {
@@ -56,7 +55,7 @@ app.use(bodyParser.json(), function(err, req, res, next){
     next();
 });
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(express.static(path.join(__dirname, 'dist')));
+//app.use(express.static(path.join(__dirname, 'dist')));
 
 
 app.use('/', responseHandler);
@@ -64,9 +63,9 @@ app.use('/api/v1', appRoutes);
 
 // For all GET requests, send back index.html
 // so that PathLocationStrategy can be used
-app.get('/*', function(req, res) {
-  res.sendFile(path.join(__dirname + '/dist/index.html'));
-});
+// app.get('/*', function(req, res) {
+//   res.sendFile(path.join(__dirname + '/dist/index.html'));
+// });
 
 const port = process.env.PORT || '5000';
 app.set('port', port);
