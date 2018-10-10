@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { MenuRoutingModule } from './menu-routing.module';
 import { ItemsComponent } from './items/items.component';
@@ -14,6 +15,7 @@ import { SharedModule } from '@app/shared';
     CommonModule,
     MenuRoutingModule,
     FormsModule,
+    NgbModule,
     SharedModule
   ],
   declarations: [ItemsComponent, CategoryComponent]

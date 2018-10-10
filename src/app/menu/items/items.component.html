@@ -17,12 +17,10 @@
                     <strong>Rs: {{item.price}} / {{item.unit}}</strong></h6></span>
                 </div>
                 <div class="overlay">
-                    
                     <button _ngcontent-c3="" class="fa fa-pencil-square-o add-btn btns2" ngbtooltip="Add" placement="bottom"
                     type="button" ng-reflect-placement="bottom" ng-reflect-ngb-tooltip="Add" (click)="open(content)"></button>
                     <button _ngcontent-c3="" class="fa fa-times remove-btn btns1" ngbtooltip="Remove" placement="bottom" 
                     type="button" ng-reflect-placement="bottom" ng-reflect-ngb-tooltip="Remove" (click)="open(content)"></button>
-                
                 </div>
             </div>
         </div>
@@ -52,6 +50,39 @@
               <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>
             </div>
     </ng-template>
-          
+    <ng-template #Cat let-modal>
+      <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Items update</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label for="dateOfBirth">Category Name</label>
+            <input id="typeahead-basic" name="catname" type="text" class="form-control" [(ngModel)]="model" (selectItem)="myFunction($event)" [ngbTypeahead]="search"/>
+          </div>
+          <div class="form-group">
+            <label for="exampleFormControlInput1">Item Name</label>
+            <input type="text" class="form-control" id="ItemName" name="itemname" >
+          </div>
+          <div class="form-group">
+            <label for="exampleFormControlInput1">Price</label>
+            <input type="number" class="form-control" id="Price" name="price">
+          </div>
+          <div class="form-group">
+            <label for="exampleFormControlInput1">Unit</label>
+            <input type="number" class="form-control" id="Unit" name="unit">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>
+      </div>
+</ng-template>
 </div>
 
+<app-fab-button [options]="fabBtnOptions" (click)="open(Cat)">
+  
+</app-fab-button>
