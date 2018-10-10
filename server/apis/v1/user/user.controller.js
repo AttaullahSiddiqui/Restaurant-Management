@@ -1,6 +1,6 @@
 'use strict';
 
-let bcrypt 		= require('bcrypt');
+let bcrypt 		= require('bcryptjs');
 let User        = require('./user.model');
 let service     = require('../../../core/app.service');
 let errHandler  = require('../../../utils/errorHandler');

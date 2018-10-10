@@ -39,11 +39,18 @@ function mongoErrors(err){
 }
 
 function validationErrors(err){
-    var errors = [];
-    for(var propertyName in err.errors){
-        errors.push(err.errors[propertyName].message);
+    try{
+        var errors = [];
+        for(var propertyName in err.errors){
+            errors.push(err.errors[propertyName].message);
+        }
+        return [errors, -4];
+    }catch(error){
+        var errors = [];
+        console.log("Unexpected Error : -------------> ",err);
+        errors.push("Unexpected Error");
+        return [errors, -1];
     }
-    return [errors, -4];
 }
 
 function castErrors(err){

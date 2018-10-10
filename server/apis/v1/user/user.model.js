@@ -1,10 +1,33 @@
 'use strict';
 
 let mongoose    	= require('mongoose');
-let bcrypt 			= require('bcrypt');
+let bcrypt 			= require('bcryptjs');
 let service 		= require('../../services/app.services');
 
 var UserSchema = mongoose.Schema({
+	name: {
+		type: String,
+		required: [true, "Employee Name is required should not be null"]
+	},
+	role: {
+		type: String,
+		required : [true,"Role is required should not be null"],
+		enum: service.userRoles
+	},
+	cnic : {
+		type: Number,
+		required : [function(){
+			var authTypeIndex = service.authTypes.indexOf(this.provider);
+			if(authTypeIndex === -1 || authTypeIndex === 1){
+				return true;
+			}
+			return false
+		},"Password is required should not be null"]
+	},
+	profilePic : {
+		type: String,
+	},
+
     userName : {
 		type: String,
 		lowercase: true,
@@ -18,14 +41,10 @@ var UserSchema = mongoose.Schema({
 	picture : {
 		type : String
 	},
-	role: {
-		type: String,
-		required : [true,"Role is required should not be null"],
-		enum: service.userRoles
-	},
+	
 	createAt : {
 		type : Date,
-		default : Date.now()
+		default : Date.now
 	}
 });
 

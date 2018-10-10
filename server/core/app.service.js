@@ -1,8 +1,8 @@
 'use strict';
 
-var bcrypt 		= require('bcrypt');
+var bcrypt  = require('bcryptjs');
 
-const USER_ROLES = ['owner', 'admin', 'user'];
+const USER_ROLES = ['owner', 'manager', 'cashier', 'waiter', 'cook', 'security guard'];
 
 module.exports = {
     userRoles               : USER_ROLES,
