@@ -11,6 +11,8 @@ import { AdminLayoutComponent, AuthLayoutComponent, HeaderComponent, SidebarComp
 
 /*Shared Module */
 import { SharedModule } from '@app/shared';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 
 @NgModule({
@@ -26,7 +28,8 @@ import { SharedModule } from '@app/shared';
     BrowserAnimationsModule,
     BrowserModule,
     AppRoutingModule,
-    SharedModule
+    SharedModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [],
   bootstrap: [AppComponent]
