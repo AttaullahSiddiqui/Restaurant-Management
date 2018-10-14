@@ -115,3 +115,17 @@
     display: flex !important;
     justify-content: center !important;
 }
+ngb-typeahead-window{
+    // position: inherit !important;
+    width: 94%;
+}
+.mg-center{
+    margin: 0 auto;
+}
+.add-btn, .remove-btn{
+    border: none;
+    background: none;
+    outline: none;
+    font-size: 22px;
+    cursor: pointer;
+}

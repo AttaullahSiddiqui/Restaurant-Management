@@ -1,3 +1,91 @@
-<p>
-  branches-list works!
-</p>
+
+<button class="btn btn-lg btn-outline-primary" (click)="openDialog(branchModel)">New Branch</button>
+
+
+
+<div class="container">
+  <div class="table-responsive" style="max-height: 500px;">
+    <table class="table">
+      <thead style="background: #c5bebe;">
+        <tr>
+          <th scope="col" class="text-center fit-col-content">Branch No</th>
+          <th scope="col" class="text-center">Branch Name</th>
+          <th scope="col" class="text-center">Branch City</th>
+          <th scope="col" class="text-center">Branch Address</th>
+          <th scope="col" class="text-center">Opening Date</th>
+          <th scope="col" class="text-center">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let hero of heroes">
+          <td class="text-center v-align">Branch - 01</td>
+          <td  class="text-center v-align">
+              Maripur road
+          </td>
+          <td class="text-center v-align">Karachi</td>
+          <td class="text-center v-align">Hingorabad road lyari karachi</td>
+          <td class="text-center v-align">12-08-2018</td>
+          <td class="text-center v-align">
+            <button type="button" class="fa fa-pencil-square-o add-btn" placement="bottom" ngbTooltip="Add"></button>
+            <button type="button" class="fa fa-times add-btn" placement="bottom" ngbTooltip="Add"></button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="paginate-center">
+  <ngb-pagination (pageChange)="pageChange($event)" [collectionSize]="120" [(page)]="page" [maxSize]="3" [rotate]="true"></ngb-pagination>
+</div>
+
+
+
+
+
+
+
+
+<ng-template #branchModel let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Profile update</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form class="row">
+
+      <div class="form-group col-md-6 col-sm-6 col-xs-12">
+        <label for="dateOfBirth">Branch Name</label>
+        <input type="number" class="form-control" id="Price" name="price">
+      </div>
+      <div class="form-group col-md-6 col-sm-6 col-xs-12">
+        <label for="exampleFormControlInput1">Select City</label>
+        <input id="typeahead-basic-77" name="catname" type="text" class="form-control" [(ngModel)]="model" (selectItem)="myFunction($event)" [ngbTypeahead]="search"/>
+      </div>
+
+
+      <div class="form-group col-md-6 col-sm-6 col-xs-12">
+        <label for="openingDate">Opening Date</label>
+        <div class="input-group">
+          <input id="openingDate" class="form-control" placeholder="yyyy-mm-dd"
+                  name="dp" [(ngModel)]="dateModel" ngbDatepicker #d="ngbDatepicker">
+          <div class="input-group-append">
+            <button class="btn btn-outline-secondary fa fa-calendar" (click)="d.toggle()" type="button"></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group col-md-6 col-sm-6 col-xs-12">
+        <label for="exampleFormControlTextarea1">Address</label>
+        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+      </div>
+      <div class="mg-center">
+          <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>
+      </div>
+    </form>
+  </div>
+</ng-template>
+
+
