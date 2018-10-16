@@ -1,3 +1,4 @@
 export const environment = {
-  production: true
+  production: true,
+  baseUrl : 'https://dua-resturant-management.com/api/v1/'
 };
