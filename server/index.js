@@ -9,7 +9,7 @@ let bodyParser  = require('body-parser');
 let http        = require('http');
 let mongoose    = require('mongoose');
 let helmet      = require('helmet');
-//let cors        = require('cors') //:: TODO
+let cors        = require('cors') //:: TODO
 
 
 let responseHandler = require('./utils/responseHandler');
@@ -35,17 +35,17 @@ mongoose.connection.on('connected', function() {
 
 
 let app = express();
-app.use(helmet()); 
+//app.use(helmet()); 
 //app.use(logger('dev'));
 
 // ::TODO Enable CORS (Should be remove)
-// app.use(cors()); // :: 
-/*app.use(function (req, res, next) {
-	res.header("Access-Control-Allow-Origin", "*");
-	res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
-	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
-	next();
-});*/
+app.use(cors());
+// app.use(function (req, res, next) {
+// 	res.header("Access-Control-Allow-Origin", "*");
+// 	res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
+// 	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+// 	next();
+// });
 
 
 app.use(bodyParser.json(), function(err, req, res, next){
