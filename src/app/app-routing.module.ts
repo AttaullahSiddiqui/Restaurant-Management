@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { AdminLayoutComponent, AuthLayoutComponent, NotFound404Component } from '@app/core-components';
+import { AdminLayoutComponent, AuthLayoutComponent, NotFound404Component } from '@app/core';
 
 const routes: Routes = [{
     path: '',
