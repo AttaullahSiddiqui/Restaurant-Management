@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import {debounceTime, distinctUntilChanged, map} from 'rxjs/operators';
 import {Observable} from 'rxjs';
+import { HttpService } from '@app/core/services/http.service';
 
 const states = ['Alabama', 'Alaska', 'American Samoa', 'Arizona', 'Arkansas', 'California', 'Colorado',
   'Connecticut', 'Delaware', 'District Of Columbia', 'Federated States Of Micronesia', 'Florida', 'Georgia',
@@ -23,9 +24,14 @@ export class BranchesListComponent implements OnInit {
   public dateModel: any;
 
   heroes = ['Windstorm', 'Bombasto', 'Magneta', 'Tornado'];
-  constructor(private modalService: NgbModal) { }
+  constructor(public http : HttpService, private modalService: NgbModal) { }
 
   ngOnInit() {
+    this.http.get('branch/all').subscribe(result => {
+      console.log("Result : ",result);
+    }, err => {
+      console.log("Error : ",err);
+    })
   }
 
 
