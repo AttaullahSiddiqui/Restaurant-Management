@@ -17,18 +17,19 @@ var BranchSchema = mongoose.Schema({
         type: String,
         required: [true, "city is required"]
     },
-    branchMapLocation: {
-        latitude : {
-            type: Number,
-            required : [true, "Latitude is required"]
-        },
-        longitude : {
-            type: Number,
-            required : [true, "Longitude is required"]
-        }
-    },
+    // branchMapLocation: {
+    //     latitude : {
+    //         type: Number,
+    //         required : [true, "Latitude is required"]
+    //     },
+    //     longitude : {
+    //         type: Number,
+    //         required : [true, "Longitude is required"]
+    //     }
+    // },
     openingDate : {
         type : Date,
+        required: [true, "Opening date is required"],
         default : Date.now
     },
 });

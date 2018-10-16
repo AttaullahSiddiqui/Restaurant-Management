@@ -25,10 +25,11 @@ function createNewBranch(req, res){
         branchName : req.body.name,
         branchAddress : req.body.address,
         city : req.body.city,
-        branchMapLocation : {
-            latitude : req.body.latitude,
-            longitude : req.body.longitutde
-        }
+        openingDate : req.body.openingDate
+        // branchMapLocation : {
+        //     latitude : req.body.latitude,
+        //     longitude : req.body.longitutde
+        // }
     }
     var newBranch = new branch(branchObj);
 	newBranch.save().then(function(result){
@@ -43,15 +44,16 @@ function updateBranchDetails(req, res){
     if(!req.body.branchId){
         return res.respondError("Branch id is required", -4);
     }
-    if(!req.body.branchName && !req.body.address && !req.body.city && !req.body.latitude && !req.body.longitude){
+    if(!req.body.branchName && !req.body.address && !req.body.city && !req.body.openingDate){
         return res.respondError("Minimum 1 feild is required for update", -4);
     }
     let obj = {};
     req.body.branchName ? (obj.branchName = req.body.branchName) : null;
     req.body.address ? (obj.branchAddress = req.body.address) : null;
     req.body.city ? (obj.city = req.body.city) : null;
-    req.body.latitude ? (obj.branchMapLocation.latitude = req.body.latitude) : null;
-    req.body.longitude ? (obj.branchMapLocation.longitude = req.body.longitude) : null;
+    req.body.openingDate ? (obj.openingDate = req.body.openingDate) : null;
+    // req.body.latitude ? (obj.branchMapLocation.latitude = req.body.latitude) : null;
+    // req.body.longitude ? (obj.branchMapLocation.longitude = req.body.longitude) : null;
     
     branch.updateOne({'_id': req.body.branchId}, {$set : obj } ,
                 { runValidators: true }, function(err, success){
