@@ -1,5 +1,5 @@
 
-<button class="btn btn-lg btn-outline-primary" (click)="openDialog(branchModel)">New Branch</button>
+<button class="btn btn-lg btn-outline-primary" (click)="openDialog('newBranch', branchModel)">New Branch</button>
 
 
 
@@ -16,18 +16,26 @@
           <th scope="col" class="text-center">Action</th>
         </tr>
       </thead>
-      <tbody>
-        <tr *ngFor="let hero of heroes">
-          <td class="text-center v-align">Branch - 01</td>
+      <tbody *ngIf="branchList.length > 0 ">
+        <tr *ngFor="let branch of branchList; let i = index;">
+          <td class="text-center v-align">Branch - {{i+1}}</td>
           <td  class="text-center v-align">
-              Maripur road
+              {{branch.branchName}}
           </td>
-          <td class="text-center v-align">Karachi</td>
-          <td class="text-center v-align">Hingorabad road lyari karachi</td>
-          <td class="text-center v-align">12-08-2018</td>
+          <td class="text-center v-align">{{branch.city}}</td>
+          <td class="text-center v-align">{{branch.branchAddress}}</td>
+          <td class="text-center v-align">{{branch.openingDate | date:'dd-MM-yyyy'}}</td>
           <td class="text-center v-align">
-            <button type="button" class="fa fa-pencil-square-o add-btn" placement="bottom" ngbTooltip="Add"></button>
-            <button type="button" class="fa fa-times add-btn" placement="bottom" ngbTooltip="Add"></button>
+            <button type="button" (click)="openDialog('updateBranch', branchModel)" class="fa fa-pencil-square-o add-btn" placement="bottom" ngbTooltip="Add"></button>
+            <button type="button" class="fa fa-times add-btn" placement="bottom" ngbTooltip="Remove"></button>
+          </td>
+        </tr>
+      </tbody>
+      <tbody *ngIf="requestPending.get || (branchList.length == 0 )">
+        <tr>
+          <td colspan="6" class="text-center" style="padding-top: 100px;">
+            <i *ngIf="requestPending.get" class="fa fa-spin fa-circle-o-notch fa-4x" aria-hidden="true"></i>
+            <label *ngIf="branchList.length == 0" class="no-content">No branch created yet</label>
           </td>
         </tr>
       </tbody>
@@ -35,7 +43,7 @@
   </div>
 </div>
 
-<div class="paginate-center">
+<div *ngIf="!requestPending.get && (branchList.length > 5 )" class="paginate-center">
   <ngb-pagination (pageChange)="pageChange($event)" [collectionSize]="120" [(page)]="page" [maxSize]="3" [rotate]="true"></ngb-pagination>
 </div>
 
@@ -54,35 +62,43 @@
     </button>
   </div>
   <div class="modal-body">
-    <form class="row">
+    <form [formGroup]="branchForm">
 
-      <div class="form-group col-md-6 col-sm-6 col-xs-12">
-        <label for="dateOfBirth">Branch Name</label>
-        <input type="number" class="form-control" id="Price" name="price">
-      </div>
-      <div class="form-group col-md-6 col-sm-6 col-xs-12">
-        <label for="exampleFormControlInput1">Select City</label>
-        <input id="typeahead-basic-77" name="catname" type="text" class="form-control" [(ngModel)]="model" (selectItem)="myFunction($event)" [ngbTypeahead]="search"/>
+      <div class="form-group">
+        <label for="branchName">Branch Name</label>
+        <input type="text" formControlName="branchName" class="form-control" id="branchName" [ngClass]="{'input-err' : isFormSubmit && branchForm.controls.branchName.errors?.required}">
+        <label class="err-label" *ngIf="isFormSubmit && branchForm.controls.branchName.errors?.required">Branch Name is required</label>
       </div>
 
+      <div class="form-group">
+        <label for="branchCity">Select City</label>
+        <input type="text" formControlName="city" class="form-control" id="branchCity" [ngbTypeahead]="search" [ngClass]="{'input-err' : isFormSubmit && branchForm.controls.city.errors?.required}"/>
+        <label class="err-label" *ngIf="isFormSubmit && branchForm.controls.city.errors?.required">City is required</label>
+      </div>
 
-      <div class="form-group col-md-6 col-sm-6 col-xs-12">
+      <div class="form-group">
         <label for="openingDate">Opening Date</label>
         <div class="input-group">
-          <input id="openingDate" class="form-control" placeholder="yyyy-mm-dd"
-                  name="dp" [(ngModel)]="dateModel" ngbDatepicker #d="ngbDatepicker">
+          <input formControlName="openingDate" class="form-control" id="openingDate" placeholder="yyyy-mm-dd"
+                  name="dp" [ngClass]="{'input-err' : isFormSubmit && branchForm.controls.openingDate.errors?.required}" ngbDatepicker #d="ngbDatepicker" readonly>
           <div class="input-group-append">
             <button class="btn btn-outline-secondary fa fa-calendar" (click)="d.toggle()" type="button"></button>
           </div>
         </div>
+        <label class="err-label" *ngIf="isFormSubmit && branchForm.controls.openingDate.errors?.required">Opening Date is required</label>
       </div>
 
-      <div class="form-group col-md-6 col-sm-6 col-xs-12">
-        <label for="exampleFormControlTextarea1">Address</label>
-        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+      <div class="form-group">
+        <label for="branchAddress">Address</label>
+        <textarea formControlName="branchAddress" class="form-control" [ngClass]="{'input-err' : isFormSubmit && branchForm.controls.branchAddress.errors?.required}" id="branchAddress" rows="3"></textarea>
+        <label class="err-label" *ngIf="isFormSubmit && branchForm.controls.branchAddress.errors?.required">Branch address is required</label>
       </div>
-      <div class="mg-center">
-          <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>
+      <div class="text-center">
+          <!-- <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button> -->
+          <button type="button" class="btn btn-outline-dark" [ngClass]="{'cs-not-allowed' : requestPending.create}" (click)="!requestPending.create && createNewBranch(branchForm.valid, branchForm.value)">
+            <i *ngIf="requestPending.create" class="fa fa-spin fa-circle-o-notch" aria-hidden="true"></i>
+            Create
+          </button>
       </div>
     </form>
   </div>

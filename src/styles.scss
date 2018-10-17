@@ -129,3 +129,18 @@ ngb-typeahead-window{
     font-size: 22px;
     cursor: pointer;
 }
+.input-err{
+    border-color: red !important;
+}
+.err-label{
+    margin-top: 5px;
+    color: red;
+    font-size: 14px;
+}
+.cs-not-allowed{
+    cursor: not-allowed;
+}
+.no-content{
+    font-size: 30px;
+    font-weight: 900;
+}
