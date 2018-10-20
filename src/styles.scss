@@ -37,6 +37,9 @@
 .mt-15{
     margin-top: 15px;
 }
+.mt-20{
+    margin-top: 20px;
+}
 .mt-40{
     margin-top: 40px;
 }
@@ -45,6 +48,12 @@
 }
 .mr-10{
     margin-right: 10px;
+}
+.mr-15{
+    margin-right: 15px;
+}
+.mr-20{
+    margin-right: 20px;
 }
 .ml-5{
     margin-left: 5px;
@@ -66,6 +75,10 @@
 }
 .pt-20{
     padding-top:  20px;
+}
+.ptb-50{
+    padding-top: 50px !important;
+    padding-bottom: 50px !important;
 }
 .form-center{
     margin: 0 auto;
@@ -143,4 +156,7 @@ ngb-typeahead-window{
 .no-content{
     font-size: 30px;
     font-weight: 900;
+}
+.app-btn{
+    min-width: 100px;
 }

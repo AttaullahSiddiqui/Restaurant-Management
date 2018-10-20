@@ -4,6 +4,7 @@ import {debounceTime, distinctUntilChanged, map} from 'rxjs/operators';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import {Observable} from 'rxjs';
 import { HttpService } from '@app/core/services/http.service';
+import { ConfirmationPopupComponent } from '@app/shared/popup/confirmation-popup/confirmation-popup.component';
 
 const states = ['Alabama', 'Alaska', 'American Samoa', 'Arizona', 'Arkansas', 'California', 'Colorado',
   'Connecticut', 'Delaware', 'District Of Columbia', 'Federated States Of Micronesia', 'Florida', 'Georgia',
@@ -123,7 +124,14 @@ export class BranchesListComponent implements OnInit {
       console.log("Reason : ",reason);
       //this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
     });
+  }
 
+  confirmDialog(){
+    const modalRef = this.modalService.open(ConfirmationPopupComponent, { centered: true }).result.then((result) => {
+      console.log("Result of confirmation : ",result);
+    }, (reason) => {
+      console.log("Reason of confirmation : ",reason);
+    });
   }
 
 }

@@ -27,7 +27,7 @@
           <td class="text-center v-align">{{branch.openingDate | date:'dd-MM-yyyy'}}</td>
           <td class="text-center v-align">
             <button type="button" (click)="openDialog('updateBranch', branchModel)" class="fa fa-pencil-square-o add-btn" placement="bottom" ngbTooltip="Add"></button>
-            <button type="button" class="fa fa-times add-btn" placement="bottom" ngbTooltip="Remove"></button>
+            <button type="button" (click)="confirmDialog()" class="fa fa-times add-btn" placement="bottom" ngbTooltip="Remove"></button>
           </td>
         </tr>
       </tbody>
