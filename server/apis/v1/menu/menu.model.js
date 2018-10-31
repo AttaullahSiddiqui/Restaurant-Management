@@ -1,23 +1,23 @@
 'use strict';
 
-let mongoose    	= require('mongoose');
+let mongoose    = require('mongoose');
 
 var CategoryItemsSchema = mongoose.Schema({
     itemName : {
         type : String,
-        required : [true, "Item Name is required should not be null"]
+        required : [true, "Item Name is required"]
     },
     price : {
         type : Number,
-        required : [true, "Item Price is required should not be null"]
+        required : [true, "Item Price is required"]
     },
     quantity : {
         type : Number,
-        required : [true, "Item quantity is required should not be null"]
+        required : [true, "Item quantity is required"]
     },
     unit : {
         type : String,
-        required : [true, "Item unit is required should not be null"]
+        required : [true, "Item unit is required"]
     }
 })
 
@@ -26,7 +26,7 @@ var MenuSchema = mongoose.Schema({
     categoryName : {
 		type: String,
 		unique  : true,
-		required : [true, "Menu Category Name is required should not be null"]
+		required : [true, "Menu Category Name is required"]
     },
     categoryItems : [CategoryItemsSchema]
 });

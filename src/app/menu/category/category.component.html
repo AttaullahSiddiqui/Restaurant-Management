@@ -1,3 +1,30 @@
-<p>
-  category works!
-</p>
+<div class="container">
+  <div class="table-responsive scroll-bar" style="max-height: 400px;">
+    <table class="table table-bordered bd-none">
+      <thead style="background: #c5bebe;">
+        <tr>
+          <th scope="col" class="text-center bd-tl" style="width: 50px;">#</th>
+          <th scope="col" class="bd-top">Category Name</th>
+          <th scope="col" class="text-center bd-top" style="width: 120px;">Total Items</th>
+          <th scope="col" class="text-center bd-top" style="width: 100px;min-width: 100px;">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let a of dummyCategories; let i = index;">
+          <td class="text-center">
+            {{i+1}}
+          </td>
+          <td>Karhai</td>
+          <td class="text-center">12</td>
+          <td class="text-center bd-left v-align">
+            <button type="button" class="fa fa-pencil-square-o remove-btn" placement="bottom" ngbTooltip="Remove"></button>
+            <button type="button" class="fa fa-trash remove-btn" placement="bottom" ngbTooltip="Remove"></button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<div class="paginate-center">
+    <ngb-pagination (pageChange)="pageChange($event)" [collectionSize]="120" [(page)]="page" [maxSize]="3" [rotate]="true"></ngb-pagination>
+</div>
