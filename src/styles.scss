@@ -135,10 +135,10 @@ ngb-typeahead-window{
 .mg-center{
     margin: 0 auto;
 }
-.add-btn, .remove-btn{
+.icon-btn{
     border: none;
     background: none;
-    outline: none;
+    outline: none !important;
     font-size: 22px;
     cursor: pointer;
 }

@@ -59,13 +59,13 @@ function removeMenuCategory(req, res){
         return res.respondError("Menu category id is required", -4);
     }
     Menu.deleteOne({'_id' : req.query.menuCategoryId}).then(function(success){
-        if(success.deletedCount){
+        if( (success.n == 1) && (success.ok == 1) ){
             return res.respondSuccess(success,"Menu category removed successfully", 1);
         }
         return res.respondError("Menu category not removed", -3);
     }, function(err){
-        console.log("Error : -------->",err);
-        return res.respondError("Unexpected Error", -1);
+        var error = errHandler.handle(err);
+        return res.respondError(error[0], error[1]);
     }); 
 }
 

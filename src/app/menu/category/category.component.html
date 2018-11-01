@@ -1,3 +1,5 @@
+<button (click)="openCategoryDialog(content)">Open Diloag</button>
+
 <div class="container">
   <div class="table-responsive scroll-bar" style="max-height: 400px;">
     <table class="table table-bordered bd-none">
@@ -9,22 +11,70 @@
           <th scope="col" class="text-center bd-top" style="width: 100px;min-width: 100px;">Action</th>
         </tr>
       </thead>
-      <tbody>
-        <tr *ngFor="let a of dummyCategories; let i = index;">
+      <tbody *ngIf="restaurantMenu.length > 0 ">
+        <tr *ngFor="let category of restaurantMenu; let i = index;">
           <td class="text-center">
             {{i+1}}
           </td>
-          <td>Karhai</td>
-          <td class="text-center">12</td>
+          <td>
+            <div *ngIf="i != currentRowIndex">{{category.categoryName | titlecase}}</div>
+            <div *ngIf="i == currentRowIndex" [formGroup]="categoryForm">
+                <input type="text" formControlName="categoryName" class="form-control" [ngClass]="{'input-err' : isFormSubmit && categoryForm.controls.categoryName.errors?.required}" [attr.disabled]="requestPending.update ? '' : null">
+                <label class="err-label" *ngIf="isFormSubmit && categoryForm.controls.categoryName.errors?.required">Category Name is required</label>
+            </div>
+          </td>
+          <td class="text-center">{{category.categoryItems.length}}</td>
           <td class="text-center bd-left v-align">
-            <button type="button" class="fa fa-pencil-square-o remove-btn" placement="bottom" ngbTooltip="Remove"></button>
-            <button type="button" class="fa fa-trash remove-btn" placement="bottom" ngbTooltip="Remove"></button>
+            <div *ngIf="i != currentRowIndex">
+                <button type="button" (click)="!requestPending.delete && editCategory(category, i)" class="fa fa-pencil-square-o icon-btn" [ngClass]="{'cs-not-allowed' : requestPending.delete }" placement="bottom" ngbTooltip="Edit"></button>
+                <button type="button" (click)="!requestPending.delete && removeCategory(category, i)" class="fa fa-trash icon-btn" [ngClass]="{'cs-not-allowed' : requestPending.delete }"  placement="bottom" ngbTooltip="Delete"></button>
+            </div>
+            <div *ngIf="i == currentRowIndex">
+                <button type="button" (click)="!requestPending.update && updateCategory(category, i)" class="fa fa-floppy-o icon-btn" [ngClass]="{'cs-not-allowed' : requestPending.update }" placement="bottom" ngbTooltip="Update"></button>
+                <button type="button" (click)="!requestPending.update && cancelCategory(i)" class="fa fa-ban icon-btn" [ngClass]="{'cs-not-allowed' : requestPending.update }" placement="bottom" ngbTooltip="Cancel"></button>
+            </div>
           </td>
         </tr>
       </tbody>
+      <tbody *ngIf="requestPending.get || (restaurantMenu.length == 0 )">
+          <tr>
+            <td colspan="6" class="text-center" style="padding-top: 100px;">
+              <i *ngIf="requestPending.get" class="fa fa-spin fa-circle-o-notch fa-4x" aria-hidden="true"></i>
+              <label *ngIf="!requestPending.get && restaurantMenu.length == 0" class="no-content">No Menu category created yet</label>
+            </td>
+          </tr>
+        </tbody>
     </table>
   </div>
 </div>
-<div class="paginate-center">
+
+<div *ngIf="!requestPending.get && (restaurantMenu.length > 5 )" class="paginate-center">
     <ngb-pagination (pageChange)="pageChange($event)" [collectionSize]="120" [(page)]="page" [maxSize]="3" [rotate]="true"></ngb-pagination>
 </div>
+
+
+<!-- TODO -->
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Category</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="categoryForm">
+      <div class="form-group">
+        <div class="input-group">
+          <label for="branchName">Category Name</label>
+          <input type="text" formControlName="categoryName" class="form-control" id="branchName" [ngClass]="{'input-err' : isFormSubmit && categoryForm.controls.categoryName.errors?.required}">
+          <label class="err-label" *ngIf="isFormSubmit && categoryForm.controls.categoryName.errors?.required">Branch Name is required</label>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="createCategory(categoryForm.valid, categoryForm.value)">
+        <i class="fa fa-spin fa-spinner" aria-hidden="true"></i>
+      Create Category</button>
+  </div>
+</ng-template>
