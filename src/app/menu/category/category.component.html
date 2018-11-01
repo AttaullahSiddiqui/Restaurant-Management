@@ -1,4 +1,8 @@
-<button (click)="openCategoryDialog(content)">Open Diloag</button>
+<div class="text-right mrb-20">
+    <button type="button" class="btn btn-primary category-btn mr-20" (click)="openCategoryDialog()">
+      <i class="fa fa-plus pd-r-5"> </i> Add New Category
+    </button>
+</div>
 
 <div class="container">
   <div class="table-responsive scroll-bar" style="max-height: 400px;">
@@ -51,30 +55,3 @@
 <div *ngIf="!requestPending.get && (restaurantMenu.length > 5 )" class="paginate-center">
     <ngb-pagination (pageChange)="pageChange($event)" [collectionSize]="120" [(page)]="page" [maxSize]="3" [rotate]="true"></ngb-pagination>
 </div>
-
-
-<!-- TODO -->
-<ng-template #content let-modal>
-  <div class="modal-header">
-    <h4 class="modal-title" id="modal-basic-title">Category</h4>
-    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-  <div class="modal-body">
-    <form [formGroup]="categoryForm">
-      <div class="form-group">
-        <div class="input-group">
-          <label for="branchName">Category Name</label>
-          <input type="text" formControlName="categoryName" class="form-control" id="branchName" [ngClass]="{'input-err' : isFormSubmit && categoryForm.controls.categoryName.errors?.required}">
-          <label class="err-label" *ngIf="isFormSubmit && categoryForm.controls.categoryName.errors?.required">Branch Name is required</label>
-        </div>
-      </div>
-    </form>
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-outline-dark" (click)="createCategory(categoryForm.valid, categoryForm.value)">
-        <i class="fa fa-spin fa-spinner" aria-hidden="true"></i>
-      Create Category</button>
-  </div>
-</ng-template>

@@ -1,0 +1,24 @@
+<div>
+  <div class="modal-header" style="border-bottom: none;">
+    <button type="button" class="close pointer" aria-label="Close" style="outline: none" (click)="activeModal.close(false)">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="categoryForm">
+      <div class="form-group">
+        <label for="categoryName">Category Name</label>
+        <input type="text" formControlName="categoryName" class="form-control" id="categoryName"
+        [ngClass]="{'input-err' : (isFormSubmit && categoryForm.controls.categoryName.errors?.required || errMsg) }" autocomplete="off">
+        <label class="err-label" *ngIf="isFormSubmit && categoryForm.controls.categoryName.errors?.required">Branch name is required</label>
+        <label class="err-label" *ngIf="errMsg">{{errMsg}}</label>
+      </div>
+      <div class="text-center">
+        <button type="submit" class="btn btn-primary app-btn" (click)="createCategory(categoryForm.valid, categoryForm.value)">
+          <i *ngIf="requestPending" class="fa fa-spin fa-spinner" aria-hidden="true"></i>  Create
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+

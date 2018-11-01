@@ -1,9 +1,16 @@
 
 <div class="container">
   <!-- Search Bar -->
-    <div>
+    <div class="row">
+      <div class="col-md-6 col-12">
         <button class="fa fa-search searchBtn"></button>
-        <input type="search" class="form-control col-md-4 col-sm-6 col-10 SearchTxt">
+        <input type="search" class="form-control col-10 SearchTxt" [ngbTypeahead]="search">
+      </div>
+      <div class="col-md-6 col-12 text-right">
+        <button type="button" class="btn btn-primary item-btn app-btn" (click)="openItemDialog()">
+            <i class="fa fa-plus pd-r-5"> </i> Add New Item
+        </button>
+      </div>
     </div>
 
     <!-- Items starts from here -->
@@ -82,7 +89,3 @@
       </div>
 </ng-template>
 </div>
-
-<app-fab-button [options]="fabBtnOptions" (click)="open(Cat)">
-  
-</app-fab-button>

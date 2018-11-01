@@ -3,6 +3,8 @@ import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import {debounceTime, distinctUntilChanged, map} from 'rxjs/operators';
 import {Observable} from 'rxjs';
 
+import { ItemPopupComponent } from '@app/menu/popup/item-popup/item-popup.component';
+
 const states = ['Alabama', 'Alaska', 'American Samoa', 'Arizona', 'Arkansas', 'California', 'Colorado',
   'Connecticut', 'Delaware', 'District Of Columbia', 'Federated States Of Micronesia', 'Florida', 'Georgia',
   'Guam', 'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky', 'Louisiana', 'Maine',
@@ -155,6 +157,15 @@ export class ItemsComponent implements OnInit {
     } else {
       return  `with: ${reason}`;
     }
+  }
+
+  openItemDialog(){
+    this.modalService.open(ItemPopupComponent, { centered: true }).result.then((result) => {
+        console.log("Result of confirmation : ",result);
+      }, (reason) => {
+        console.log("Reason of confirmation : ",reason);
+      });
+     
   }
 
 }

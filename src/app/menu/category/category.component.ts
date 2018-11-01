@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
-import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+
 import { HttpService } from '@app/core/services/http.service';
+import { CategoryPopupComponent } from '@app/menu/popup/category-popup/category-popup.component';
+import { ConfirmationPopupComponent } from '@app/shared/popup/confirmation-popup/confirmation-popup.component';
 
 @Component({
   selector: 'app-category',
@@ -12,7 +15,6 @@ import { HttpService } from '@app/core/services/http.service';
 export class CategoryComponent implements OnInit {
 
   //TODO :: Start
-    dummyCategories = [1, 2 ,3, 4 ,5 , 6 ,7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
     public page = 1;
   //TODO :: END
   
@@ -21,7 +23,6 @@ export class CategoryComponent implements OnInit {
   currentRowIndex: Number = -1;
   requestPending = {
     get: false,
-    create : false,
     update: false,
     delete: false
   }
@@ -54,12 +55,12 @@ export class CategoryComponent implements OnInit {
     console.log("Page Change : ",e);
   };
 
-  openCategoryDialog(content){
+  openCategoryDialog(){
     this.resetCategoryForm();
-    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
-      console.log("Result ------>: ",result);
-    }, (reason) => {
-      console.log("Reason ------>: ",reason);
+    this.modalService.open(CategoryPopupComponent, { centered: true }).result.then((result) => {
+      if(result){
+        return this.getMenu();
+      }
     });
   };
 
@@ -73,21 +74,6 @@ export class CategoryComponent implements OnInit {
       this.requestPending.get = false;
       console.log("Error : ",err);
     })
-  };
-
-  createCategory(valid, value){
-    this.isFormSubmit = true;
-    if(!valid){
-      return;
-    }
-    this.requestPending.create = true;
-    this.http.post('menu/category/new', {name : value.categoryName}).subscribe(result => {
-      console.log(result.body.message);
-      this.requestPending.create = false;
-    }, err => {
-      this.requestPending.create = false;
-      console.log("Error in branch creation : ",err);
-    });
   };
 
   editCategory(category, index){
@@ -131,15 +117,19 @@ export class CategoryComponent implements OnInit {
   };
 
   removeCategory(category, index){
-    this.requestPending.delete = true;
-    const url = 'menu/category/remove?menuCategoryId='+category._id
-    this.http.delete(url, null).subscribe(result => {
-      console.log("Result :----->",result);
-      this.requestPending.delete = false;
-      this.restaurantMenu.splice(index, 1);
-    }, err => {
-      this.requestPending.delete = false;
-      console.log("Error in category name remove : ",err);
+    this.modalService.open(ConfirmationPopupComponent, { centered: true }).result.then((result) => {
+      if(result){
+        this.requestPending.delete = true;
+        const url = 'menu/category/remove?menuCategoryId='+category._id
+        this.http.delete(url, null).subscribe(result => {
+          console.log("Result :----->",result);
+          this.requestPending.delete = false;
+          this.restaurantMenu.splice(index, 1);
+        }, err => {
+          this.requestPending.delete = false;
+          console.log("Error in category name remove : ",err);
+        });
+      }
     });
   };
 

@@ -1,0 +1,33 @@
+<div>
+  <div class="modal-header" style="border-bottom: none;">
+    <button type="button" class="close pointer" aria-label="Close" style="outline: none" (click)="activeModal.close('no')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+      <form>
+        <div class="form-group">
+          <label for="category">Select Category</label>
+          <select multiple class="form-control" id="category">
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="categoryName">Category Name</label>
+          <input type="text" class="form-control" id="categoryName">
+          <!-- <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
+        </div>
+        <div class="text-center">
+            <button type="submit" class="btn btn-primary app-btn">
+              <i class="fa fa-spin fa-spinner" aria-hidden="true"></i>  Submit
+            </button>
+        </div>
+      </form>
+  </div>
+</div>
+  
+  
