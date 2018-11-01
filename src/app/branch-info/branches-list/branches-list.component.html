@@ -20,14 +20,14 @@
         <tr *ngFor="let branch of branchList; let i = index;">
           <td class="text-center v-align">Branch - {{i+1}}</td>
           <td  class="text-center v-align">
-              {{branch.branchName}}
+              {{branch.branchName | titlecase}}
           </td>
-          <td class="text-center v-align">{{branch.city}}</td>
+          <td class="text-center v-align">{{branch.city | titlecase}}</td>
           <td class="text-center v-align">{{branch.branchAddress}}</td>
           <td class="text-center v-align">{{branch.openingDate | date:'dd-MM-yyyy'}}</td>
           <td class="text-center v-align">
-            <button type="button" (click)="openDialog('updateBranch', branchModel)" class="fa fa-pencil-square-o add-btn" placement="bottom" ngbTooltip="Add"></button>
-            <button type="button" (click)="confirmDialog()" class="fa fa-times add-btn" placement="bottom" ngbTooltip="Remove"></button>
+            <button type="button" (click)="openDialog('updateBranch', branchModel)" class="fa fa-pencil-square-o icon-btn" placement="bottom" ngbTooltip="Add"></button>
+            <button type="button" (click)="confirmDialog()" class="fa fa-times icon-btn" placement="bottom" ngbTooltip="Remove"></button>
           </td>
         </tr>
       </tbody>
@@ -35,7 +35,7 @@
         <tr>
           <td colspan="6" class="text-center" style="padding-top: 100px;">
             <i *ngIf="requestPending.get" class="fa fa-spin fa-circle-o-notch fa-4x" aria-hidden="true"></i>
-            <label *ngIf="branchList.length == 0" class="no-content">No branch created yet</label>
+            <label *ngIf="!requestPending.get && branchList.length == 0" class="no-content">No branch created yet</label>
           </td>
         </tr>
       </tbody>
