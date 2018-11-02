@@ -1,4 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
+@import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
+@import "../node_modules/bootstrap-select/dist/css/bootstrap-select.min.css";
+
 .main-container {
     background: url(assets/background.jpg);
     background-repeat: no-repeat;
@@ -168,6 +171,10 @@ ngb-typeahead-window{
 }
 .input-err{
     border-color: red !important;
+}
+.select-err{
+    border: 1px solid red;
+    border-radius: 4px;
 }
 .err-label{
     margin-top: 5px;

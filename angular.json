@@ -28,12 +28,14 @@
               "src/manifest.json"
             ],
             "styles": [
-              "src/styles.scss",
               "node_modules/font-awesome/css/font-awesome.css",
-              "node_modules/ng2-toastr/bundles/ng2-toastr.min.css",
+              "src/styles.scss",
               "src/styles/app.scss"
             ],
             "scripts": [
+              "node_modules/jquery/dist/jquery.min.js",
+              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js",
+              "node_modules/bootstrap-select/dist/js/bootstrap-select.min.js",
               "node_modules/chart.js/dist/Chart.js"
             ]
           },

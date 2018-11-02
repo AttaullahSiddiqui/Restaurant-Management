@@ -5,26 +5,42 @@
     </button>
   </div>
   <div class="modal-body">
-      <form>
-        <div class="form-group">
-          <label for="category">Select Category</label>
-          <select multiple class="form-control" id="category">
-            <option>1</option>
-            <option>2</option>
-            <option>3</option>
-            <option>4</option>
-            <option>5</option>
-          </select>
-        </div>
+    <form [formGroup]="categoryItemForm">
         <div class="form-group">
           <label for="categoryName">Category Name</label>
-          <input type="text" class="form-control" id="categoryName">
-          <!-- <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> -->
+          <div [ngClass]="{'select-err' : (isFormSubmit && categoryItemForm.controls.categoryName.errors?.required) }">
+            <select formControlName="categoryName" class="form-control selectpicker" id="categoryName" data-live-search="true" title="Select...">
+              <option *ngFor="let category of options.data.menu; let i = index;">
+                {{category.categoryName | titlecase}}
+              </option>
+            </select>
+          </div>
+          <label class="err-label" *ngIf="isFormSubmit && categoryItemForm.controls.categoryName.errors?.required">Select category is required</label>
+        </div>
+        <div class="form-group">
+          <label for="itemName">Item Name</label>
+          <input type="text" formControlName="itemName" class="form-control" id="itemName"
+          [ngClass]="{'input-err' : (isFormSubmit && categoryItemForm.controls.itemName.errors?.required || errMsg) }" autocomplete="off">
+          <label class="err-label" *ngIf="isFormSubmit && categoryItemForm.controls.itemName.errors?.required">Item name is required</label>
+          <label class="err-label" *ngIf="errMsg">{{errMsg}}</label>
+        </div>
+        <div class="form-group">
+          <label for="price">Price</label>
+          <input type="number" formControlName="itemPrice" class="form-control" id="price"
+          [ngClass]="{'input-err' : (isFormSubmit && categoryItemForm.controls.itemPrice.errors?.required) }" autocomplete="off">
+          <label class="err-label" *ngIf="isFormSubmit && categoryItemForm.controls.itemPrice.errors?.required">Item price is required</label>
+        </div>
+        <div class="form-group">
+          <label for="unit">Unit</label>
+          <input type="number" formControlName="itemUnit" class="form-control" id="unit"
+          [ngClass]="{'input-err' : (isFormSubmit && categoryItemForm.controls.itemUnit.errors?.required) }" autocomplete="off">
+          <label class="err-label" *ngIf="isFormSubmit && categoryItemForm.controls.itemUnit.errors?.required">Item unit is required</label>
         </div>
         <div class="text-center">
-            <button type="submit" class="btn btn-primary app-btn">
-              <i class="fa fa-spin fa-spinner" aria-hidden="true"></i>  Submit
-            </button>
+          <button type="submit" class="btn btn-primary app-btn" (click)="submitCall(categoryItemForm.valid, categoryItemForm.value)">
+            <i *ngIf="requestPending" class="fa fa-spin fa-spinner" aria-hidden="true"></i> 
+            {{ (options.type == 'add') ? 'Save' : 'Update'}}
+          </button>
         </div>
       </form>
   </div>

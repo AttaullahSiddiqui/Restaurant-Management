@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import {debounceTime, distinctUntilChanged, map} from 'rxjs/operators';
-import {Observable} from 'rxjs';
+import { Observable } from 'rxjs';
+import { HttpService } from '@app/core/services/http.service';
 
 import { ItemPopupComponent } from '@app/menu/popup/item-popup/item-popup.component';
 
@@ -24,6 +26,13 @@ export class ItemsComponent implements OnInit {
 
     public model: any;
 
+    requestPending = {
+        get: false,
+        update: false,
+        delete: false
+    }
+    restaurantMenu : menuDetail[] = [];
+
     search = (text$: Observable<string>) =>
       text$.pipe(
         debounceTime(200),
@@ -31,141 +40,163 @@ export class ItemsComponent implements OnInit {
         map(term => states.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
       )
 
-  constructor(private modalService: NgbModal) {}
+    constructor(
+        private modalService: NgbModal,
+        private fb: FormBuilder,
+        public http : HttpService,
+        ) {}
 
-  ngOnInit() {
-  }
-
-  myFunction(e){
-    console.log("Event : ",e);
-  }
-
-  public fabBtnOptions = {
-    position: 'bottom',
-    value: 'Add'
-  }
-  arr = [
-    {
-        categoryName: 'Karhai',
-        items: [
-            {
-                name: 'Mutton Karhai',
-                price: '1600',
-                unit: 'KG'
-            }, {
-                name: 'Mutton Karhai',
-                price: '1600',
-                unit: 'KG'
-            }, {
-                name: 'Mutton Karhai',
-                price: '1600',
-                unit: 'KG'
-            }, {
-                name: 'Mutton Karhai',
-                price: '1600',
-                unit: 'KG'
-            }, {
-                name: 'Mutton Karhai',
-                price: '1600',
-                unit: 'KG'
-            }, {
-                name: 'Mutton Karhai',
-                price: '1600',
-                unit: 'KG'
-            }, {
-                name: 'Mutton Karhai',
-                price: '1600',
-                unit: 'KG'
-            },
-        ]
-    },{
-        categoryName: 'Sabzi',
-        items: [
-            {
-                name: 'Palak',
-                price: '80',
-                unit: 'plate'
-            }, {
-                name: 'Palak',
-                price: '80',
-                unit: 'plate'
-            }, {
-                name: 'Palak',
-                price: '80',
-                unit: 'plate'
-            }, {
-                name: 'Palak',
-                price: '80',
-                unit: 'plate'
-            }, {
-                name: 'Palak',
-                price: '80',
-                unit: 'plate'
-            }
-        ]
-    }, {
-        categoryName: 'Drink',
-        items: [
-            {
-                name: 'Pepsi',
-                price: '110',
-                unit: '1.ltr'
-            }, {
-                name: 'Pepsi',
-                price: '110',
-                unit: '1.ltr'
-            }, {
-                name: 'Pepsi',
-                price: '110',
-                unit: '1.ltr'
-            }, {
-                name: 'Pepsi',
-                price: '110',
-                unit: '1.ltr'
-            }, {
-                name: 'Pepsi',
-                price: '110',
-                unit: '1.ltr'
-            }, {
-                name: 'Pepsi',
-                price: '110',
-                unit: '1.ltr'
-            }, {
-                name: 'Pepsi',
-                price: '110',
-                unit: '1.ltr'
-            },
-        ]
-    },
-  ]
-
-// Modal on edit and close click
-  closeResult: string;
-  open(content) {
-    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
-      this.closeResult = `Closed with: ${result}`;
-    }, (reason) => {
-      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-    });
-  }
-
-  private getDismissReason(reason: any): string {
-    if (reason === ModalDismissReasons.ESC) {
-      return 'by pressing ESC';
-    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      return 'by clicking on a backdrop';
-    } else {
-      return  `with: ${reason}`;
+    ngOnInit() {
+        this.getMenu();
     }
-  }
 
-  openItemDialog(){
-    this.modalService.open(ItemPopupComponent, { centered: true }).result.then((result) => {
-        console.log("Result of confirmation : ",result);
-      }, (reason) => {
-        console.log("Reason of confirmation : ",reason);
-      });
-     
-  }
+    myFunction(e){
+        console.log("Event : ",e);
+    }
 
+    public fabBtnOptions = {
+        position: 'bottom',
+        value: 'Add'
+    }
+    arr = [
+        {
+            categoryName: 'Karhai',
+            items: [
+                {
+                    name: 'Mutton Karhai',
+                    price: '1600',
+                    unit: 'KG'
+                }, {
+                    name: 'Mutton Karhai',
+                    price: '1600',
+                    unit: 'KG'
+                }, {
+                    name: 'Mutton Karhai',
+                    price: '1600',
+                    unit: 'KG'
+                }, {
+                    name: 'Mutton Karhai',
+                    price: '1600',
+                    unit: 'KG'
+                }, {
+                    name: 'Mutton Karhai',
+                    price: '1600',
+                    unit: 'KG'
+                }, {
+                    name: 'Mutton Karhai',
+                    price: '1600',
+                    unit: 'KG'
+                }, {
+                    name: 'Mutton Karhai',
+                    price: '1600',
+                    unit: 'KG'
+                },
+            ]
+        },{
+            categoryName: 'Sabzi',
+            items: [
+                {
+                    name: 'Palak',
+                    price: '80',
+                    unit: 'plate'
+                }, {
+                    name: 'Palak',
+                    price: '80',
+                    unit: 'plate'
+                }, {
+                    name: 'Palak',
+                    price: '80',
+                    unit: 'plate'
+                }, {
+                    name: 'Palak',
+                    price: '80',
+                    unit: 'plate'
+                }, {
+                    name: 'Palak',
+                    price: '80',
+                    unit: 'plate'
+                }
+            ]
+        }, {
+            categoryName: 'Drink',
+            items: [
+                {
+                    name: 'Pepsi',
+                    price: '110',
+                    unit: '1.ltr'
+                }, {
+                    name: 'Pepsi',
+                    price: '110',
+                    unit: '1.ltr'
+                }, {
+                    name: 'Pepsi',
+                    price: '110',
+                    unit: '1.ltr'
+                }, {
+                    name: 'Pepsi',
+                    price: '110',
+                    unit: '1.ltr'
+                }, {
+                    name: 'Pepsi',
+                    price: '110',
+                    unit: '1.ltr'
+                }, {
+                    name: 'Pepsi',
+                    price: '110',
+                    unit: '1.ltr'
+                }, {
+                    name: 'Pepsi',
+                    price: '110',
+                    unit: '1.ltr'
+                },
+            ]
+        },
+    ]
+
+
+    getMenu(){
+        this.requestPending.get = true;
+        this.http.get('menu').subscribe(result => {
+        console.log("Menu Fetch : ",result);
+            this.requestPending.get = false;
+            this.restaurantMenu = result.body.data;
+        }, err => {
+        this.requestPending.get = false;
+        console.log("Error : ",err);
+        })
+    };
+
+    openItemDialog(type, categoryIndex?, itemIndex?){
+        let modalRef = this.modalService.open(ItemPopupComponent);
+        let modelData = {
+            menu: this.restaurantMenu,
+        }
+        if(type == 'add'){
+            modalRef.componentInstance.options = { type: 'add', data: modelData};
+        }else{
+            modelData['categoryIndex'] = categoryIndex;
+            modelData['itemIndex'] = itemIndex;
+            modalRef.componentInstance.options = { type: 'update', data: modelData };
+        }  
+        modalRef.result.then( (result) => {
+            console.log("Result of confirmation : ",result);
+        });
+    };
+
+}
+
+// Intrefaces
+interface menuDetail {
+    _id: string;
+    categoryName: string,
+    city: string,
+    categoryItems: menuItemDetail[],
+    branchAddress: string
+}
+
+interface menuItemDetail {
+    itemName : string
+    price :Number
+    quantity : Number 
+    unit : string
 }
