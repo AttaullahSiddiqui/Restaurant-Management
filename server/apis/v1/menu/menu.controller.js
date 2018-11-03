@@ -77,12 +77,14 @@ function createMenuItem(req, res){
             return res.respondError(isErrors, -4);
         }
         Menu.update(
-            {'_id': req.body.categoryId},
+            {'_id': req.body.categoryId, 'categoryItems.itemName': {$ne: req.body.itemName}},
             { "$push": { "categoryItems": { $each : [{ 'itemName' : req.body.itemName, 'price' : req.body.price, 'quantity' : req.body.quantity, 'unit' : req.body.unit }] } } },
             { runValidators: true }).then(function(result){
             console.log("Result ---------------> ",result);
             if(result.nModified && result.n){
                 return res.respondSuccess(null,"Menu category item addedd successfully", 1);
+            }else if(!result.nModified && !result.n && result.ok){
+                return res.respondSuccess(null,"Item already exist in category", -6);
             }
             return res.respondError("No menu category item added", -3);
         },function(err){

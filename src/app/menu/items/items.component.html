@@ -14,78 +14,39 @@
     </div>
 
     <!-- Items starts from here -->
-    <div *ngFor="let category of arr">
-        <u><h1>{{category.categoryName}}</h1></u>
-        <div  class="row">
-            <div *ngFor="let item of category.items" class="col-md-4 col-sm-6 col-xs-12 items container1">
-                <div class="itemStyle">
-                    <b>{{item.name}}</b>
-                    <span class="badge badge-success float-right items-prise"><h6>Price<br /><br />
-                    <strong>Rs: {{item.price}} / {{item.unit}}</strong></h6></span>
-                </div>
-                <div class="overlay">
-                    <button _ngcontent-c3="" class="fa fa-pencil-square-o icon-btn btns2" ngbtooltip="Add" placement="bottom"
-                    type="button" ng-reflect-placement="bottom" ng-reflect-ngb-tooltip="Add" (click)="open(content)"></button>
-                    <button _ngcontent-c3="" class="fa fa-times icon-btn btns1" ngbtooltip="Remove" placement="bottom" 
-                    type="button" ng-reflect-placement="bottom" ng-reflect-ngb-tooltip="Remove" (click)="open(content)"></button>
-                </div>
+    <div *ngFor="let category of restaurantMenu; let categoryIndex = index;">
+      <u><h1>{{category.categoryName | titlecase}}</h1></u>
+      <div  class="row">
+        <div *ngFor="let item of category.categoryItems; let itemIndex = index;" class="col-md-4 col-sm-6 col-xs-12 items container1">
+            <div class="itemStyle">
+                <b>{{item.itemName | titlecase}}</b>
+                <span class="badge badge-success float-right items-prise"><h6>Price<br /><br />
+                <strong>Rs: {{item.price}} / {{item.unit}}</strong></h6></span>
+            </div>
+            <div class="overlay">
+                <button class="fa fa-pencil-square-o icon-btn btns2" ngbtooltip="Add" placement="bottom" type="button" (click)="openItemDialog('update')"></button>
+                <button class="fa fa-trash icon-btn btns1" ngbtooltip="Remove" placement="bottom" type="button" (click)="removeCategoryItem(item, categoryIndex, itemIndex)"></button>
             </div>
         </div>
-    </div>    
+      </div>
+    </div> 
 
-    <ng-template #content let-modal>
-            <div class="modal-header">
-              <h4 class="modal-title" id="modal-basic-title">Profile update</h4>
-              <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <form>
-                <div class="form-group">
-                  <label for="dateOfBirth">Date of birth</label>
-                  <div class="input-group">
-                    <!-- <input id="dateOfBirth" class="form-control" placeholder="yyyy-mm-dd" name="dp" ngbDatepicker #dp="ngbDatepicker"> -->
-                    <div class="input-group-append">
-                      <button class="btn btn-outline-secondary calendar" (click)="dp.toggle()" type="button"></button>
-                    </div>
-                  </div>
-                </div>
-              </form>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>
-            </div>
-    </ng-template>
-    <ng-template #Cat let-modal>
-      <div class="modal-header">
-        <h4 class="modal-title" id="modal-basic-title">Items update</h4>
-        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form>
-          <div class="form-group">
-            <label for="dateOfBirth">Category Name</label>
-            <input id="typeahead-basic" name="catname" type="text" class="form-control" [(ngModel)]="model" (selectItem)="myFunction($event)" [ngbTypeahead]="search"/>
+    <!-- <div *ngFor="let category of arr">
+        <u><h1>{{category.categoryName}}</h1></u>
+        <div  class="row">
+          <div *ngFor="let item of category.items" class="col-md-4 col-sm-6 col-xs-12 items container1">
+              <div class="itemStyle">
+                  <b>{{item.name}}</b>
+                  <span class="badge badge-success float-right items-prise"><h6>Price<br /><br />
+                  <strong>Rs: {{item.price}} / {{item.unit}}</strong></h6></span>
+              </div>
+              <div class="overlay">
+                  <button _ngcontent-c3="" class="fa fa-pencil-square-o icon-btn btns2" ngbtooltip="Add" placement="bottom"
+                  type="button" ng-reflect-placement="bottom" ng-reflect-ngb-tooltip="Add" (click)="open(content)"></button>
+                  <button _ngcontent-c3="" class="fa fa-times icon-btn btns1" ngbtooltip="Remove" placement="bottom" 
+                  type="button" ng-reflect-placement="bottom" ng-reflect-ngb-tooltip="Remove" (click)="open(content)"></button>
+              </div>
           </div>
-          <div class="form-group">
-            <label for="exampleFormControlInput1">Item Name</label>
-            <input type="text" class="form-control" id="ItemName" name="itemname" >
-          </div>
-          <div class="form-group">
-            <label for="exampleFormControlInput1">Price</label>
-            <input type="number" class="form-control" id="Price" name="price">
-          </div>
-          <div class="form-group">
-            <label for="exampleFormControlInput1">Unit</label>
-            <input type="number" class="form-control" id="Unit" name="unit">
-          </div>
-        </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>
-      </div>
-</ng-template>
+        </div>
+    </div>     -->
 </div>

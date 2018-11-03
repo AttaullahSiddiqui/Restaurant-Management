@@ -10,8 +10,8 @@
         <label for="categoryName">Category Name</label>
         <input type="text" formControlName="categoryName" class="form-control" id="categoryName"
         [ngClass]="{'input-err' : (isFormSubmit && categoryForm.controls.categoryName.errors?.required || errMsg) }" autocomplete="off">
-        <label class="err-label" *ngIf="isFormSubmit && categoryForm.controls.categoryName.errors?.required">Branch name is required</label>
-        <label class="err-label" *ngIf="errMsg">{{errMsg}}</label>
+        <label class="err-label" *ngIf="isFormSubmit && categoryForm.controls.categoryName.errors?.required">Category name is required</label>
+        <label class="err-label" *ngIf="errMsg && categoryForm.value.categoryName">{{errMsg}}</label>
       </div>
       <div class="text-center">
         <button type="submit" class="btn btn-primary app-btn" (click)="createCategory(categoryForm.valid, categoryForm.value)">

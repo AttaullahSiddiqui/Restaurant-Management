@@ -41,19 +41,49 @@ export class ItemPopupComponent implements OnInit {
   
   createCategoryItemForm(){
     this.categoryItemForm = this.fb.group({
-      categoryName : ['', Validators.required],
-      itemName : ['', Validators.required],
-      itemPrice: ['', Validators.required],
-      itemUnit: ['', Validators.required]
+      categoryId    : ['', Validators.required],
+      itemName      : ['', Validators.required],
+      itemPrice     : ['', Validators.required],
+      itemQuantity  : ['', Validators.required],
+      itemUnit      : ['', Validators.required]
     });
   };
 
   submitCall(valid, value){
+    console.log("Arguments : ",arguments);
+    this.errMsg = "";
     this.isFormSubmit = true;
     if(!valid){
       return;
     }
-    console.log("Arguments : ",arguments);
+    if(this.options.type == 'add'){
+      return this.addCategoryItem(value);
+    }
+    return this.updateCategoryItem(value);
+  }
+
+  addCategoryItem(data){
+    this.requestPending = true;
+    var obj = {
+      categoryId  : data.categoryId,
+      itemName    : data.itemName,
+      price       : data.itemPrice,
+      quantity    : data.itemQuantity,
+      unit        : data.itemUnit
+    }
+    this.http.post('menu/item/new', obj).subscribe(result => {
+      console.log(result.body.message);
+      this.requestPending = false;
+      this.activeModal.close(true);
+    }, err => {
+      this.requestPending = false;
+      (err.status == 409) && (this.errMsg = 'Item name already exist in category')
+      console.log("Error in item creation : ",err);
+    });
+  }
+
+  updateCategoryItem(data){
+
   }
 
 }

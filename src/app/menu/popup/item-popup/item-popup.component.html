@@ -8,14 +8,14 @@
     <form [formGroup]="categoryItemForm">
         <div class="form-group">
           <label for="categoryName">Category Name</label>
-          <div [ngClass]="{'select-err' : (isFormSubmit && categoryItemForm.controls.categoryName.errors?.required) }">
-            <select formControlName="categoryName" class="form-control selectpicker" id="categoryName" data-live-search="true" title="Select...">
-              <option *ngFor="let category of options.data.menu; let i = index;">
+          <div [ngClass]="{'select-err' : (isFormSubmit && categoryItemForm.controls.categoryId.errors?.required) }">
+            <select formControlName="categoryId" class="form-control selectpicker" id="categoryName" data-live-search="true" title="Select...">
+              <option *ngFor="let category of options.data.menu; let i = index;" [value]="category._id">
                 {{category.categoryName | titlecase}}
               </option>
             </select>
           </div>
-          <label class="err-label" *ngIf="isFormSubmit && categoryItemForm.controls.categoryName.errors?.required">Select category is required</label>
+          <label class="err-label" *ngIf="isFormSubmit && categoryItemForm.controls.categoryId.errors?.required">Select category is required</label>
         </div>
         <div class="form-group">
           <label for="itemName">Item Name</label>
@@ -31,8 +31,14 @@
           <label class="err-label" *ngIf="isFormSubmit && categoryItemForm.controls.itemPrice.errors?.required">Item price is required</label>
         </div>
         <div class="form-group">
+          <label for="quantity">Quantity</label>
+          <input type="number" formControlName="itemQuantity" class="form-control" id="quantity"
+          [ngClass]="{'input-err' : (isFormSubmit && categoryItemForm.controls.itemQuantity.errors?.required) }" autocomplete="off">
+          <label class="err-label" *ngIf="isFormSubmit && categoryItemForm.controls.itemQuantity.errors?.required">Item Quantity is required</label>
+        </div>
+        <div class="form-group">
           <label for="unit">Unit</label>
-          <input type="number" formControlName="itemUnit" class="form-control" id="unit"
+          <input type="text" formControlName="itemUnit" class="form-control" id="unit"
           [ngClass]="{'input-err' : (isFormSubmit && categoryItemForm.controls.itemUnit.errors?.required) }" autocomplete="off">
           <label class="err-label" *ngIf="isFormSubmit && categoryItemForm.controls.itemUnit.errors?.required">Item unit is required</label>
         </div>

@@ -130,7 +130,7 @@ export class CategoryComponent implements OnInit {
           console.log("Error in category name remove : ",err);
         });
       }
-    });
+    },dismiss => null);
   };
 
 

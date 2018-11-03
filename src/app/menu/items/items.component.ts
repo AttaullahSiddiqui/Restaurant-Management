@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { HttpService } from '@app/core/services/http.service';
 
 import { ItemPopupComponent } from '@app/menu/popup/item-popup/item-popup.component';
+import { ConfirmationPopupComponent } from '@app/shared/popup/confirmation-popup/confirmation-popup.component';
 
 const states = ['Alabama', 'Alaska', 'American Samoa', 'Arizona', 'Arkansas', 'California', 'Colorado',
   'Connecticut', 'Delaware', 'District Of Columbia', 'Federated States Of Micronesia', 'Florida', 'Georgia',
@@ -157,13 +158,13 @@ export class ItemsComponent implements OnInit {
     getMenu(){
         this.requestPending.get = true;
         this.http.get('menu').subscribe(result => {
-        console.log("Menu Fetch : ",result);
+            console.log("Menu Fetch : ",result);
             this.requestPending.get = false;
             this.restaurantMenu = result.body.data;
         }, err => {
-        this.requestPending.get = false;
-        console.log("Error : ",err);
-        })
+            this.requestPending.get = false;
+            console.log("Error : ",err);
+        });
     };
 
     openItemDialog(type, categoryIndex?, itemIndex?){
@@ -179,8 +180,29 @@ export class ItemsComponent implements OnInit {
             modalRef.componentInstance.options = { type: 'update', data: modelData };
         }  
         modalRef.result.then( (result) => {
+            this.getMenu();
             console.log("Result of confirmation : ",result);
+        }, reason => {
+            this.getMenu();
+            console.log("reason of confirmation : ",reason);
         });
+    };
+
+    removeCategoryItem(item, categoryIndex, itemIndex){
+        this.modalService.open(ConfirmationPopupComponent, { centered: true }).result.then((result) => {
+            if(result){
+                this.requestPending.delete = false;
+                this.http.delete('menu/item/remove?itemId='+item._id, null).subscribe(result => {
+                    console.log("Item remove successfully : ",result);
+                    this.requestPending.delete = false;
+                    this.restaurantMenu[categoryIndex].categoryItems.splice(itemIndex, 1);
+                }, err => {
+                    this.requestPending.delete = false;
+                    console.log("Error in remove menu item: ",err);
+                });
+            }
+          },dismiss => null);
+        
     };
 
 }

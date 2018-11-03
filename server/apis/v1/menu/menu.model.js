@@ -5,6 +5,7 @@ let mongoose    = require('mongoose');
 var CategoryItemsSchema = mongoose.Schema({
     itemName : {
         type : String,
+        lowercase: true,
         required : [true, "Item Name is required"]
     },
     price : {
@@ -25,7 +26,8 @@ var CategoryItemsSchema = mongoose.Schema({
 var MenuSchema = mongoose.Schema({
     categoryName : {
 		type: String,
-		unique  : true,
+        unique  : true,
+        lowercase: true,
 		required : [true, "Menu Category Name is required"]
     },
     categoryItems : [CategoryItemsSchema]
