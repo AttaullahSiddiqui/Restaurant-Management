@@ -3,7 +3,7 @@ import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import {debounceTime, distinctUntilChanged, map} from 'rxjs/operators';
 import { Observable } from 'rxjs';
-import { HttpService } from '@app/core/services/http.service';
+import { HttpService, AppToastrService } from '@app/core';
 
 import { ItemPopupComponent } from '@app/menu/popup/item-popup/item-popup.component';
 import { ConfirmationPopupComponent } from '@app/shared/popup/confirmation-popup/confirmation-popup.component';
@@ -45,6 +45,7 @@ export class ItemsComponent implements OnInit {
         private modalService: NgbModal,
         private fb: FormBuilder,
         public http : HttpService,
+        public _toastrService : AppToastrService
         ) {}
 
     ngOnInit() {
@@ -202,7 +203,6 @@ export class ItemsComponent implements OnInit {
                 });
             }
           },dismiss => null);
-        
     };
 
 }

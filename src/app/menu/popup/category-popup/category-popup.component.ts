@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { NgbActiveModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { HttpService } from '@app/core/services/http.service';
+import { HttpService, AppToastrService } from '@app/core';
 
 @Component({
   selector: 'app-category-popup',
@@ -19,6 +19,7 @@ export class CategoryPopupComponent implements OnInit {
     private modalConfig: NgbModalConfig,
     private fb: FormBuilder,
     public http : HttpService,
+    public _toastrService : AppToastrService
   ){
     modalConfig.backdrop = 'static';
     modalConfig.keyboard = false;
@@ -42,13 +43,18 @@ export class CategoryPopupComponent implements OnInit {
     }
     this.requestPending = true;
     this.http.post('menu/category/new', {name : value.categoryName}).subscribe(result => {
-      console.log(result.body.message);
+      //console.log(result.body.message);
       this.requestPending = false;
       this.activeModal.close(true);
+      this._toastrService.success('Category created successfully');
     }, err => {
       this.requestPending = false;
-      (err.status == 409) && (this.errMsg = 'Category name already exist')
-      console.log("Error in category creation : ",err);
+      if(err.status == 409) {
+        this.errMsg = 'Category name already exist';
+        return;
+      }
+      this._toastrService.error('Failed to create category', 'Error');
+      //console.log("Error in category creation : ",err);
     });
   };
 

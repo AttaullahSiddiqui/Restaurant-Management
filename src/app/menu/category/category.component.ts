@@ -3,7 +3,7 @@ import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
-import { HttpService } from '@app/core/services/http.service';
+import { HttpService, AppToastrService } from '@app/core';
 import { CategoryPopupComponent } from '@app/menu/popup/category-popup/category-popup.component';
 import { ConfirmationPopupComponent } from '@app/shared/popup/confirmation-popup/confirmation-popup.component';
 
@@ -32,7 +32,8 @@ export class CategoryComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     public http : HttpService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    public _toastrService : AppToastrService
   ) { };
 
   ngOnInit() {
@@ -67,12 +68,13 @@ export class CategoryComponent implements OnInit {
   getMenu(){
     this.requestPending.get = true;
     this.http.get('menu').subscribe(result => {
-      console.log("Menu Fetch : ",result);
+      //console.log("Menu Fetch : ",result);
         this.requestPending.get = false;
         this.restaurantMenu = result.body.data;
     }, err => {
       this.requestPending.get = false;
-      console.log("Error : ",err);
+      this._toastrService.error('Failed to fetch category', 'Error');
+      //console.log("Error : ",err);
     })
   };
 
@@ -106,13 +108,16 @@ export class CategoryComponent implements OnInit {
       name :  this.categoryForm.value.categoryName
     }
     this.http.put('menu/category/update', obj).subscribe(result => {
-      console.log("Result :----->",result.body);
+      //console.log("Result :----->",result.body);
       this.requestPending.update = false;
       this.currentRowIndex = -1;
+      this._toastrService.success('Category Updated Successfully');
+      this.getMenu();
     }, err => {
       this.requestPending.update = false;
       this.currentRowIndex = -1;
-      console.log("Error in category name update : ",err);
+      this._toastrService.error('Failed to update category', 'Error');
+      //console.log("Error in category name update : ",err);
     });
   };
 
@@ -122,12 +127,14 @@ export class CategoryComponent implements OnInit {
         this.requestPending.delete = true;
         const url = 'menu/category/remove?menuCategoryId='+category._id
         this.http.delete(url, null).subscribe(result => {
-          console.log("Result :----->",result);
+          //console.log("Result :----->",result);
+          this._toastrService.success('Category remove Successfully');
           this.requestPending.delete = false;
           this.restaurantMenu.splice(index, 1);
         }, err => {
           this.requestPending.delete = false;
-          console.log("Error in category name remove : ",err);
+          this._toastrService.error('Failed to remove category', 'Error');
+          //console.log("Error in category name remove : ",err);
         });
       }
     },dismiss => null);

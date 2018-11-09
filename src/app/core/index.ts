@@ -8,3 +8,4 @@ export * from './components/not-found404/not-found404.component';
 /* Services */
 export * from './services/http.service';
 export * from './services/utility.service';
+export * from './services/app-toastr.service';

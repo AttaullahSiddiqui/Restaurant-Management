@@ -1,4 +1,3 @@
-
 <div class="container">
   <!-- Search Bar -->
     <div class="row">
@@ -15,7 +14,7 @@
 
     <!-- Items starts from here -->
     <div *ngFor="let category of restaurantMenu; let categoryIndex = index;">
-      <u><h1>{{category.categoryName | titlecase}}</h1></u>
+      <h1>{{category.categoryName | titlecase}}</h1>
       <div  class="row">
         <div *ngFor="let item of category.categoryItems; let itemIndex = index;" class="col-md-4 col-sm-6 col-xs-12 items container1">
             <div class="itemStyle">
@@ -28,25 +27,12 @@
                 <button class="fa fa-trash icon-btn btns1" ngbtooltip="Remove" placement="bottom" type="button" (click)="removeCategoryItem(item, categoryIndex, itemIndex)"></button>
             </div>
         </div>
+        <div class="mg-center" *ngIf="category.categoryItems.length == 0">
+            <label class="no-content">
+                <i class="fa fa-exclamation-circle mrr-5" aria-hidden="true"></i>
+                No item in this category created yet
+            </label>
+        </div>
       </div>
     </div> 
-
-    <!-- <div *ngFor="let category of arr">
-        <u><h1>{{category.categoryName}}</h1></u>
-        <div  class="row">
-          <div *ngFor="let item of category.items" class="col-md-4 col-sm-6 col-xs-12 items container1">
-              <div class="itemStyle">
-                  <b>{{item.name}}</b>
-                  <span class="badge badge-success float-right items-prise"><h6>Price<br /><br />
-                  <strong>Rs: {{item.price}} / {{item.unit}}</strong></h6></span>
-              </div>
-              <div class="overlay">
-                  <button _ngcontent-c3="" class="fa fa-pencil-square-o icon-btn btns2" ngbtooltip="Add" placement="bottom"
-                  type="button" ng-reflect-placement="bottom" ng-reflect-ngb-tooltip="Add" (click)="open(content)"></button>
-                  <button _ngcontent-c3="" class="fa fa-times icon-btn btns1" ngbtooltip="Remove" placement="bottom" 
-                  type="button" ng-reflect-placement="bottom" ng-reflect-ngb-tooltip="Remove" (click)="open(content)"></button>
-              </div>
-          </div>
-        </div>
-    </div>     -->
 </div>

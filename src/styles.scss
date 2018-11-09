@@ -1,6 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
-@import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
-@import "../node_modules/bootstrap-select/dist/css/bootstrap-select.min.css";
+@import "~bootstrap/dist/css/bootstrap.min.css";
+@import "~bootstrap-select/dist/css/bootstrap-select.min.css";
+@import '~ngx-toastr/toastr.css';
+// @import '~ngx-toastr/toastr-bs4-alert';
 
 .main-container {
     background: url(assets/background.jpg);
@@ -46,16 +48,16 @@
 .mt-40, .mrt-40{
     margin-top: 40px;
 }
-.mr-5{
+.mr-5, mrr-5{
     margin-right: 5px;
 }
-.mr-10{
+.mr-10, mrr-10{
     margin-right: 10px;
 }
-.mr-15{
+.mr-15, mrr-15{
     margin-right: 15px;
 }
-.mr-20{
+.mr-20, mrr-20{
     margin-right: 20px;
 }
 .ml-5{
