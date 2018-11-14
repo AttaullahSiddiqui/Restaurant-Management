@@ -80,9 +80,9 @@
 .container1 {
     position: relative;
     width: 100%;
-  }
+}
 
-  .overlay {
+.overlay {
     position: absolute;
     bottom: 0;
     left: 0;
@@ -94,25 +94,29 @@
     transition: .4s ease;
     //border: 1px solid rgb(233, 230, 230);
     border-radius: 10px;
-  }
-  
-  
-  .container1:hover .overlay {
+}
+
+
+.container1:hover .overlay {
     height: 100%;
     text-align: center;
-  }
-  
-  .btns1 {
+}
+
+.btns1 {
     height: 25px;
     width: 25px;
     background: transparent;
     font-size: 22px;
-  }
-  .btns2 {
+}
+.btns2 {
     height: 25px;
     width: 25px;
     background: transparent;
     margin-top: 24px;
     margin-right: 20px;
     font-size: 22px;
-  }
+}
+.no-content-size{
+    min-height: 120px;
+    padding-top: 40px;
+}

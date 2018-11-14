@@ -14,8 +14,8 @@
 
     <!-- Items starts from here -->
     <div *ngFor="let category of restaurantMenu; let categoryIndex = index;">
-      <h1>{{category.categoryName | titlecase}}</h1>
-      <div  class="row">
+      <h1 class="mrt-30">{{category.categoryName | titlecase}}</h1>
+      <div class="row">
         <div *ngFor="let item of category.categoryItems; let itemIndex = index;" class="col-md-4 col-sm-6 col-xs-12 items container1">
             <div class="itemStyle">
                 <b>{{item.itemName | titlecase}}</b>
@@ -28,7 +28,7 @@
             </div>
         </div>
         <div class="mg-center" *ngIf="category.categoryItems.length == 0">
-            <label class="no-content">
+            <label class="no-content no-content-size">
                 <i class="fa fa-exclamation-circle mrr-5" aria-hidden="true"></i>
                 No item in this category created yet
             </label>
