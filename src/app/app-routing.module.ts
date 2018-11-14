@@ -8,26 +8,26 @@ const routes: Routes = [{
     component: AdminLayoutComponent,
     children: [{
       path: '',
-      loadChildren: './dashboard/dashboard.module#DashboardModule'
-    },{
-      path: 'menu',
-      loadChildren: './menu/menu.module#MenuModule'
+      loadChildren: './featured-modules/private/dashboard/dashboard.module#DashboardModule'
     },{
       path: 'feedback',
-      loadChildren: './app-errors/app-errors.module#AppErrorsModule'
+      loadChildren: './featured-modules/private/app-errors/app-errors.module#AppErrorsModule'
+    },{
+      path: 'menu',
+      loadChildren: './featured-modules/private/menu/menu.module#MenuModule'
     },{
       path: 'bill',
-      loadChildren: './bill/bill.module#BillModule'
+      loadChildren: './featured-modules/private/bill/bill.module#BillModule'
     },{
       path: 'branches',
-      loadChildren: './branch-info/branch-info.module#BranchInfoModule'
+      loadChildren: './featured-modules/private/branch-info/branch-info.module#BranchInfoModule'
     }]
   }, {
     path: '',
     component: AuthLayoutComponent,
     children: [{
       path: 'public',
-      loadChildren: './public/public.module#PublicModule'
+      loadChildren: './featured-modules/public/public.module#PublicModule'
     }]
   },{
     path: '**',

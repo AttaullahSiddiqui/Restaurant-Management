@@ -5,7 +5,7 @@ import {debounceTime, distinctUntilChanged, map} from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { HttpService, AppToastrService } from '@app/core';
 
-import { ItemPopupComponent } from '@app/menu/popup/item-popup/item-popup.component';
+import { ItemPopupComponent } from '@app/featured-modules/private/menu/popup/item-popup/item-popup.component';
 import { ConfirmationPopupComponent } from '@app/shared/popup/confirmation-popup/confirmation-popup.component';
 
 const states = ['Alabama', 'Alaska', 'American Samoa', 'Arizona', 'Arkansas', 'California', 'Colorado',

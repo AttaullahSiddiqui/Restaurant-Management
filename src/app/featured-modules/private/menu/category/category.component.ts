@@ -4,7 +4,7 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { HttpService, AppToastrService } from '@app/core';
-import { CategoryPopupComponent } from '@app/menu/popup/category-popup/category-popup.component';
+import { CategoryPopupComponent } from '@app/featured-modules/private/menu/popup/category-popup/category-popup.component';
 import { ConfirmationPopupComponent } from '@app/shared/popup/confirmation-popup/confirmation-popup.component';
 
 @Component({
