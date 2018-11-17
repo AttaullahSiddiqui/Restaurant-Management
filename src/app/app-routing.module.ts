@@ -10,9 +10,6 @@ const routes: Routes = [{
       path: '',
       loadChildren: './featured-modules/private/dashboard/dashboard.module#DashboardModule'
     },{
-      path: 'feedback',
-      loadChildren: './featured-modules/private/app-errors/app-errors.module#AppErrorsModule'
-    },{
       path: 'menu',
       loadChildren: './featured-modules/private/menu/menu.module#MenuModule'
     },{

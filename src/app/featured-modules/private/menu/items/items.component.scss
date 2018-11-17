@@ -45,35 +45,13 @@
     outline: none;
 }
 
-//Search bar style ends here.
-.itemStyle{
-    margin-top: 15px;
-    font-size: large;
-}
-
 .items{
     border: 1px solid rgb(233, 230, 230);
     height: 75px;
-    line-height: 46px;
+    //line-height: 46px;
     background: transparent;
     border-radius: 10px;
     margin-top: 5px;
-}
-.items-prise{
-    line-height: 60px;
-    background: transparent;
-    color: #666670;
-    
-
-    h6{
-        line-height: 0.9;
-        font-size: 13px;
-
-        strong{
-            color: black;
-            font-size: 16px;
-        }
-    }
 }
 
 

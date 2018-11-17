@@ -16,6 +16,14 @@
             <button type="button" class="fa fa-plus icon-btn" placement="bottom" ngbTooltip="Add"></button>
           </td>
           <td>
+            <!-- <div [ngClass]="{'select-err' : (isFormSubmit && categoryItemForm.controls.categoryId.errors?.required) }">
+              <select formControlName="categoryId" class="form-control selectpicker" id="categoryName" data-live-search="true" title="Select...">
+                <option *ngFor="let category of options.data.menu; let i = index;" [value]="category._id">
+                  {{category.categoryName | titlecase}}
+                </option>
+              </select>
+            </div> -->
+              <!-- <label class="err-label" *ngIf="isFormSubmit && categoryItemForm.controls.categoryId.errors?.required">Select category is required</label> -->
             <input id="typeahead-basic" type="text" class="form-control" [(ngModel)]="model" (selectItem)="myFunction($event)" [ngbTypeahead]="search"/>
           </td>
           <td class="text-center v-align">

@@ -17,10 +17,16 @@
       <h1 class="mrt-30">{{category.categoryName | titlecase}}</h1>
       <div class="row">
         <div *ngFor="let item of category.categoryItems; let itemIndex = index;" class="col-md-4 col-sm-6 col-xs-12 items container1">
-            <div class="itemStyle">
-                <b>{{item.itemName | titlecase}}</b>
-                <span class="badge badge-success float-right items-prise"><h6>Price<br /><br />
-                <strong>Rs: {{item.price}} / {{item.unit}}</strong></h6></span>
+            <div class="row align-items-center h-100">
+                <div class="col-9">
+                    <b>{{item.itemName | titlecase}}</b>
+                </div>
+                <div class="col-3 text-center">
+                    <div>
+                        <b>Rs</b>
+                    </div>
+                    <b>{{item.price}}/{{item.unit}}</b>
+                </div>
             </div>
             <div class="overlay">
                 <button class="fa fa-pencil-square-o icon-btn btns2" ngbtooltip="Add" placement="bottom" type="button" (click)="openItemDialog('update')"></button>
