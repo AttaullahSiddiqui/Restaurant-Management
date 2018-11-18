@@ -11,26 +11,29 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
+        <tr [formGroup]="billForm">
           <td class="text-center bd-tl v-align">
-            <button type="button" class="fa fa-plus icon-btn" placement="bottom" ngbTooltip="Add"></button>
+            <button type="button" class="fa fa-plus icon-btn"(click)="addItem(billForm.valid, billForm.value)" placement="bottom" ngbTooltip="Add"></button>
           </td>
           <td>
-            <!-- <div [ngClass]="{'select-err' : (isFormSubmit && categoryItemForm.controls.categoryId.errors?.required) }">
-              <select formControlName="categoryId" class="form-control selectpicker" id="categoryName" data-live-search="true" title="Select...">
-                <option *ngFor="let category of options.data.menu; let i = index;" [value]="category._id">
-                  {{category.categoryName | titlecase}}
-                </option>
+            <div [ngClass]="{'select-err' : (isFormSubmit && billForm.controls.itemDetail.errors?.required) }">
+              <select formControlName="itemDetail" class="form-control selectpicker" id="categoryName" data-live-search="true" title="Select...">
+                <optgroup *ngFor="let category of restaurantMenu" label="{{category.categoryName | titlecase}}">
+                    <option *ngFor="let item of category.categoryItems; let itemIndex = index;" value="{{item | json}}">
+                        {{item.itemName | titlecase}}
+                    </option>
+                </optgroup>
               </select>
-            </div> -->
-              <!-- <label class="err-label" *ngIf="isFormSubmit && categoryItemForm.controls.categoryId.errors?.required">Select category is required</label> -->
-            <input id="typeahead-basic" type="text" class="form-control" [(ngModel)]="model" (selectItem)="myFunction($event)" [ngbTypeahead]="search"/>
+            </div>
+            <label class="err-label" *ngIf="isFormSubmit && billForm.controls.itemDetail.errors?.required">Item is required</label>
           </td>
           <td class="text-center v-align">
             - -
           </td>
           <td class="text-center">
-            <input type="number" class="form-control" placeholder="Quantity">
+            <input formControlName="itemQuantity" type="number" class="form-control" placeholder="Quantity"  min="0"
+            [ngClass]="{'input-err' : (isFormSubmit && billForm.controls.itemQuantity.errors?.required) }">
+            <label class="err-label" *ngIf="isFormSubmit && billForm.controls.itemQuantity.errors?.required">Quantity is required</label>
           </td>
           <td class="text-center v-align bd-tr">
             - -

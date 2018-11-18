@@ -1,15 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import {Observable} from 'rxjs';
 import {debounceTime, distinctUntilChanged, map} from 'rxjs/operators';
-
-const states = ['Alabama', 'Alaska', 'American Samoa', 'Arizona', 'Arkansas', 'California', 'Colorado',
-  'Connecticut', 'Delaware', 'District Of Columbia', 'Federated States Of Micronesia', 'Florida', 'Georgia',
-  'Guam', 'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky', 'Louisiana', 'Maine',
-  'Marshall Islands', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota', 'Mississippi', 'Missouri', 'Montana',
-  'Nebraska', 'Nevada', 'New Hampshire', 'New Jersey', 'New Mexico', 'New York', 'North Carolina', 'North Dakota',
-  'Northern Mariana Islands', 'Ohio', 'Oklahoma', 'Oregon', 'Palau', 'Pennsylvania', 'Puerto Rico', 'Rhode Island',
-  'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont', 'Virgin Islands', 'Virginia',
-  'Washington', 'West Virginia', 'Wisconsin', 'Wyoming'];
+import { HttpService, AppToastrService } from '@app/core';
 
 @Component({
   selector: 'app-create-bills',
@@ -18,22 +11,71 @@ const states = ['Alabama', 'Alaska', 'American Samoa', 'Arizona', 'Arkansas', 'C
 })
 export class CreateBillsComponent implements OnInit {
 
-  public model: any;
+  requestPending : boolean = false;
+  restaurantMenu : menuDetail[] = [];
+  billItem : billItem[] = [];
+  billForm : FormGroup;
+  isFormSubmit: boolean = false;
 
-  search = (text$: Observable<string>) =>
-    text$.pipe(
-      debounceTime(200),
-      distinctUntilChanged(),
-      map(term => states.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
-    )
-
-  constructor() { }
+  constructor(
+    public http : HttpService,
+    public _toastrService : AppToastrService,
+    private fb: FormBuilder
+  ) { }
 
   ngOnInit() {
+    this.getMenu();
+    this.createBillForm();
   }
 
-  myFunction(e){
-    console.log("Event : ",e);
+  createBillForm(){
+    this.billForm = this.fb.group({
+      itemDetail    : ['', Validators.required],
+      itemQuantity  : ['', Validators.required],
+    })
   }
 
+  getMenu(){
+    this.requestPending = true;
+    this.http.get('menu').subscribe(result => {
+        console.log("Menu Fetch : ",result);
+        this.requestPending = false;
+        this.restaurantMenu = result.body.data;
+    }, err => {
+        this.requestPending = false;
+        console.log("Error : ",err);
+    });
+  };
+
+  addItem(valid, data){
+    this.isFormSubmit = true;
+    if(!valid){
+      return ;
+    }
+    console.log("Data :",data);
+  }
+
+}
+
+interface billItem {
+  itemId : string,
+  itemName : string
+  cost :Number
+  quantity : Number 
+  price : Number
+}
+
+interface menuDetail {
+  _id: string;
+  categoryName: string,
+  city: string,
+  categoryItems: menuItemDetail[],
+  branchAddress: string
+}
+
+interface menuItemDetail {
+  itemName : string
+  price :Number
+  quantity : Number 
+  unit : string
 }
