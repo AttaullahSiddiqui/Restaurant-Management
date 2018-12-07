@@ -1,0 +1,52 @@
+<div>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Profile update</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form [formGroup]="branchForm">
+  
+        <div class="form-group">
+          <label for="branchName">Branch Name</label>
+          <input type="text" formControlName="branchName" class="form-control" id="branchName" [ngClass]="{'input-err' : isFormSubmit && branchForm.controls.branchName.errors?.required}">
+          <label class="err-label" *ngIf="isFormSubmit && branchForm.controls.branchName.errors?.required">Branch Name is required</label>
+        </div>
+  
+        <div class="form-group">
+          <label for="branchCity">Select City</label>
+          <input type="text" formControlName="city" class="form-control" id="branchCity" [ngbTypeahead]="search" [ngClass]="{'input-err' : isFormSubmit && branchForm.controls.city.errors?.required}"/>
+          <label class="err-label" *ngIf="isFormSubmit && branchForm.controls.city.errors?.required">City is required</label>
+        </div>
+  
+        <div class="form-group">
+          <label for="openingDate">Opening Date</label>
+          <div class="input-group">
+            <input formControlName="openingDate" class="form-control" id="openingDate" placeholder="yyyy-mm-dd"
+                    name="dp" [ngClass]="{'input-err' : isFormSubmit && branchForm.controls.openingDate.errors?.required}" ngbDatepicker #d="ngbDatepicker" readonly>
+            <div class="input-group-append">
+              <button class="btn btn-outline-secondary fa fa-calendar" (click)="d.toggle()" type="button"></button>
+            </div>
+          </div>
+          <label class="err-label" *ngIf="isFormSubmit && branchForm.controls.openingDate.errors?.required">Opening Date is required</label>
+        </div>
+  
+        <div class="form-group">
+          <label for="branchAddress">Address</label>
+          <textarea formControlName="branchAddress" class="form-control" [ngClass]="{'input-err' : isFormSubmit && branchForm.controls.branchAddress.errors?.required}" id="branchAddress" rows="3"></textarea>
+          <label class="err-label" *ngIf="isFormSubmit && branchForm.controls.branchAddress.errors?.required">Branch address is required</label>
+        </div>
+        <div class="text-center">
+            <!-- <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button> -->
+            <button type="button" class="btn btn-outline-dark" [ngClass]="{'cs-not-allowed' : requestPending.create}" (click)="!requestPending.create && createNewBranch(branchForm.valid, branchForm.value)">
+              <i *ngIf="requestPending.create" class="fa fa-spin fa-circle-o-notch" aria-hidden="true"></i>
+              Create
+            </button>
+        </div>
+      </form>
+    </div>
+</div>
+  
+  
+  

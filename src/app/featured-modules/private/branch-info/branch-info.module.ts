@@ -9,6 +9,8 @@ import { BranchesListComponent } from './branches-list/branches-list.component';
 
 /*Shared*/
 import { SharedModule } from '@app/shared';
+import { EmployeePopupComponent } from './popup/employee-popup/employee-popup.component';
+import { BranchPopupComponent } from './popup/branch-popup/branch-popup.component';
 
 
 @NgModule({
@@ -20,6 +22,15 @@ import { SharedModule } from '@app/shared';
     ReactiveFormsModule,
     SharedModule
   ],
-  declarations: [EmployeesListComponent, BranchesListComponent]
+  declarations: [
+    EmployeesListComponent,
+    BranchesListComponent,
+    EmployeePopupComponent,
+    BranchPopupComponent
+  ],
+  entryComponents: [
+    EmployeePopupComponent,
+    BranchPopupComponent
+  ]
 })
 export class BranchInfoModule { }

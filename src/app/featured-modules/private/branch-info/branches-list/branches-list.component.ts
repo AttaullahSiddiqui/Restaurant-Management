@@ -2,8 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import {NgbModal, ModalDismissReasons, NgbModalConfig} from '@ng-bootstrap/ng-bootstrap';
 import {debounceTime, distinctUntilChanged, map} from 'rxjs/operators';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
-import {Observable} from 'rxjs';
+import { Observable } from 'rxjs';
+
 import { HttpService } from '@app/core/services/http.service';
+import { BranchPopupComponent } from '@app/featured-modules/private/branch-info/popup/branch-popup/branch-popup.component';
 import { ConfirmationPopupComponent } from '@app/shared/popup/confirmation-popup/confirmation-popup.component';
 
 const states = ['Alabama', 'Alaska', 'American Samoa', 'Arizona', 'Arkansas', 'California', 'Colorado',
@@ -111,20 +113,33 @@ export class BranchesListComponent implements OnInit {
         map(term => states.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
       )
 
-  openDialog(type, modalRef, index?){
-    this.resetBranchForm();
-    // if(type == 'updateBranch' && index){
+  openDialog(type, index?){
+    if(type == 'update' && index != -1){
+      this.modalService.open(BranchPopupComponent, { ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+        console.log("Result : ",result);
+      }, (reason) => {
+        console.log("Reason : ",reason);
+      });
+    }else{
 
-    // }
-    console.log(modalRef);
-    this.modalService.open(modalRef, { ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
-      console.log("Result : ",result);
-      //this.closeResult = `Closed with: ${result}`;
-    }, (reason) => {
-      console.log("Reason : ",reason);
-      //this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-    });
+    }
+    
   }
+
+  // openDialog(type, modalRef, index?){
+  //   this.resetBranchForm();
+  //   // if(type == 'updateBranch' && index){
+
+  //   // }
+  //   console.log(modalRef);
+  //   this.modalService.open(modalRef, { ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+  //     console.log("Result : ",result);
+  //     //this.closeResult = `Closed with: ${result}`;
+  //   }, (reason) => {
+  //     console.log("Reason : ",reason);
+  //     //this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+  //   });
+  // }
 
   confirmDialog(){
     const modalRef = this.modalService.open(ConfirmationPopupComponent, { centered: true }).result.then((result) => {
