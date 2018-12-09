@@ -44,11 +44,11 @@ function updateBranchDetails(req, res){
     if(!req.body.branchId){
         return res.respondError("Branch id is required", -4);
     }
-    if(!req.body.branchName && !req.body.address && !req.body.city && !req.body.openingDate){
+    if(!req.body.name && !req.body.address && !req.body.city && !req.body.openingDate){
         return res.respondError("Minimum 1 feild is required for update", -4);
     }
     let obj = {};
-    req.body.branchName ? (obj.branchName = req.body.branchName) : null;
+    req.body.name ? (obj.branchName = req.body.name) : null;
     req.body.address ? (obj.branchAddress = req.body.address) : null;
     req.body.city ? (obj.city = req.body.city) : null;
     req.body.openingDate ? (obj.openingDate = req.body.openingDate) : null;

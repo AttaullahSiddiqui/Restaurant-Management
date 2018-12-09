@@ -1,7 +1,7 @@
 <div>
     <div class="modal-header">
-      <h4 class="modal-title" id="modal-basic-title">Profile update</h4>
-      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <h4 class="modal-title" id="modal-basic-title">{{options.type | titlecase}} Branch</h4>
+      <button type="button" class="close" aria-label="Close" (click)="activeModal.close(false)">
         <span aria-hidden="true">&times;</span>
       </button>
     </div>
@@ -10,14 +10,14 @@
   
         <div class="form-group">
           <label for="branchName">Branch Name</label>
-          <input type="text" formControlName="branchName" class="form-control" id="branchName" [ngClass]="{'input-err' : isFormSubmit && branchForm.controls.branchName.errors?.required}">
-          <label class="err-label" *ngIf="isFormSubmit && branchForm.controls.branchName.errors?.required">Branch Name is required</label>
+          <input type="text" formControlName="branchName" class="form-control" id="branchName" [ngClass]="{'input-err' : (serverErr || (isFormSubmit && branchForm.controls.branchName.errors?.required)) }">
+          <label class="err-label" *ngIf="isFormSubmit && branchForm.controls.branchName.errors?.required">Please enter branch name</label>
         </div>
   
         <div class="form-group">
           <label for="branchCity">Select City</label>
-          <input type="text" formControlName="city" class="form-control" id="branchCity" [ngbTypeahead]="search" [ngClass]="{'input-err' : isFormSubmit && branchForm.controls.city.errors?.required}"/>
-          <label class="err-label" *ngIf="isFormSubmit && branchForm.controls.city.errors?.required">City is required</label>
+          <input type="text" formControlName="city" class="form-control" id="branchCity"  [ngClass]="{'input-err' : isFormSubmit && branchForm.controls.city.errors?.required}"/>
+          <label class="err-label" *ngIf="isFormSubmit && branchForm.controls.city.errors?.required">Please enter city</label>
         </div>
   
         <div class="form-group">
@@ -29,19 +29,22 @@
               <button class="btn btn-outline-secondary fa fa-calendar" (click)="d.toggle()" type="button"></button>
             </div>
           </div>
-          <label class="err-label" *ngIf="isFormSubmit && branchForm.controls.openingDate.errors?.required">Opening Date is required</label>
+          <label class="err-label" *ngIf="isFormSubmit && branchForm.controls.openingDate.errors?.required">Please select Date</label>
         </div>
   
         <div class="form-group">
           <label for="branchAddress">Address</label>
           <textarea formControlName="branchAddress" class="form-control" [ngClass]="{'input-err' : isFormSubmit && branchForm.controls.branchAddress.errors?.required}" id="branchAddress" rows="3"></textarea>
-          <label class="err-label" *ngIf="isFormSubmit && branchForm.controls.branchAddress.errors?.required">Branch address is required</label>
+          <label class="err-label" *ngIf="isFormSubmit && branchForm.controls.branchAddress.errors?.required">Please enter branch address</label>
+        </div>
+
+        <div *ngIf="serverErr" class="text-center mrb-10">
+          <label class="err-label">Branch name is already in use.</label>
         </div>
         <div class="text-center">
-            <!-- <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button> -->
-            <button type="button" class="btn btn-outline-dark" [ngClass]="{'cs-not-allowed' : requestPending.create}" (click)="!requestPending.create && createNewBranch(branchForm.valid, branchForm.value)">
-              <i *ngIf="requestPending.create" class="fa fa-spin fa-circle-o-notch" aria-hidden="true"></i>
-              Create
+            <button type="button" class="btn btn-outline-dark" [ngClass]="{'cs-not-allowed' : requestPending}" (click)="!requestPending && save(branchForm.valid, branchForm.value)">
+              <i *ngIf="requestPending" class="fa fa-spin fa-circle-o-notch" aria-hidden="true"></i>
+              {{ (options.type == 'new') ? 'Create' : 'Update'}} 
             </button>
         </div>
       </form>

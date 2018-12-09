@@ -31,7 +31,7 @@ export class HttpService {
     );
   }
 
-  delete(url:string, data: any): Observable<HttpResponse<any>> {
+  delete(url:string): Observable<HttpResponse<any>> {
     return this.http.delete<any>(environment.baseUrl+url, { observe: 'response' }).pipe(
       catchError(this.handleError)
     );

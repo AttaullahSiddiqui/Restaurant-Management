@@ -126,7 +126,7 @@ export class CategoryComponent implements OnInit {
       if(result){
         this.requestPending.delete = true;
         const url = 'menu/category/remove?menuCategoryId='+category._id
-        this.http.delete(url, null).subscribe(result => {
+        this.http.delete(url).subscribe(result => {
           //console.log("Result :----->",result);
           this._toastrService.success('Category remove Successfully');
           this.requestPending.delete = false;

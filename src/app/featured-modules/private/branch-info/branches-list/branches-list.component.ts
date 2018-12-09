@@ -8,15 +8,6 @@ import { HttpService } from '@app/core/services/http.service';
 import { BranchPopupComponent } from '@app/featured-modules/private/branch-info/popup/branch-popup/branch-popup.component';
 import { ConfirmationPopupComponent } from '@app/shared/popup/confirmation-popup/confirmation-popup.component';
 
-const states = ['Alabama', 'Alaska', 'American Samoa', 'Arizona', 'Arkansas', 'California', 'Colorado',
-  'Connecticut', 'Delaware', 'District Of Columbia', 'Federated States Of Micronesia', 'Florida', 'Georgia',
-  'Guam', 'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky', 'Louisiana', 'Maine',
-  'Marshall Islands', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota', 'Mississippi', 'Missouri', 'Montana',
-  'Nebraska', 'Nevada', 'New Hampshire', 'New Jersey', 'New Mexico', 'New York', 'North Carolina', 'North Dakota',
-  'Northern Mariana Islands', 'Ohio', 'Oklahoma', 'Oregon', 'Palau', 'Pennsylvania', 'Puerto Rico', 'Rhode Island',
-  'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont', 'Virgin Islands', 'Virginia',
-  'Washington', 'West Virginia', 'Wisconsin', 'Wyoming'];
-
 @Component({
   selector: 'app-branches-list',
   templateUrl: './branches-list.component.html',
@@ -25,14 +16,9 @@ const states = ['Alabama', 'Alaska', 'American Samoa', 'Arizona', 'Arkansas', 'C
 export class BranchesListComponent implements OnInit {
 
   branchList : branchDetail[] = [];
-  branchForm: FormGroup;
-  isFormSubmit : boolean = false;
-  requestPending = {
-    get: false,
-    create : false,
-    update: false,
-    delete: false
-  }
+  requestPending : boolean = false;
+  page: number = 1;
+  pageSize: number = 5;
 
   constructor(
     private fb: FormBuilder,
@@ -45,108 +31,60 @@ export class BranchesListComponent implements OnInit {
    }
 
   ngOnInit() {
-    this.createBranchForm();
     this.getAllBranches();
   }
 
-  createBranchForm() {
-    this.branchForm = this.fb.group({
-      branchName : ['', Validators.required],
-      branchAddress : ['', Validators.required],
-      city : ['', Validators.required],
-      openingDate : ['', Validators.required]
-    });
-  };
-
-  resetBranchForm(){
-    this.isFormSubmit = false;
-    this.branchForm.reset();
-  }
-
   getAllBranches(){
-    this.requestPending.get = true;
+    this.requestPending = true;
     this.http.get('branch/all').subscribe(result => {
       console.log("Result : ",result);
-        this.requestPending.get = false;
+        this.requestPending = false;
         this.branchList = result.body.data;
     }, err => {
-      this.requestPending.get = false;
+      this.requestPending = false;
       console.log("Error : ",err);
     })
   };
 
-  createNewBranch(valid, value){
-    this.isFormSubmit = true;
-    if(!valid){
-      return;
+  openDialog(type, data?){
+    let modelData = {
+      type : type
     }
-    this.requestPending.create = true;
-    let obj = {
-      name : value.branchName,
-      address : value.branchAddress,
-      city : value.city,
-      openingDate : value.openingDate.year + '-' + value.openingDate.month + '-' + value.openingDate.day
+    if(type == 'update' && data){
+      modelData['data'] = data;
     }
-    this.http.post('branch/new', obj).subscribe(result => {
-      console.log(result.body.message);
-      this.requestPending.create = false;
-    }, err => {
-      this.requestPending.create = false;
-      // if(err.status == 409){
-
-      // }
-      console.log("Error in branch creation : ",err);
-      
-    })
+    let ref = this.modalService.open(BranchPopupComponent);
+    ref.componentInstance.options = modelData;
+    ref.result.then((result) => {
+      if(result){
+        return this.getAllBranches();
+      }
+      console.log("Result after close : ",result);
+    }, (reason) => {
+      this.getAllBranches();
+      console.log("Reason after close : ",reason);
+    });
   }
 
-  public page = 1;
+  removeConfirmDialog(branchDetail){
+    const modalRef = this.modalService.open(ConfirmationPopupComponent, { centered: true }).result.then((result) => {
+      if(result){
+        const URL = 'branch/remove/?branchId='+branchDetail._id;
+        this.http.delete(URL)
+          .subscribe(success => {
+            this.requestPending = false;
+            //console.log("Success call----",success);
+            this.getAllBranches();
+          },err => {
+            this.requestPending = false;
+            //console.log("Error call----",err);
+          });
+      }
+    }, (reason) => {});
+  };
 
   pageChange(e){
-    console.log("Page Change : ",e);
-  }
-
-  search = (text$: Observable<string>) =>
-      text$.pipe(
-        debounceTime(200),
-        distinctUntilChanged(),
-        map(term => states.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
-      )
-
-  openDialog(type, index?){
-    if(type == 'update' && index != -1){
-      this.modalService.open(BranchPopupComponent, { ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
-        console.log("Result : ",result);
-      }, (reason) => {
-        console.log("Reason : ",reason);
-      });
-    }else{
-
-    }
-    
-  }
-
-  // openDialog(type, modalRef, index?){
-  //   this.resetBranchForm();
-  //   // if(type == 'updateBranch' && index){
-
-  //   // }
-  //   console.log(modalRef);
-  //   this.modalService.open(modalRef, { ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
-  //     console.log("Result : ",result);
-  //     //this.closeResult = `Closed with: ${result}`;
-  //   }, (reason) => {
-  //     console.log("Reason : ",reason);
-  //     //this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-  //   });
-  // }
-
-  confirmDialog(){
-    const modalRef = this.modalService.open(ConfirmationPopupComponent, { centered: true }).result.then((result) => {
-      console.log("Result of confirmation : ",result);
-    }, (reason) => {
-      console.log("Reason of confirmation : ",reason);
-    });
+    console.log("Event : ",e);
   }
 
 }

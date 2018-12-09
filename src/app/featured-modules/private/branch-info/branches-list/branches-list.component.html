@@ -1,7 +1,5 @@
 
-<button class="btn btn-lg btn-outline-primary" (click)="openDialog('newBranch', branchModel)">New Branch</button>
-
-
+<button class="btn btn-lg btn-outline-primary" (click)="openDialog('new')">New Branch</button>
 
 <div class="container">
   <div class="table-responsive" style="max-height: 500px;">
@@ -26,16 +24,16 @@
           <td class="text-center v-align">{{branch.branchAddress}}</td>
           <td class="text-center v-align">{{branch.openingDate | date:'dd-MM-yyyy'}}</td>
           <td class="text-center v-align">
-            <button type="button" (click)="openDialog('updateBranch', branchModel)" class="fa fa-pencil-square-o icon-btn" placement="bottom" ngbTooltip="Add"></button>
-            <button type="button" (click)="confirmDialog()" class="fa fa-times icon-btn" placement="bottom" ngbTooltip="Remove"></button>
+            <button type="button" (click)="openDialog('update', branch)" class="fa fa-pencil-square-o icon-btn" placement="bottom" ngbTooltip="Edit"></button>
+            <button type="button" (click)="removeConfirmDialog(branch)" class="fa fa-times icon-btn" placement="bottom" ngbTooltip="Remove"></button>
           </td>
         </tr>
       </tbody>
-      <tbody *ngIf="requestPending.get || (branchList.length == 0 )">
+      <tbody *ngIf="requestPending || (branchList.length == 0 )">
         <tr>
           <td colspan="6" class="text-center" style="padding-top: 100px;">
-            <i *ngIf="requestPending.get" class="fa fa-spin fa-circle-o-notch fa-4x" aria-hidden="true"></i>
-            <label *ngIf="!requestPending.get && branchList.length == 0" class="no-content">No branch created yet</label>
+            <i *ngIf="requestPending" class="fa fa-spin fa-circle-o-notch fa-4x" aria-hidden="true"></i>
+            <label *ngIf="!requestPending && branchList.length == 0" class="no-content">No branch created yet</label>
           </td>
         </tr>
       </tbody>
@@ -43,65 +41,7 @@
   </div>
 </div>
 
-<div *ngIf="!requestPending.get && (branchList.length > 5 )" class="paginate-center">
-  <ngb-pagination (pageChange)="pageChange($event)" [collectionSize]="120" [(page)]="page" [maxSize]="3" [rotate]="true"></ngb-pagination>
+<div *ngIf="!requestPending && (branchList.length > 5 )" class="paginate-center">
+  <ngb-pagination (pageChange)="pageChange($event)"  [collectionSize]="branchList.length" [pageSize]="pageSize" [rotate]="true"></ngb-pagination>
 </div>
 
-
-
-
-
-
-
-
-<!-- <ng-template #branchModel let-modal>
-  <div class="modal-header">
-    <h4 class="modal-title" id="modal-basic-title">Profile update</h4>
-    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-  <div class="modal-body">
-    <form [formGroup]="branchForm">
-
-      <div class="form-group">
-        <label for="branchName">Branch Name</label>
-        <input type="text" formControlName="branchName" class="form-control" id="branchName" [ngClass]="{'input-err' : isFormSubmit && branchForm.controls.branchName.errors?.required}">
-        <label class="err-label" *ngIf="isFormSubmit && branchForm.controls.branchName.errors?.required">Branch Name is required</label>
-      </div>
-
-      <div class="form-group">
-        <label for="branchCity">Select City</label>
-        <input type="text" formControlName="city" class="form-control" id="branchCity" [ngbTypeahead]="search" [ngClass]="{'input-err' : isFormSubmit && branchForm.controls.city.errors?.required}"/>
-        <label class="err-label" *ngIf="isFormSubmit && branchForm.controls.city.errors?.required">City is required</label>
-      </div>
-
-      <div class="form-group">
-        <label for="openingDate">Opening Date</label>
-        <div class="input-group">
-          <input formControlName="openingDate" class="form-control" id="openingDate" placeholder="yyyy-mm-dd"
-                  name="dp" [ngClass]="{'input-err' : isFormSubmit && branchForm.controls.openingDate.errors?.required}" ngbDatepicker #d="ngbDatepicker" readonly>
-          <div class="input-group-append">
-            <button class="btn btn-outline-secondary fa fa-calendar" (click)="d.toggle()" type="button"></button>
-          </div>
-        </div>
-        <label class="err-label" *ngIf="isFormSubmit && branchForm.controls.openingDate.errors?.required">Opening Date is required</label>
-      </div>
-
-      <div class="form-group">
-        <label for="branchAddress">Address</label>
-        <textarea formControlName="branchAddress" class="form-control" [ngClass]="{'input-err' : isFormSubmit && branchForm.controls.branchAddress.errors?.required}" id="branchAddress" rows="3"></textarea>
-        <label class="err-label" *ngIf="isFormSubmit && branchForm.controls.branchAddress.errors?.required">Branch address is required</label>
-      </div>
-      <div class="text-center">
-          <!-- <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button> -->
-          <button type="button" class="btn btn-outline-dark" [ngClass]="{'cs-not-allowed' : requestPending.create}" (click)="!requestPending.create && createNewBranch(branchForm.valid, branchForm.value)">
-            <i *ngIf="requestPending.create" class="fa fa-spin fa-circle-o-notch" aria-hidden="true"></i>
-            Create
-          </button>
-      </div>
-    </form>
-  </div>
-</ng-template>
-
- -->
