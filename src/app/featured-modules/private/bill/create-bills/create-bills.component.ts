@@ -1,21 +1,26 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import {Observable} from 'rxjs';
+import {Observable, Subscription} from 'rxjs';
 import {debounceTime, distinctUntilChanged, map} from 'rxjs/operators';
 import { HttpService, AppToastrService } from '@app/core';
+declare var $:any;
 
 @Component({
   selector: 'app-create-bills',
   templateUrl: './create-bills.component.html',
   styleUrls: ['./create-bills.component.scss']
 })
-export class CreateBillsComponent implements OnInit {
+export class CreateBillsComponent implements OnInit, OnDestroy {
+  @ViewChild('quantity') quantityInput : ElementRef;
 
   requestPending : boolean = false;
   restaurantMenu : menuDetail[] = [];
   billItem : billItem[] = [];
   billForm : FormGroup;
   isFormSubmit: boolean = false;
+  private formSubscriber : FormSubscriber = {};
+  itemCost : any = '- -';
+  totalItemPrice : any = '- -';
 
   constructor(
     public http : HttpService,
@@ -26,13 +31,52 @@ export class CreateBillsComponent implements OnInit {
   ngOnInit() {
     this.getMenu();
     this.createBillForm();
+    this.subscribeFormChanges();
   }
+
+  ngOnDestroy(){
+    this.unSubscribeFormChanges();
+  }
+
 
   createBillForm(){
     this.billForm = this.fb.group({
       itemDetail    : ['', Validators.required],
       itemQuantity  : ['', Validators.required],
     })
+  };
+
+  subscribeFormChanges(){
+
+    this.formSubscriber.detail = this.billForm.get('itemDetail').valueChanges.pipe(
+        distinctUntilChanged()
+      ).subscribe((data) => {
+        data = JSON.parse(data);
+        if(data){
+          this.itemCost = data.price +'/'+data.unit;
+        }
+        this.quantityInput.nativeElement.focus();
+        console.log("Item Details change : ",data.price);
+    }) 
+
+    this.formSubscriber.quantity = this.billForm.get('itemQuantity').valueChanges.pipe(
+       distinctUntilChanged()
+      ).subscribe((data) => {
+        if(data && this.itemCost != '- -' ){
+          this.totalItemPrice = +this.itemCost * +data.price;
+        }
+        console.log("Item Quantity change : ",data);
+    })   
+  }
+
+  calculateAmount(){
+
+  }
+
+  unSubscribeFormChanges(){
+    this.formSubscriber.detail.unsubscribe();
+    this.formSubscriber.quantity.unsubscribe();
+    console.log("unsubscribe call : ",this.formSubscriber);
   }
 
   getMenu(){
@@ -41,6 +85,9 @@ export class CreateBillsComponent implements OnInit {
         console.log("Menu Fetch : ",result);
         this.requestPending = false;
         this.restaurantMenu = result.body.data;
+        setTimeout(() => {
+          $('.selectpicker').selectpicker('refresh');
+        }, 0);
     }, err => {
         this.requestPending = false;
         console.log("Error : ",err);
@@ -52,7 +99,12 @@ export class CreateBillsComponent implements OnInit {
     if(!valid){
       return ;
     }
-    console.log("Data :",data);
+    console.log("Data :", JSON.parse(data.itemDetail)); 
+  }
+
+  resetForm(){
+    this.billForm.reset();
+    this.isFormSubmit = false;
   }
 
 }
@@ -78,4 +130,9 @@ interface menuItemDetail {
   price :Number
   quantity : Number 
   unit : string
+}
+
+interface FormSubscriber{
+  detail? : Subscription,
+  quantity? : Subscription
 }

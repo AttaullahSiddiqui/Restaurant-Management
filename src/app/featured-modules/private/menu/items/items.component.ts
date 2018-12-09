@@ -60,101 +60,6 @@ export class ItemsComponent implements OnInit {
         position: 'bottom',
         value: 'Add'
     }
-    arr = [
-        {
-            categoryName: 'Karhai',
-            items: [
-                {
-                    name: 'Mutton Karhai',
-                    price: '1600',
-                    unit: 'KG'
-                }, {
-                    name: 'Mutton Karhai',
-                    price: '1600',
-                    unit: 'KG'
-                }, {
-                    name: 'Mutton Karhai',
-                    price: '1600',
-                    unit: 'KG'
-                }, {
-                    name: 'Mutton Karhai',
-                    price: '1600',
-                    unit: 'KG'
-                }, {
-                    name: 'Mutton Karhai',
-                    price: '1600',
-                    unit: 'KG'
-                }, {
-                    name: 'Mutton Karhai',
-                    price: '1600',
-                    unit: 'KG'
-                }, {
-                    name: 'Mutton Karhai',
-                    price: '1600',
-                    unit: 'KG'
-                },
-            ]
-        },{
-            categoryName: 'Sabzi',
-            items: [
-                {
-                    name: 'Palak',
-                    price: '80',
-                    unit: 'plate'
-                }, {
-                    name: 'Palak',
-                    price: '80',
-                    unit: 'plate'
-                }, {
-                    name: 'Palak',
-                    price: '80',
-                    unit: 'plate'
-                }, {
-                    name: 'Palak',
-                    price: '80',
-                    unit: 'plate'
-                }, {
-                    name: 'Palak',
-                    price: '80',
-                    unit: 'plate'
-                }
-            ]
-        }, {
-            categoryName: 'Drink',
-            items: [
-                {
-                    name: 'Pepsi',
-                    price: '110',
-                    unit: '1.ltr'
-                }, {
-                    name: 'Pepsi',
-                    price: '110',
-                    unit: '1.ltr'
-                }, {
-                    name: 'Pepsi',
-                    price: '110',
-                    unit: '1.ltr'
-                }, {
-                    name: 'Pepsi',
-                    price: '110',
-                    unit: '1.ltr'
-                }, {
-                    name: 'Pepsi',
-                    price: '110',
-                    unit: '1.ltr'
-                }, {
-                    name: 'Pepsi',
-                    price: '110',
-                    unit: '1.ltr'
-                }, {
-                    name: 'Pepsi',
-                    price: '110',
-                    unit: '1.ltr'
-                },
-            ]
-        },
-    ]
-
 
     getMenu(){
         this.requestPending.get = true;
@@ -193,7 +98,7 @@ export class ItemsComponent implements OnInit {
         this.modalService.open(ConfirmationPopupComponent, { centered: true }).result.then((result) => {
             if(result){
                 this.requestPending.delete = false;
-                this.http.delete('menu/item/remove?itemId='+item._id, null).subscribe(result => {
+                this.http.delete('menu/item/remove?itemId='+item._id).subscribe(result => {
                     console.log("Item remove successfully : ",result);
                     this.requestPending.delete = false;
                     this.restaurantMenu[categoryIndex].categoryItems.splice(itemIndex, 1);

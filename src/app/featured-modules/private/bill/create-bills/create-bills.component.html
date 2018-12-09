@@ -28,15 +28,15 @@
             <label class="err-label" *ngIf="isFormSubmit && billForm.controls.itemDetail.errors?.required">Item is required</label>
           </td>
           <td class="text-center v-align">
-            - -
+            {{itemCost}}
           </td>
           <td class="text-center">
-            <input formControlName="itemQuantity" type="number" class="form-control" placeholder="Quantity"  min="0"
+            <input formControlName="itemQuantity" #quantity type="number" class="form-control" placeholder="Quantity"  min="0"
             [ngClass]="{'input-err' : (isFormSubmit && billForm.controls.itemQuantity.errors?.required) }">
             <label class="err-label" *ngIf="isFormSubmit && billForm.controls.itemQuantity.errors?.required">Quantity is required</label>
           </td>
           <td class="text-center v-align bd-tr">
-            - -
+            {{totalItemPrice}}
           </td>
         </tr>
         <tr >
