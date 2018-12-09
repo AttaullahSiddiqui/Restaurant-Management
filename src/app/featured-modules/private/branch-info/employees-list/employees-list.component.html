@@ -1,3 +1,5 @@
+<button class="btn btn-lg btn-outline-primary" (click)="openDialog('new')">New Employee</button>
+
 <div class="container">
   <div class="table-responsive" style="max-height: 500px;">
     <table class="table">
@@ -15,20 +17,20 @@
         <tr>
           <td class="text-center v-align">1</td>
           <td  class="text-center">
-              <img src="../../../assets/default-profile.png" style="width: 50px;border-radius: 50%;">
+              <img src="./assets/default-profile.png" style="width: 50px;border-radius: 50%;">
           </td>
           <td class="text-center v-align">Riaz</td>
           <td class="text-center v-align">Manager</td>
           <td class="text-center v-align">Active</td>
           <td class="text-center v-align">
-            <button type="button" class="fa fa-pencil-square-o icon-btn" placement="bottom" ngbTooltip="Add"></button>
-            <button type="button" class="fa fa-times icon-btn" placement="bottom" ngbTooltip="Add"></button>
+            <button type="button" (click)="openDialog('update', 'data')" class="fa fa-pencil-square-o icon-btn" placement="bottom" ngbTooltip="Add"></button>
+            <button type="button" (click)="removeConfirmDialog('data')" class="fa fa-times icon-btn" placement="bottom" ngbTooltip="Add"></button>
           </td>
         </tr>
         <tr>
           <td class="text-center v-align">2</td>
           <td class="text-center">
-            <img src="../../../assets/default-profile.png" style="width: 50px;border-radius: 50%;">
+            <img src="./assets/default-profile.png" style="width: 50px;border-radius: 50%;">
           </td>
           <td class="text-center v-align">Riaz</td>
           <td class="text-center v-align">Manager</td>
@@ -41,7 +43,7 @@
         <tr>
           <td class="text-center v-align">3</td>
           <td class="text-center">
-            <img src="../../../assets/default-profile.png" style="width: 50px;border-radius: 50%;">
+            <img src="./assets/default-profile.png" style="width: 50px;border-radius: 50%;">
           </td>
           <td class="text-center v-align">Riaz</td>
           <td class="text-center v-align">Manager</td>
@@ -54,7 +56,7 @@
         <tr>
           <td class="text-center v-align">4</td>
           <td class="text-center">
-            <img src="../../../assets/default-profile.png" style="width: 50px;border-radius: 50%;">
+            <img src="./assets/default-profile.png" style="width: 50px;border-radius: 50%;">
           </td>
           <td class="text-center v-align">Riaz</td>
           <td class="text-center v-align">Manager</td>
@@ -67,7 +69,7 @@
         <tr>
           <td class="text-center v-align">5</td>
           <td class="text-center">
-            <img src="../../../assets/default-profile.png" style="width: 50px;border-radius: 50%;">
+            <img src="./assets/default-profile.png" style="width: 50px;border-radius: 50%;">
           </td>
           <td class="text-center v-align">Riaz</td>
           <td class="text-center v-align">Manager</td>
@@ -85,6 +87,3 @@
 <div class="paginate-center">
   <ngb-pagination (pageChange)="pageChange($event)" [collectionSize]="120" [(page)]="page" [maxSize]="3" [rotate]="true"></ngb-pagination>
 </div>
-
-
-<app-fab-button [options]="fabBtnOptions"></app-fab-button>

@@ -1,3 +1,105 @@
-<p>
-  employee-popup works!
-</p>
+<div>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">{{options.type | titlecase}} Employee</h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.close(false)">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="employeeForm">
+
+      <div class="row">
+        <div class="col-md-8">
+          <div class="row">
+            <div class="form-group col-md-6">
+              <label for="name">Full Name</label>
+              <input type="text" formControlName="name" class="form-control" id="name" [ngClass]="{'input-err' : (serverErr || (isFormSubmit && employeeForm.controls.name.errors?.required)) }">
+              <label class="err-label" *ngIf="isFormSubmit && employeeForm.controls.name.errors?.required">Please enter name</label>
+            </div>
+      
+            <div class="form-group col-md-6">
+              <label for="fatherName">Father Name</label>
+              <input type="text" formControlName="fatherName" class="form-control" id="fatherName"  [ngClass]="{'input-err' : isFormSubmit && employeeForm.controls.fatherName.errors?.required}"/>
+              <label class="err-label" *ngIf="isFormSubmit && employeeForm.controls.fatherName.errors?.required">Please enter father name</label>
+            </div>
+    
+            <div class="form-group col-md-6">
+              <label for="age">Age</label>
+              <input type="text" formControlName="age" class="form-control" id="age"  [ngClass]="{'input-err' : isFormSubmit && employeeForm.controls.age.errors?.required}"/>
+              <label class="err-label" *ngIf="isFormSubmit && employeeForm.controls.age.errors?.required">Please enter age name</label>
+            </div>
+    
+            <div class="form-group col-md-6">
+              <label for="role">Role</label>
+              <input type="text" formControlName="role" class="form-control" id="role"  [ngClass]="{'input-err' : isFormSubmit && employeeForm.controls.role.errors?.required}"/>
+              <label class="err-label" *ngIf="isFormSubmit && employeeForm.controls.role.errors?.required">Please select role</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group text-center col-md-4">
+          <img class="pointer" src="./assets/upload-image.png" style="margin-top: 22px;" title="Browse" (click)="openBrowseWindow()">
+          <input type="file" class="form-control-file" accept="image/*" #browseFile hidden>
+        </div>
+
+        <div class="form-group col-md-4">
+          <label for="joiningDate">Joining Date</label>
+          <div class="input-group">
+            <input formControlName="joiningDate" class="form-control" id="joiningDate" placeholder="yyyy-mm-dd"
+                    name="dp" [ngClass]="{'input-err' : isFormSubmit && employeeForm.controls.joiningDate.errors?.required}" ngbDatepicker #d="ngbDatepicker" readonly>
+            <div class="input-group-append">
+              <button class="btn btn-outline-secondary fa fa-calendar" (click)="d.toggle()" type="button"></button>
+            </div>
+          </div>
+          <label class="err-label" *ngIf="isFormSubmit && employeeForm.controls.joiningDate.errors?.required">Please select joining Date</label>
+        </div>
+
+        <div class="form-group col-md-4" *ngIf="options.type == 'update'">
+          <label for="resigningDate">Resigning Date</label>
+          <div class="input-group">
+            <input formControlName="resigningDate" class="form-control" id="resigningDate" placeholder="yyyy-mm-dd"
+                    name="dp" ngbDatepicker #r="ngbDatepicker" readonly>
+            <div class="input-group-append">
+              <button class="btn btn-outline-secondary fa fa-calendar" (click)="r.toggle()" type="button"></button>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group col-md-4">
+          <label for="salary">Salary</label>
+          <input type="text" formControlName="salary" class="form-control" id="salary"  [ngClass]="{'input-err' : isFormSubmit && employeeForm.controls.salary.errors?.required}"/>
+          <label class="err-label" *ngIf="isFormSubmit && employeeForm.controls.salary.errors?.required">Please enter salary</label>
+        </div>
+
+        <div class="form-group col-md-4">
+          <label for="reference">Reference</label>
+          <input type="text" formControlName="reference" class="form-control" id="reference" />
+        </div>
+
+        <div class="form-group col-md-4">
+          <label for="contactNo">Contact No</label>
+          <input type="text" formControlName="contactNo" class="form-control" id="contactNo"/>
+        </div>
+
+        <div class="form-group" [ngClass]="(options.type == 'update') ? 'col-md-4' : 'col-md-8'">
+          <label for="address">Address</label>
+          <textarea formControlName="address" class="form-control" [ngClass]="{'input-err' : isFormSubmit && branchForm.controls.address.errors?.required}" id="address" rows="3"></textarea>
+          <label class="err-label" *ngIf="isFormSubmit && branchForm.controls.address.errors?.required">Please enter address</label>
+        </div>
+          
+      </div>
+
+      <div *ngIf="serverErr" class="text-center mrb-10">
+        <label class="err-label">Any server error here.</label>
+      </div>
+      <div class="text-center">
+          <button type="button" class="btn btn-outline-dark" [ngClass]="{'cs-not-allowed' : requestPending}" (click)="!requestPending && save(employeeForm.valid, employeeForm.value)">
+            <i *ngIf="requestPending" class="fa fa-spin fa-circle-o-notch" aria-hidden="true"></i>
+            {{ (options.type == 'new') ? 'Create' : 'Update'}} 
+          </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+

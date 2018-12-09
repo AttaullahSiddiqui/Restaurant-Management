@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {NgbModal, NgbModalConfig} from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { HttpService } from '@app/core/services/http.service';
 import { BranchPopupComponent } from '@app/featured-modules/private/branch-info/popup/branch-popup/branch-popup.component';
@@ -19,12 +19,8 @@ export class BranchesListComponent implements OnInit {
 
   constructor(
     public http : HttpService,
-    private modalService: NgbModal,
-    private modalConfig: NgbModalConfig,
-  ) {
-    modalConfig.backdrop = 'static';
-    modalConfig.keyboard = false;
-   }
+    private modalService: NgbModal
+  ) {}
 
   ngOnInit() {
     this.getAllBranches();
