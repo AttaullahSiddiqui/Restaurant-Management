@@ -1,8 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {NgbModal, ModalDismissReasons, NgbModalConfig} from '@ng-bootstrap/ng-bootstrap';
-import {debounceTime, distinctUntilChanged, map} from 'rxjs/operators';
-import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
-import { Observable } from 'rxjs';
+import {NgbModal, NgbModalConfig} from '@ng-bootstrap/ng-bootstrap';
 
 import { HttpService } from '@app/core/services/http.service';
 import { BranchPopupComponent } from '@app/featured-modules/private/branch-info/popup/branch-popup/branch-popup.component';
@@ -21,7 +18,6 @@ export class BranchesListComponent implements OnInit {
   pageSize: number = 5;
 
   constructor(
-    private fb: FormBuilder,
     public http : HttpService,
     private modalService: NgbModal,
     private modalConfig: NgbModalConfig,
