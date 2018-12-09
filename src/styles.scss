@@ -229,3 +229,11 @@ ngb-typeahead-window{
 .no-outline{
     outline: none;
 }
+
+//Overide boostrap lg model :: start
+@media only screen and (min-width: 992px) {
+    .modal-lg {
+      max-width: 992px !important;
+    }
+}
+//Overide boostrap lg model :: End
