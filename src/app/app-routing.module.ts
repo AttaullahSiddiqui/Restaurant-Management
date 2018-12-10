@@ -18,6 +18,9 @@ const routes: Routes = [{
     },{
       path: 'branches',
       loadChildren: './featured-modules/private/branch-info/branch-info.module#BranchInfoModule'
+    },{
+      path: 'employee',
+      loadChildren: './featured-modules/private/employee/employee.module#EmployeeModule'
     }]
   }, {
     path: '',

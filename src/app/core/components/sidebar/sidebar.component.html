@@ -42,8 +42,20 @@
                 <li>
                     <a href="javascript:void(0)" [routerLink]="['/branches']"><span>Branch List</span></a>
                 </li>
+            </ul>
+        </li>
+    </div>
+    <div class="nested-menu">
+        <a class="list-group-item" (click)="addExpandClass('employees')">
+            <span><i class="fa" [ngClass]="menuIcon"></i>&nbsp; Employees </span>
+        </a>
+        <li class="nested" [class.expand]="showMenu === 'employees'">
+            <ul class="submenu">
                 <li>
-                    <a href="javascript:void(0)" [routerLink]="['/branches/employees']"><span>Employees</span></a>
+                    <a href="javascript:void(0)" [routerLink]="['/employee/category']"><span>Category</span></a>
+                </li>
+                <li>
+                    <a href="javascript:void(0)" [routerLink]="['/employee/list']"><span>List</span></a>
                 </li>
             </ul>
         </li>
