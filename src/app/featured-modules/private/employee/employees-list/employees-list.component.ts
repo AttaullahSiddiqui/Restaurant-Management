@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
-import { HttpService } from '@app/core/services/http.service';
+import { HttpService } from '@app/core';
 import { EmployeePopupComponent } from '@app/featured-modules/private/employee/popup/employee-popup/employee-popup.component';
 import { ConfirmationPopupComponent } from '@app/shared/popup/confirmation-popup/confirmation-popup.component';
 
