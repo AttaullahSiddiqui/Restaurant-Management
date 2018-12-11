@@ -1,3 +1,5 @@
+<button class="btn btn-lg btn-outline-primary" (click)="openDialog('new')">New Branch</button>
+
 <div class="container">
   <div class="table-responsive" style="max-height: 500px;">
     <table class="table">
@@ -5,20 +7,26 @@
         <tr>
           <th scope="col" class="text-center fit-col-content">S.No</th>
           <th scope="col">Employee Category</th>
+          <th scope="col">Role</th>
           <th scope="col" class="text-center fit-col-content" style="width: 90px;">Action</th>
         </tr>
       </thead>
-      <tbody>
-        <tr>
-          <td class="text-center v-align">1</td>
-          <td class="v-align">Active</td>
-          <!-- <td class="text-center v-align">
-            <button type="button" (click)="editCategory(i)" class="fa fa-pencil-square-o icon-btn" placement="bottom" ngbTooltip="Edit"></button>
-            <button type="button" (click)="removeCategory(i)" class="fa fa-times icon-btn" placement="bottom" ngbTooltip="Remove"></button>
-          </td> -->
+      <tbody *ngIf="empCategoryList.length > 0 ">
+        <tr *ngFor="let empCategory of empCategoryList; let i = index;">
+          <td class="text-center v-align">{{i+1}}</td>
+          <td class="v-align">{{empCategory.categoryName | titlecase}}</td>
+          <td class="v-align">{{empCategory.accessType | roles}}</td>
           <td class="text-center v-align">
-            <button type="button" (click)="updateCategory(i)" class="fa fa-floppy-o icon-btn" placement="bottom" ngbTooltip="Update"></button>
-            <button type="button" (click)="cancelCategory(i)" class="fa fa-ban icon-btn" placement="bottom" ngbTooltip="Cancel"></button>
+            <button type="button" (click)="openDialog('update', empCategory)" class="fa fa-pencil-square-o icon-btn" placement="bottom" ngbTooltip="Edit"></button>
+            <button type="button" (click)="removeConfirmDialog(empCategory)" class="fa fa-times icon-btn" placement="bottom" ngbTooltip="Remove"></button>
+          </td>
+        </tr>
+      </tbody>
+      <tbody *ngIf="requestPending || (empCategoryList.length == 0 )">
+        <tr>
+          <td colspan="6" class="text-center" style="padding-top: 100px;">
+            <i *ngIf="requestPending" class="fa fa-spin fa-circle-o-notch fa-4x" aria-hidden="true"></i>
+            <label *ngIf="!requestPending && empCategoryList.length == 0" class="no-content">No employee category created yet</label>
           </td>
         </tr>
       </tbody>

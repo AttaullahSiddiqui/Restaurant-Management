@@ -11,6 +11,7 @@ import { SharedModule } from '@app/shared';
 import { EmployeeCategoryComponent } from './employee-category/employee-category.component';
 import { EmployeesListComponent } from './employees-list/employees-list.component';
 import { EmployeePopupComponent } from './popup/employee-popup/employee-popup.component';
+import { EmployeeCategoryPopupComponent } from './popup/employee-category-popup/employee-category-popup.component'; 
 
 @NgModule({
   imports: [
@@ -21,9 +22,15 @@ import { EmployeePopupComponent } from './popup/employee-popup/employee-popup.co
     ReactiveFormsModule,
     SharedModule
   ],
-  declarations: [EmployeeCategoryComponent, EmployeesListComponent, EmployeePopupComponent],
+  declarations: [
+    EmployeeCategoryComponent,
+    EmployeesListComponent,
+    EmployeePopupComponent,
+    EmployeeCategoryPopupComponent
+  ],
   entryComponents: [
-    EmployeePopupComponent
+    EmployeePopupComponent,
+    EmployeeCategoryPopupComponent
   ]
 })
 export class EmployeeModule { }

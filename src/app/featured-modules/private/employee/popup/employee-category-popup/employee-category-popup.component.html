@@ -1,0 +1,41 @@
+<div>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">{{options.type | titlecase}} Category</h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.close(false)">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="employeeCategoryForm">
+
+      <div class="form-group">
+        <label for="categoryName">Category Name</label>
+        <input type="text" formControlName="categoryName" class="form-control" id="categoryName" [ngClass]="{'input-err' : (serverErr || (isFormSubmit && employeeCategoryForm.controls.categoryName.errors?.required)) }">
+        <label class="err-label" *ngIf="isFormSubmit && employeeCategoryForm.controls.categoryName.errors?.required">Please enter branch name</label>
+      </div>
+      
+      <div class="form-group">
+        <label for="role">Select Role</label>
+        <select formControlName="role" class="form-control" id="role" [ngClass]="{'input-err' : isFormSubmit && employeeCategoryForm.controls.role.errors?.required}">
+          <option *ngFor="let userRole of userRoles" [value]="userRole.value">{{userRole.name}}</option>
+        </select>
+        <label class="err-label" *ngIf="isFormSubmit && employeeCategoryForm.controls.role.errors?.required">Please select role</label>
+      </div>
+
+
+
+
+      <div *ngIf="serverErr" class="text-center mrb-10">
+        <label class="err-label">Category name is already in use.</label>
+      </div>
+      <div class="text-center">
+          <button type="button" class="btn btn-outline-dark" [ngClass]="{'cs-not-allowed' : requestPending}" (click)="!requestPending && save(employeeCategoryForm.valid, employeeCategoryForm.value)">
+            <i *ngIf="requestPending" class="fa fa-spin fa-circle-o-notch" aria-hidden="true"></i>
+            {{ (options.type == 'new') ? 'Create' : 'Update'}} 
+          </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+

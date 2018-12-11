@@ -14,4 +14,23 @@ export class UtilityService {
   public getToken() : string{
     return localStorage.getItem('Authorization');
   }
+
+  public getUserRoles() {
+    const USER_ROLES = [
+      {
+        name: 'Admin',
+        value: 1,
+      },{
+        name: 'Manager',
+        value: 2,
+      },{
+        name: 'Cashier',
+        value: 3,
+      },{
+        name: 'Other',
+        value: 4,
+      }
+    ]
+    return USER_ROLES;
+  }
 }
