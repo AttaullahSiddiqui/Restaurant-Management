@@ -5,7 +5,7 @@ let router              = express.Router();
 let menuRoutes          = require('../../apis/v1/menu/menu.routes')();
 // let billRoutes          = require('../../apis/v1/bill/bill.routes')();
 let branchRoutes        = require('../../apis/v1/branch/branch.routes')();
-let empCategoryRoutes   = require('../../apis/v1/employee-category/employee-category.routes')();
+let empCategoryRoutes   = require('../../apis/v1/employee/employee.routes')();
 
 module.exports = function (){
 
@@ -14,7 +14,7 @@ module.exports = function (){
     router.use('/menu', menuRoutes);
     // router.use('/menu', billRoutes);
     router.use('/branch', branchRoutes);
-    router.use('/employees/category', empCategoryRoutes);
+    router.use('/employee', empCategoryRoutes);
     
     return router;
 }
