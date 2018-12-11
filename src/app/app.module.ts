@@ -9,7 +9,14 @@ import { AppComponent } from '@app/app.component';
 
 
 /*Core Components*/
-import { AdminLayoutComponent, AuthLayoutComponent, HeaderComponent, SidebarComponent, NotFound404Component } from '@app/core';
+import { 
+  AdminLayoutComponent,
+  AuthLayoutComponent,
+  HeaderComponent,
+  SidebarComponent,
+  ReportProblemComponent,
+  NotFound404Component
+} from '@app/core';
 
 /*Shared Module */
 import { ServiceWorkerModule } from '@angular/service-worker';
@@ -23,6 +30,7 @@ import { environment } from '@env/environment';
     AuthLayoutComponent,
     HeaderComponent,
     SidebarComponent,
+    ReportProblemComponent,
     NotFound404Component
   ],
   imports: [

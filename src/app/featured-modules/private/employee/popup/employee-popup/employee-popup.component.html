@@ -83,8 +83,8 @@
 
         <div class="form-group" [ngClass]="(options.type == 'update') ? 'col-md-4' : 'col-md-8'">
           <label for="address">Address</label>
-          <textarea formControlName="address" class="form-control" [ngClass]="{'input-err' : isFormSubmit && branchForm.controls.address.errors?.required}" id="address" rows="3"></textarea>
-          <label class="err-label" *ngIf="isFormSubmit && branchForm.controls.address.errors?.required">Please enter address</label>
+          <textarea formControlName="address" class="form-control" [ngClass]="{'input-err' : isFormSubmit && employeeForm.controls.address.errors?.required}" id="address" rows="3"></textarea>
+          <label class="err-label" *ngIf="isFormSubmit && employeeForm.controls.address.errors?.required">Please enter address</label>
         </div>
           
       </div>

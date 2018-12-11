@@ -65,6 +65,10 @@ export class EmployeePopupComponent implements OnInit {
     this.browsePictureElement.nativeElement.click();
   }
 
+  save(valid, value){
+    
+  }
+
 }
 
 
