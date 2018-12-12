@@ -2,7 +2,7 @@
 
 let express             = require('express');
 let empCategoryCtrl     = require('./employee-category.controller');
-let employeeCtrl require('./employee.controller');
+let employeeCtrl        = require('./employee.controller');
 let service             = require('../../../core/app.service');
 
 let router  = express.Router();
