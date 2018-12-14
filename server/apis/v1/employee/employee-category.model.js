@@ -30,4 +30,4 @@ var EmployeeCategorySchema = mongoose.Schema({
 })
 
 
-module.exports = mongoose.model('EmployeeCategory', EmployeeCategorySchema);
+module.exports = mongoose.model('employee_category', EmployeeCategorySchema);

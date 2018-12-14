@@ -28,7 +28,7 @@ function createEmployee(req, res){
         picture : req.body.picture,
         joiningDate : req.body.joiningDate,
         salary : req.body.salary,
-        reference : req.body.reference,
+        empCategoryId : req.body.reference,
         contactNo : req.body.contactNo,
         address : req.body.address,
         status: true

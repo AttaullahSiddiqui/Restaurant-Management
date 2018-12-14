@@ -1,5 +1,6 @@
 'use strict';
 let mongoose    = require('mongoose');
+let empCategory = require('./employee-category.model');
 
 var EmployeeSchema = mongoose.Schema({
     name : {
@@ -14,6 +15,11 @@ var EmployeeSchema = mongoose.Schema({
         type : Number,
         required : [true, "Age is required"]
     },
+    empCategoryId : {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'employee_category',
+        required : [true, "Employee category is required"]
+    },
     picture : {
         type : String,
         required : [true, "Picture is required"]
@@ -22,30 +28,34 @@ var EmployeeSchema = mongoose.Schema({
         type : Date,
         required : [true, "Joining date is required"]
     },
-    resigningDate : {
-        type : Date
-    },
+    resigningDate : Date,
     salary : {
         type : Number,
         required : [true, "Salary is required"]
     },
-    reference : {
-        type : String
-    },
-    contactNo : {
-        type : Number
-    },
+    reference : String,
+    contactNo : Number,
     address : {
         type : String,
         required : [true, "Address is required"]
     },
-    status: {
-        type: Boolean
-    },
+    status: Boolean,
     createAt : {
 		type : Date,
 		default : Date.now
 	}
 });
+	
 
-module.exports = mongoose.model('Employees', EmployeeSchema);
+EmployeeSchema.path('empCategoryId').validate(function (value) {
+    return new Promise(function(resolve, reject){
+        empCategory.findOne({'_id': value}, function (err, doc) {
+            if (err || !doc) {
+                resolve(false);
+            } 
+            resolve(true);
+        });
+    });
+}, 'Invalid employee category');
+
+module.exports = mongoose.model('employees', EmployeeSchema);
