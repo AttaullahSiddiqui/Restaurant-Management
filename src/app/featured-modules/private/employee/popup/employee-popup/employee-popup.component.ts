@@ -21,6 +21,7 @@ export class EmployeePopupComponent implements OnInit {
     this._options = data;
   };
 
+  selectedImage = "./assets/upload-image.png";
   employeeForm: FormGroup;
   requestPending: boolean = false;
   isFormSubmit : boolean = false;
@@ -65,6 +66,19 @@ export class EmployeePopupComponent implements OnInit {
     this.browsePictureElement.nativeElement.click();
   }
 
+  fileChange(e){
+    let file = e.target.files[0];
+    var reader = new FileReader();
+    reader.onload = (readerEvt) => {
+      this.selectedImage = readerEvt.target['result'];
+    }
+    reader.readAsDataURL(file);
+  }
+
+
+
+
+  
   save(valid, value){
     
   }

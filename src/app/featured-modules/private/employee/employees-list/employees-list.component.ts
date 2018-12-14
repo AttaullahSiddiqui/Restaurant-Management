@@ -23,12 +23,12 @@ export class EmployeesListComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    //this.getAllEmployeeDetail()
+    this.getAllEmployeeDetail()
   }
 
   getAllEmployeeDetail(){
     this.requestPending = true;
-    this.http.get('/all').subscribe(result => {
+    this.http.get('employee/all').subscribe(result => {
       console.log("Result : ",result);
         this.requestPending = false;
         //this.employeeList = result.body.data;
@@ -37,6 +37,7 @@ export class EmployeesListComponent implements OnInit {
       console.log("Error : ",err);
     })
   };
+
 
   openDialog(type, data?){
     let modelData = {
