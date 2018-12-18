@@ -22,7 +22,7 @@ let CONFIG          = require('./app.config');
 
 */
 
-mongoose.connect(CONFIG.db['development'], { useNewUrlParser: true, autoIndex : false });
+mongoose.connect(CONFIG.db['development'], { useNewUrlParser: true, useCreateIndex : true });
 mongoose.connection.on('error', function(err){
   console.error("Connection Error on "+'development'+ " mode ",err);
   process.exit(-1);
