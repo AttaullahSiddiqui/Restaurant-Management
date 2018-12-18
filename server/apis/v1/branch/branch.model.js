@@ -34,4 +34,4 @@ var BranchSchema = mongoose.Schema({
     },
 });
 
-module.exports = mongoose.model('Branch', BranchSchema);
+module.exports = mongoose.model('branches', BranchSchema);

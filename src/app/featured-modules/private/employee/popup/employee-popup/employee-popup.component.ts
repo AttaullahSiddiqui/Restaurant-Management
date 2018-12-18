@@ -1,8 +1,10 @@
 import { Component, OnInit, Input, ElementRef, ViewChild } from '@angular/core';
 import { NgbActiveModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
+import { forkJoin } from 'rxjs';
 
 import { HttpService, AppToastrService } from '@app/core';
+
 
 @Component({
   selector: 'app-employee-popup',
@@ -39,7 +41,18 @@ export class EmployeePopupComponent implements OnInit {
 
   ngOnInit() {
     this.createForm('');
+    this.getBranchesAndEmpCategory().subscribe(res => {
+      console.log("Res: ",res);
+    },err => {
+      console.log("Erro : ",err);
+    })
   }
+
+  getBranchesAndEmpCategory(){
+    let branches = this.http.get('branch/all');
+    let empCategory = this.http.get('employee/category/all');
+    return forkJoin(branches, empCategory)
+  };
 
   createForm(data) {
     this.employeeForm = this.fb.group({

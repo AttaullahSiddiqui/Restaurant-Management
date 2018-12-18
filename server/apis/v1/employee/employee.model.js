@@ -1,6 +1,7 @@
 'use strict';
 let mongoose    = require('mongoose');
 let empCategory = require('./employee-category.model');
+let branches    = require('../branch/branch.model');
 
 var EmployeeSchema = mongoose.Schema({
     name : {
@@ -17,8 +18,13 @@ var EmployeeSchema = mongoose.Schema({
     },
     empCategoryId : {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'employee_category',
+        ref: 'employee_categories',
         required : [true, "Employee category is required"]
+    },
+    empBranchId : {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'branches',
+        required : [true, "Branch is required"]
     },
     picture : {
         type : String,
@@ -57,5 +63,18 @@ EmployeeSchema.path('empCategoryId').validate(function (value) {
         });
     });
 }, 'Invalid employee category');
+
+
+EmployeeSchema.path('empBranchId').validate(function (value) {
+    return new Promise(function(resolve, reject){
+        branches.findOne({'_id': value}, function (err, doc) {
+            if (err || !doc) {
+                resolve(false);
+            } 
+            resolve(true);
+        });
+    });
+}, 'Invalid branch id');
+
 
 module.exports = mongoose.model('employees', EmployeeSchema);
