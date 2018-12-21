@@ -3,7 +3,7 @@ import { NgbActiveModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { forkJoin } from 'rxjs';
 
-import { HttpService, AppToastrService } from '@app/core';
+import { HttpService, AppToastrService, UploadImageService } from '@app/core';
 
 
 @Component({
@@ -24,6 +24,7 @@ export class EmployeePopupComponent implements OnInit {
   };
 
   selectedImage = "./assets/upload-image.png";
+  private imageFile : any;
   employeeForm: FormGroup;
   requestPending: boolean = false;
   isFormSubmit : boolean = false;
@@ -33,7 +34,8 @@ export class EmployeePopupComponent implements OnInit {
     public activeModal: NgbActiveModal,
     private modalConfig: NgbModalConfig,
     private fb: FormBuilder,
-    public http : HttpService
+    private http : HttpService,
+    private imageService : UploadImageService
   ) { 
     modalConfig.backdrop = 'static';
     modalConfig.keyboard = false;
@@ -80,12 +82,12 @@ export class EmployeePopupComponent implements OnInit {
   }
 
   fileChange(e){
-    let file = e.target.files[0];
+    this.imageFile = e.target.files[0];
     var reader = new FileReader();
     reader.onload = (readerEvt) => {
       this.selectedImage = readerEvt.target['result'];
     }
-    reader.readAsDataURL(file);
+    reader.readAsDataURL(this.imageFile);
   }
 
 
@@ -93,7 +95,9 @@ export class EmployeePopupComponent implements OnInit {
 
   
   save(valid, value){
-    
+    // this.imageService.upload(this.imageFile, 'kskff').subscribe(succcess => {
+
+    // });
   }
 
 }
