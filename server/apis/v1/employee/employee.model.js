@@ -1,4 +1,6 @@
 'use strict';
+
+
 let mongoose    = require('mongoose');
 let empCategory = require('./employee-category.model');
 let branches    = require('../branch/branch.model');
@@ -6,25 +8,28 @@ let branches    = require('../branch/branch.model');
 var EmployeeSchema = mongoose.Schema({
     name : {
         type : String,
+        maxlength: 50,
         required : [true, "Name is required"]
     },
     fatherName : {
         type : String,
+        maxlength: 50,
         required : [true, "Father name is required"]
     },
     age : {
         type : Number,
+        min : 0,
         required : [true, "Age is required"]
-    },
-    empCategoryId : {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'employee_categories',
-        required : [true, "Employee category is required"]
     },
     empBranchId : {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'branches',
         required : [true, "Branch is required"]
+    },
+    empCategoryId : {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'employee_categories',
+        required : [true, "Employee category is required"]
     },
     picture : {
         type : String,
@@ -37,12 +42,14 @@ var EmployeeSchema = mongoose.Schema({
     resigningDate : Date,
     salary : {
         type : Number,
+        min : 0,
         required : [true, "Salary is required"]
     },
     reference : String,
     contactNo : Number,
     address : {
         type : String,
+        maxlength: 200,
         required : [true, "Address is required"]
     },
     status: Boolean,

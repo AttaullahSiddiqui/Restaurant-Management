@@ -29,9 +29,9 @@ export class EmployeesListComponent implements OnInit {
   getAllEmployeeDetail(){
     this.requestPending = true;
     this.http.get('employee/all').subscribe(result => {
-      console.log("Result : ",result);
+      console.log("Result : ",result.body.data);
         this.requestPending = false;
-        //this.employeeList = result.body.data;
+        this.employeeList = result.body.data;
     }, err => {
       this.requestPending = false;
       console.log("Error : ",err);
@@ -48,13 +48,13 @@ export class EmployeesListComponent implements OnInit {
     }
     let ref = this.modalService.open(EmployeePopupComponent, {size: 'lg'});
     ref.componentInstance.options = modelData;
-    ref.result.then((result) => {
-      if(result){
-        //return this.getAllEmployeeDetail();
+    ref.result.then((isAnyChange : boolean) => {
+      if(isAnyChange){
+        return this.getAllEmployeeDetail();
       }
-      console.log("Result after close : ",result);
+      console.log("Result after close : ",isAnyChange);
     }, (reason) => {
-      //this.getAllEmployeeDetail();
+      this.getAllEmployeeDetail();
       console.log("Reason after close : ",reason);
     });
   }

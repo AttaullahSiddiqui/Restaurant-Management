@@ -13,10 +13,11 @@ module.exports = {
 
 function getAllCategories(req, res){
     empCategory.find({}, function(err, result){
+        if(err){
+            var error = errHandler.handle(err);
+            return res.respondError(error[0], error[1]);
+        }
         return res.respondSuccess(result,"Fetched Employees categories", 1);
-    },function(err){
-        var error = errHandler.handle(err);
-        return res.respondError(error[0], error[1]);
     });
 }
 

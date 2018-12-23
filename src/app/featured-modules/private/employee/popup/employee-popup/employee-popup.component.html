@@ -12,38 +12,42 @@
         <div class="col-md-8">
           <div class="row">
             <div class="form-group col-md-6">
-              <label for="name">Full Name</label>
-              <input type="text" formControlName="name" class="form-control" id="name" [ngClass]="{'input-err' : (serverErr || (isFormSubmit && employeeForm.controls.name.errors?.required)) }">
+              <label for="name">*Full Name</label>
+              <input type="text" formControlName="name" class="form-control" id="name" maxlength="50" [ngClass]="{'input-err' : (serverErr || (isFormSubmit && employeeForm.controls.name.errors?.required)) }">
               <label class="err-label" *ngIf="isFormSubmit && employeeForm.controls.name.errors?.required">Please enter name</label>
             </div>
       
             <div class="form-group col-md-6">
-              <label for="fatherName">Father Name</label>
-              <input type="text" formControlName="fatherName" class="form-control" id="fatherName"  [ngClass]="{'input-err' : isFormSubmit && employeeForm.controls.fatherName.errors?.required}"/>
+              <label for="fatherName">*Father Name</label>
+              <input type="text" formControlName="fatherName" class="form-control" id="fatherName"  maxlength="50"  [ngClass]="{'input-err' : isFormSubmit && employeeForm.controls.fatherName.errors?.required}"/>
               <label class="err-label" *ngIf="isFormSubmit && employeeForm.controls.fatherName.errors?.required">Please enter father name</label>
             </div>
     
             <div class="form-group col-md-6">
-              <label for="age">Age</label>
-              <input type="text" formControlName="age" class="form-control" id="age"  [ngClass]="{'input-err' : isFormSubmit && employeeForm.controls.age.errors?.required}"/>
+              <label for="age">*Age</label>
+              <input type="number" formControlName="age" class="form-control" id="age" min="0"  [ngClass]="{'input-err' : isFormSubmit && employeeForm.controls.age.errors?.required}"/>
               <label class="err-label" *ngIf="isFormSubmit && employeeForm.controls.age.errors?.required">Please enter age name</label>
             </div>
-    
+
             <div class="form-group col-md-6">
-              <label for="role">Role</label>
-              <input type="text" formControlName="role" class="form-control" id="role"  [ngClass]="{'input-err' : isFormSubmit && employeeForm.controls.role.errors?.required}"/>
-              <label class="err-label" *ngIf="isFormSubmit && employeeForm.controls.role.errors?.required">Please select role</label>
+              <label for="branch">*Select Branch</label>
+              <select formControlName="branch" class="form-control" id="branch" [ngClass]="{'input-err' : isFormSubmit && employeeForm.controls.branch.errors?.required}">
+                <option *ngFor="let branch of branches; let i=index;" [value]="branch._id">{{branch.branchName | titlecase}}</option>
+              </select>
+              <label class="err-label" *ngIf="isFormSubmit && employeeForm.controls.branch.errors?.required">Please select branch</label>
             </div>
+
           </div>
         </div>
 
         <div class="form-group text-center col-md-4">
-          <img class="pointer" [src]="selectedImage" style="margin-top: 22px;width: 166px;height: 134px;" title="Browse" (click)="openBrowseWindow()">
-          <input type="file" class="form-control-file" accept="image/*" (change)="fileChange($event)" #browseFile hidden>
+          <img class="pointer" [src]="selectedImage" alt="Profile picture" style="margin-top: 22px;width: 166px;height: 134px;" title="Browse" (click)="openBrowseWindow()">
+          <input type="file" formControlName="picture" class="form-control-file" accept="image/*" (change)="fileChange($event)" #browseFile hidden>
+          <label class="err-label d-block" *ngIf="isFormSubmit && employeeForm.controls.picture.errors?.required">Please select picture</label>
         </div>
 
         <div class="form-group col-md-4">
-          <label for="joiningDate">Joining Date</label>
+          <label for="joiningDate">*Joining Date</label>
           <div class="input-group">
             <input formControlName="joiningDate" class="form-control" id="joiningDate" placeholder="yyyy-mm-dd"
                     name="dp" [ngClass]="{'input-err' : isFormSubmit && employeeForm.controls.joiningDate.errors?.required}" ngbDatepicker #d="ngbDatepicker" readonly>
@@ -66,9 +70,17 @@
         </div>
 
         <div class="form-group col-md-4">
-          <label for="salary">Salary</label>
-          <input type="text" formControlName="salary" class="form-control" id="salary"  [ngClass]="{'input-err' : isFormSubmit && employeeForm.controls.salary.errors?.required}"/>
+          <label for="salary">*Salary</label>
+          <input type="number" formControlName="salary" class="form-control" id="salary" min="0"  [ngClass]="{'input-err' : isFormSubmit && employeeForm.controls.salary.errors?.required}"/>
           <label class="err-label" *ngIf="isFormSubmit && employeeForm.controls.salary.errors?.required">Please enter salary</label>
+        </div>
+
+        <div class="form-group col-md-4">
+          <label for="type">*Select Employee Category</label>
+          <select formControlName="type" class="form-control" id="type" [ngClass]="{'input-err' : isFormSubmit && employeeForm.controls.type.errors?.required}">
+            <option *ngFor="let category of empCategory; let i=index;" [value]="category._id">{{category.categoryName | titlecase}}</option>
+          </select>
+          <label class="err-label" *ngIf="isFormSubmit && employeeForm.controls.type.errors?.required">Please select employee category</label>
         </div>
 
         <div class="form-group col-md-4">
@@ -78,12 +90,12 @@
 
         <div class="form-group col-md-4">
           <label for="contactNo">Contact No</label>
-          <input type="text" formControlName="contactNo" class="form-control" id="contactNo"/>
+          <input type="number" formControlName="contactNo" class="form-control" id="contactNo"/>
         </div>
 
-        <div class="form-group" [ngClass]="(options.type == 'update') ? 'col-md-4' : 'col-md-8'">
-          <label for="address">Address</label>
-          <textarea formControlName="address" class="form-control" [ngClass]="{'input-err' : isFormSubmit && employeeForm.controls.address.errors?.required}" id="address" rows="3"></textarea>
+        <div class="form-group" [ngClass]="(options.type == 'update') ? 'col-md-12' : 'col-md-4'">
+          <label for="address">*Address</label>
+          <textarea formControlName="address" maxlength="200" class="form-control" [ngClass]="{'input-err' : isFormSubmit && employeeForm.controls.address.errors?.required}" id="address" rows="3"></textarea>
           <label class="err-label" *ngIf="isFormSubmit && employeeForm.controls.address.errors?.required">Please enter address</label>
         </div>
           
