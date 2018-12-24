@@ -31,6 +31,7 @@
     "@angular/pwa": "0.8.4",
     "@angular/router": "^7.0.1",
     "@angular/service-worker": "^7.0.1",
+    "@balkangraph/orgchart.js": "3.5.9",
     "@ng-bootstrap/ng-bootstrap": "^4.0.0",
     "@ngx-translate/core": "8.0.0",
     "@ngx-translate/http-loader": "2.0.0",

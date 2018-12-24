@@ -12,6 +12,7 @@ module.exports = {
 
 
 function getAllEmployee(req, res){
+
     // employee.find({}, function(err,result){
     //     if(err){
     //         var error = errHandler.handle(err);
@@ -80,12 +81,11 @@ function updateEmployee(req, res){
     if(!req.body.employeeId){
         return res.respondError("Employee id is required", -4);
     }
-    let obj = {};
-    req.body.name ? (obj.categoryName = req.body.name) : null;
-    req.body.fatherName  ? (obj.fatherName = req.body.fatherName) : null;
-    req.body.type ? (obj.accessType = req.body.type) : null;
-
-    employee.updateOne({'_id': req.body.empCategoryId}, {$set : obj } ,
+    let hashData = hasingObject(req.body);
+    if(Object.keys(obj).length === 0){
+        return res.respondSuccess("No property add to update", 4);
+    }
+    employee.updateOne({'_id': req.body.empCategoryId}, {$set : hashData } ,
                 { runValidators: true }, function(err, success){
                     if(err){
                         var error = errHandler.handle(err);
@@ -100,10 +100,10 @@ function updateEmployee(req, res){
 }
 
 function removeEmployee(req, res){
-    if(!req.query.empId){
+    if(!req.query.employeeId){
         return res.respondError("Employee id is required", -4);
     }
-    employee.deleteOne({'_id' : req.query.empId}).then(function(success){
+    employee.deleteOne({'_id' : req.query.employeeId}).then(function(success){
         if( (success.n == 1) && (success.ok == 1) ){
             return res.respondSuccess(success,"Employee removed successfully", 1);
         }
@@ -113,3 +113,40 @@ function removeEmployee(req, res){
         return res.respondError(error[0], error[1]);
     }); 
 }
+
+
+function hasingObject(obj){
+    let updatedObj = {
+        name : 'name',
+        fatherName : 'fatherName',
+        age : 'age',
+        branch : 'empBranchId',
+        type : 'empCategoryId',
+        picture : 'picture',
+        joiningDate : 'joiningDate',
+        resigningDate : 'resigningDate',
+        salary : 'salary',
+        reference  : 'reference',
+        contactNo : 'contactNo',
+        address : 'address',
+    };
+    let hashObj = {};
+    Object.keys(obj).forEach(function(key){
+        if(updatedObj.hasOwnProperty(key)){
+            hashObj[updatedObj[key]] = obj[key];
+        }
+    });
+    return updatedObj;
+};
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { forkJoin } from 'rxjs';
 
 import { HttpService } from '@app/core';
 import { EmployeePopupComponent } from '@app/featured-modules/private/employee/popup/employee-popup/employee-popup.component';
@@ -17,14 +18,32 @@ export class EmployeesListComponent implements OnInit {
   pageSize: number = 5;
   requestPending : boolean = false;
 
+  private branches;
+  private empCategory;
+  selectedBranch : string = "All";
+  selectedEmpCategory : string = "All";
+
   constructor(
     public http : HttpService,
     private modalService: NgbModal
   ) { }
 
   ngOnInit() {
-    this.getAllEmployeeDetail()
+    this.getAllEmployeeDetail();
+    this.getBranchesAndEmpCategory().subscribe(res => {
+      this.branches = res[0].body.data;
+      this.empCategory = res[1].body.data;
+      // console.log("Res: ",res);
+    },err => {
+      // console.log("Erro : ",err);
+    });
   }
+
+  getBranchesAndEmpCategory(){
+    let branches = this.http.get('branch/all');
+    let empCategory = this.http.get('employee/category/all');
+    return forkJoin(branches, empCategory)
+  };
 
   getAllEmployeeDetail(){
     this.requestPending = true;

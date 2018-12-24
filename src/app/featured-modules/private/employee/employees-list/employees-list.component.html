@@ -1,20 +1,22 @@
 <div class="container">
   <div class="text-right mrb-10">
     <div ngbDropdown class="d-inline-block">
-      <button class="btn btn-primary app-btn" id="dropdownBasic1" ngbDropdownToggle>Selected Branch</button>
-      <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+      <button class="btn btn-primary app-btn" id="dropdownBranch" ngbDropdownToggle>Select Branch</button>
+      <div ngbDropdownMenu aria-labelledby="dropdownBranch">  
         <button class="dropdown-item">All</button>
-        <button class="dropdown-item">Maripur</button>
-        <button class="dropdown-item">Clifton</button>
+        <button class="dropdown-item" *ngFor="let branch of branches">
+          {{branch.branchName | titlecase}}
+        </button>
       </div>
     </div>
 
     <div ngbDropdown class="d-inline-block ml-15">
-      <button class="btn btn-primary app-btn" id="dropdownBasic1" ngbDropdownToggle>Employee Category</button>
-      <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-        <button class="dropdown-item">Manager</button>
-        <button class="dropdown-item">Chef</button>
-        <button class="dropdown-item">Waiter</button>
+      <button class="btn btn-primary app-btn" id="dropdownEmpCategory" ngbDropdownToggle>Select Employee Category</button>
+      <div ngbDropdownMenu aria-labelledby="dropdownEmpCategory">
+          <button class="dropdown-item">All</button>
+        <button class="dropdown-item" *ngFor="let category of empCategory">
+            {{category.categoryName | titlecase}}
+        </button>
       </div>
     </div>
 
@@ -23,6 +25,16 @@
       New Employee
     </button>
 
+  </div>
+  <div class="chip"> 
+    <span class="cs-badge">B</span> 
+    &nbsp;&nbsp; John Doe
+    <span class="closebtn">&times;</span>
+  </div>
+  <div class="chip ml-10"> 
+    <span class="cs-badge">C</span> 
+    &nbsp;&nbsp; John Doe
+    <span class="closebtn">&times;</span>
   </div>
   <div class="table-responsive" style="max-height: 500px;">
     <table class="table">
