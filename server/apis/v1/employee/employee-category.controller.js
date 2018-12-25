@@ -1,6 +1,7 @@
 'use strict';
 
 var empCategory = require('./employee-category.model');
+var employee    = require('./employee.model');
 var errHandler  = require('../../../utils/errorHandler');
 
 module.exports = {
@@ -10,9 +11,17 @@ module.exports = {
     removeCategory      : removeCategory
 };
 
-
+// Only access manager or owner
 function getAllCategories(req, res){
-    empCategory.find({}, function(err, result){
+    let query = {};
+    if(req.body.userRole == 1){ //:: owner block
+        if(req.body.branchId){ // :: If id not provided fetch all categories, If id provided fetch by against provided id
+            query = { 'branchId' : req.body.branchId };
+        }
+    }else{ //:: manager block
+        query = { 'branchId' : req.body.branchId };
+    }
+    empCategory.find(query, function(err, result){
         if(err){
             var error = errHandler.handle(err);
             return res.respondError(error[0], error[1]);
@@ -22,7 +31,11 @@ function getAllCategories(req, res){
 }
 
 function createCategory(req, res){
-    var newEmpCategory = new empCategory({categoryName : req.body.name, accessType : req.body.type});
+    var newEmpCategory = new empCategory({
+        branchId: req.body.branchId,    // if Owner provide from client side if manager fetch from json Web token
+        categoryName : req.body.name, 
+        accessType : req.body.type
+    });
 	newEmpCategory.save().then(function(result){
         return res.respondSuccess(null,"Employee Category created successfully", 2);
     },function(err){
@@ -35,10 +48,17 @@ function updateCategory(req, res){
     if(!req.body.empCategoryId){
         return res.respondError("Employee category id is required", -4);
     }
-    let obj = {};
-    req.body.name ? (obj.categoryName = req.body.name) : null;
-    req.body.type ? (obj.accessType = req.body.type) : null;
-    empCategory.updateOne({'_id': req.body.empCategoryId}, {$set : obj } ,
+    let updateModel = {
+        branchId: 'branchId',  // if Owner provide from client side if manager fetch from json Web token
+        name : 'categoryName',
+        type : 'accessType'
+    }
+    let hashData = helper.mappingModel(req.body, updateModel);
+    if(Object.keys(hashData).length === 0){
+        return res.respondError("Minimum 1 feild is required for update", -4);
+    }
+
+    empCategory.updateOne({'_id': req.body.empCategoryId}, {$set : updateModel } ,
                 { runValidators: true }, function(err, success){
                     if(err){
                         var error = errHandler.handle(err);
@@ -52,17 +72,28 @@ function updateCategory(req, res){
 
 }
 
+// Need to update remove api for owner and manager
 function removeCategory(req, res){
     if(!req.query.empCategoryId){
         return res.respondError("Employee category id is required", -4);
     }
-    empCategory.deleteOne({'_id' : req.query.empCategoryId}).then(function(success){
-        if( (success.n == 1) && (success.ok == 1) ){
-            return res.respondSuccess(success,"Employee category removed successfully", 1);
+    employee.findOne({'empCategoryId' : req.query.empCategoryId}, function(err, result){
+        if(err){
+            var error = errHandler.handle(err);
+            return res.respondError(error[0], error[1]);
         }
-        return res.respondError("Employee category not removed", -3);
-    }, function(err){
-        var error = errHandler.handle(err);
-        return res.respondError(error[0], error[1]);
-    }); 
+        else if(result) {
+            return res.respondError("Category not be removed its used as a refernce in other collections", -1);
+        }else{
+            return empCategory.deleteOne({'_id' : req.query.empCategoryId}).then(function(success){
+                if( (success.n == 1) && (success.ok == 1) ){
+                    return res.respondSuccess(success,"Employee category removed successfully", 1);
+                }
+                return res.respondError("Employee category not removed", -3);
+            }, function(err){
+                var error = errHandler.handle(err);
+                return res.respondError(error[0], error[1]);
+            }); 
+        };
+    });
 }

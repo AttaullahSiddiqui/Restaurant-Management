@@ -2,6 +2,7 @@
 
 var employee = require('./employee.model');
 var errHandler  = require('../../../utils/errorHandler');
+var helper = require('../../../utils/helper');
 
 module.exports = {
     createEmployee  : createEmployee,
@@ -81,11 +82,25 @@ function updateEmployee(req, res){
     if(!req.body.employeeId){
         return res.respondError("Employee id is required", -4);
     }
-    let hashData = hasingObject(req.body);
-    if(Object.keys(obj).length === 0){
-        return res.respondSuccess("No property add to update", 4);
+    let updateModel = {
+        name : 'name',
+        fatherName : 'fatherName',
+        age : 'age',
+        branch : 'empBranchId',
+        type : 'empCategoryId',
+        picture : 'picture',
+        joiningDate : 'joiningDate',
+        resigningDate : 'resigningDate',
+        salary : 'salary',
+        reference  : 'reference',
+        contactNo : 'contactNo',
+        address : 'address',
+    };
+    let hashData = helper.mappingModel(req.body, updateModel);
+    if(Object.keys(hashData).length === 0){
+        return res.respondError("Minimum 1 feild is required for update", -4);
     }
-    employee.updateOne({'_id': req.body.empCategoryId}, {$set : hashData } ,
+    employee.updateOne({'_id': req.body.employeeId}, {$set : hashData } ,
                 { runValidators: true }, function(err, success){
                     if(err){
                         var error = errHandler.handle(err);
@@ -112,31 +127,6 @@ function removeEmployee(req, res){
         var error = errHandler.handle(err);
         return res.respondError(error[0], error[1]);
     }); 
-}
-
-
-function hasingObject(obj){
-    let updatedObj = {
-        name : 'name',
-        fatherName : 'fatherName',
-        age : 'age',
-        branch : 'empBranchId',
-        type : 'empCategoryId',
-        picture : 'picture',
-        joiningDate : 'joiningDate',
-        resigningDate : 'resigningDate',
-        salary : 'salary',
-        reference  : 'reference',
-        contactNo : 'contactNo',
-        address : 'address',
-    };
-    let hashObj = {};
-    Object.keys(obj).forEach(function(key){
-        if(updatedObj.hasOwnProperty(key)){
-            hashObj[updatedObj[key]] = obj[key];
-        }
-    });
-    return updatedObj;
 };
 
 

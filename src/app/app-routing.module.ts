@@ -21,6 +21,9 @@ const routes: Routes = [{
     },{
       path: 'employee',
       loadChildren: './featured-modules/private/employee/employee.module#EmployeeModule'
+    },{
+      path: 'user',
+      loadChildren: './featured-modules/private/users/users.module#UsersModule'
     }]
   }, {
     path: '',

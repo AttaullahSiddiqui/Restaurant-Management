@@ -11,7 +11,8 @@ module.exports = {
     convertToGMT            : convertToGMT,
     toLower                 : toLower,
     validateArray           : validateArray,
-    MongooseErrorMessages   : MongooseErrorMessages
+    MongooseErrorMessages   : MongooseErrorMessages,
+    mappingModel            : mappingModel
 }
 
 function extendObject(targetObj, sourceObj){
@@ -56,3 +57,13 @@ function MongooseErrorMessages(err){
         return err.errors[key] = err.errors[key].message;
     })
 }
+
+function mappingModel(obj, model){
+    let hashObj = {};
+    Object.keys(obj).forEach(function(key){
+        if(model.hasOwnProperty(key)){
+            hashObj[model[key]] = obj[key];
+        }
+    });
+    return hashObj;
+};

@@ -1,5 +1,6 @@
 'use strict';
 let mongoose    = require('mongoose');
+let branches    = require('../branch/branch.model');
 /* ------ NOTE -----
  1 = All rights equal to owner,
  2 = Rights equal to Manager,
@@ -8,6 +9,11 @@ let mongoose    = require('mongoose');
 */
 
 var EmployeeCategorySchema = mongoose.Schema({
+    branchId : {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'branches',
+        required : [true, "Branch id is required"]
+    },
     categoryName : {
         type : String,
         unique: true,
@@ -26,6 +32,17 @@ var EmployeeCategorySchema = mongoose.Schema({
 		default : Date.now
 	}
 });
+
+EmployeeCategorySchema.path('branchId').validate(function (value) {
+    return new Promise(function(resolve, reject){
+        branches.findOne({'_id': value}, function (err, doc) {
+            if (err || !doc) {
+                resolve(false);
+            } 
+            resolve(true);
+        });
+    });
+}, 'Invalid branch id');
 
 
 module.exports = mongoose.model('employee_categories', EmployeeCategorySchema);

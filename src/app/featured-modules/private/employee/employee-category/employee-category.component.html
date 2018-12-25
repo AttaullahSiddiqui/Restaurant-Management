@@ -1,6 +1,19 @@
-<button class="btn btn-lg btn-outline-primary" (click)="openDialog('new')">New Branch</button>
-
 <div class="container">
+  <div class="text-right mrb-10">
+    <div ngbDropdown class="d-inline-block">
+      <button class="btn btn-primary app-btn" id="dropdownBranch" ngbDropdownToggle>Select Branch</button>
+      <div ngbDropdownMenu aria-labelledby="dropdownBranch">
+        <button class="dropdown-item">Manager</button>
+        <button class="dropdown-item">Chef</button>
+        <button class="dropdown-item">Waiter</button>
+      </div>
+    </div>
+
+    <button class="btn btn-primary app-btn ml-15" (click)="openDialog('new')">
+      <i class="fa fa-plus pd-r-5"></i>
+      New Category
+    </button>
+  </div>
   <div class="table-responsive" style="max-height: 500px;">
     <table class="table">
       <thead style="background: #c5bebe;">
