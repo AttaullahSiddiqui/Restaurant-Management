@@ -1,10 +1,7 @@
 import { Component, OnInit, ViewContainerRef } from '@angular/core';
-// import { HttpClient } from '@angular/common/http';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
-//import { ToastsManager } from 'ng2-toastr';
-// import { Router } from '@angular/router';
 
-import { routerTransition } from './router.animations';
+import { routerTransition } from '../router.animations';
 
 interface ItemsResponse {
   results: string[];
@@ -30,7 +27,7 @@ export class LoginComponent implements OnInit {
   constructor(private fb : FormBuilder) {
     this.creatLoginForm();
     //this.toastr.setRootViewContainerRef(vcr);
-   }
+   };
 
   ngOnInit() {
   }
@@ -40,7 +37,7 @@ export class LoginComponent implements OnInit {
       userName  : ['', [Validators.required, this.userNameSpaceValidator]],
       password  : ['', Validators.required]
     }) 
-  }
+  };
 
   authUser(valid, formData){
     this.errorMsg = "";
@@ -62,7 +59,7 @@ export class LoginComponent implements OnInit {
     //   }
     //   console.log("Error in auth : ",err);
     // });
-  }
+  };
 
   userNameSpaceValidator(control: FormControl) { 
     let userName = control.value;
@@ -72,6 +69,6 @@ export class LoginComponent implements OnInit {
       noSpaceAllow : true
     }
     return null;
-  }
+  };
 
 }
