@@ -1,5 +1,13 @@
-<h1>Hello World user Module</h1>
-<h1>Hello World user Module</h1>
-<h1>Hello World user Module</h1>
-<h1>Hello World user Module</h1>
-<h1>Hello World user Module</h1>
+<ngb-tabset type="pills" justify="justified">
+    <ngb-tab title="Users List">
+      <ng-template ngbTabContent>
+        <app-user-list></app-user-list>
+      </ng-template>
+    </ngb-tab>
+    <ngb-tab>
+      <ng-template ngbTabTitle>Users Request</ng-template>
+      <ng-template ngbTabContent>
+        <app-user-request></app-user-request>
+      </ng-template>
+    </ngb-tab>
+</ngb-tabset>

@@ -1,0 +1,28 @@
+<div class="mrt-10">
+  <div class="table-responsive">
+    <table class="table table-bordered bd-none">
+      <thead style="background: #c5bebe;">
+        <tr>
+          <th scope="col" class="text-center bd-tl" style="width: 50px;">S.no</th>
+          <th scope="col" class="text-center bd-top">User Name</th>
+          <th scope="col" class="text-center bd-top">Mobile No</th>
+          <th scope="col" class="text-center bd-top">Role</th>
+          <th scope="col" class="text-center bd-tr">Request Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of dummyData; let i = index;">
+          <td class="text-center bd-left v-align">
+            {{i+1}}
+          </td>
+          <td class="text-center">{{user.userName}}</td>
+          <td class="text-center">{{user.mobileNo}} 
+            <span class="mobile-status">verified</span>
+          </td>
+          <td class="text-center">{{user.role}}</td>
+          <td class="text-center bd-right">{{user.status}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
