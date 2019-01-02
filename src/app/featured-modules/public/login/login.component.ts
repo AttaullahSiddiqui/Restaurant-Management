@@ -1,11 +1,11 @@
-import { Component, OnInit, ViewContainerRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+
 
 import { routerTransition } from '../router.animations';
-
-interface ItemsResponse {
-  results: string[];
-}
+import { PublicService } from '../public.service';
+import { HttpService, UtilityService } from '@app/core';
 
 @Component({
   selector: 'app-login',
@@ -20,21 +20,21 @@ export class LoginComponent implements OnInit {
   isRequestPending: boolean = false;
   errorMsg : string;
 
-  // public toastr: ToastsManager,
-  // , vcr: ViewContainerRef
-  //private http: HttpClient
-
-  constructor(private fb : FormBuilder) {
-    this.creatLoginForm();
-    //this.toastr.setRootViewContainerRef(vcr);
-   };
+  constructor(
+    private fb : FormBuilder,
+    public publicService: PublicService,
+    public http: HttpService,
+    public utility: UtilityService,
+    private route: Router
+  ) {};
 
   ngOnInit() {
-  }
+    this.creatLoginForm();
+  };
 
   creatLoginForm(){
     this.loginForm = this.fb.group({
-      userName  : ['', [Validators.required, this.userNameSpaceValidator]],
+      userName  : ['', [Validators.required, this.publicService.userNameSpaceValidator]],
       password  : ['', Validators.required]
     }) 
   };
@@ -46,29 +46,29 @@ export class LoginComponent implements OnInit {
         return;
     }
     this.isRequestPending = true;
-    // this.http.post<ItemsResponse>('user/login', formData, {observe: 'response'}).subscribe(data => {
-    //   //this.toastr.success(data.body['message'], 'Success!');
-    //   this.isRequestPending = false;
-    //   localStorage.setItem("authToken", data.body['data']);
-    //   console.log("Data : ",data);
-    // }, err => {
-    //   this.isRequestPending = false;
-    //   this.errorMsg = err.error.message || 'Unknown Error please try again';
-    //   if(err.status === 500){
-    //     this.errorMsg = this.errorMsg+ ". If your seeing this constantly contact to developer";
-    //   }
-    //   console.log("Error in auth : ",err);
-    // });
-  };
-
-  userNameSpaceValidator(control: FormControl) { 
-    let userName = control.value;
-    var isValid = userName.split(' ');
-    if(isValid.length >= 2)
-    return {
-      noSpaceAllow : true
-    }
-    return null;
+    this.http.post('user/login', formData).subscribe(result => {
+      //console.log("Result : ",result.body.data);
+      let resultObj = result.body.data;
+      this.utility.setToken(resultObj.token);
+      this.isRequestPending = false;
+      this.isFormSubmit = false;
+      this.route.navigate(['/']);
+      // if(resultObj.userRole == 1){
+      //   this.route.navigate(['/']);
+      // }else{
+      //   this.route.navigate(['/bill/create']);
+      // }
+      
+    },err => {
+      if(err.status == 404 || err.status == 403){
+        this.errorMsg = err.message;
+      }else{
+        this.errorMsg = "Uexpected error. Please try again";
+      }
+      this.isRequestPending = false;
+      this.isFormSubmit = false;
+      //console.log("Error : ",err);
+    });
   };
 
 }

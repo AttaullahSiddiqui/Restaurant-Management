@@ -3,14 +3,14 @@
       <div class="col-md-4">
           <img src="assets/logo.png" width="150px" class="user-avatar" />
           <h1>DUA Restaurant</h1>
-          <form role="form" [formGroup]="loginForm" (ngSubmit)="authUser(loginForm.valid, loginForm.value)" novalidate>
+          <form role="form" [formGroup]="loginForm" (ngSubmit)="!isRequestPending && authUser(loginForm.valid, loginForm.value)" novalidate>
               <div class="form-content">
                   <div class="form-group">
                       <input type="text" formControlName="userName" class="form-control input-underline input-lg" placeholder="Username">
                       <div *ngIf="isFormSubmit && loginForm.controls.userName.invalid" class="error text-left">
                         <p *ngIf="loginForm.controls.userName.errors.required">Username is required</p>
-                        <p *ngIf="loginForm.controls.userName.errors.noSpaceAllow">No space allowed between username</p>
                       </div>
+                      <p class="error text-left" *ngIf="loginForm.controls.userName.errors?.noSpaceAllow">No space allowed between username</p>
                   </div>
 
                   <div class="form-group">

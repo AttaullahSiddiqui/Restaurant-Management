@@ -1,7 +1,9 @@
 import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
+import { HttpService } from '@app/core';
 
 import { routerTransition } from '../router.animations';
+import { PublicService } from '../public.service';
 
 interface ItemsResponse {
   results: string[];
@@ -17,22 +19,24 @@ export class SignupComponent implements OnInit {
 
   signupForm : FormGroup;
   isFormSubmit: boolean = false;
-  isRequestPending: boolean = false;
+  requestPending: boolean = false;
   errorMsg : string;
 
-  constructor(private fb : FormBuilder) {
-    this.creatLoginForm();
-  };
+  constructor(
+    private fb : FormBuilder,
+    public http : HttpService,
+    public publicService : PublicService
+  ) {};
 
   ngOnInit() {
+    this.creatLoginForm();
   };
 
   creatLoginForm(){
     this.signupForm = this.fb.group({
-      name      : ['', Validators.required],
-      userName  : ['', [Validators.required, this.userNameSpaceValidator]],
-      password  : ['', Validators.required],
-      contactNo : ['', Validators.required]
+      userName  : ['', [Validators.required, this.publicService.userNameSpaceValidator]],
+      password  : ['', [Validators.required, Validators.maxLength(12), Validators.minLength(5)]],
+      mobileNo : ['', [Validators.required, Validators.minLength(11)]]
     });
   };
 
@@ -42,17 +46,22 @@ export class SignupComponent implements OnInit {
     if(!valid){
         return;
     }
-    this.isRequestPending = true;
-  };
-
-  userNameSpaceValidator(control: FormControl) { 
-    let userName = control.value;
-    var isValid = userName.split(' ');
-    if(isValid.length >= 2)
-    return {
-      noSpaceAllow : true
-    }
-    return null;
+    this.requestPending = true;
+    this.http.post('user/new', formData).subscribe(result => {
+        this.requestPending = false;
+        this.isFormSubmit = false;
+        this.signupForm.reset();
+        console.log("Result : ",result);
+    }, err => {
+      if(err.status == 409){
+        this.errorMsg = err.message[0]
+      }else{
+        this.errorMsg = "Uexpected error. Please try again";
+      }
+      this.requestPending = false;
+      this.isFormSubmit = false;
+      console.log("Error : ",err);
+    });
   };
 
 }

@@ -1,38 +1,35 @@
 <div class="login-page" [@routerTransition]>
   <div class="row justify-content-md-center">
       <div class="col-md-4">
-          <h1>DUA Restaurant</h1>
-          <form role="form" [formGroup]="signupForm" (ngSubmit)="createUser(signupForm.valid, signupForm.value)" novalidate>
+          <!-- <h1>DUA Restaurant</h1> -->
+          <form role="form" [formGroup]="signupForm" (ngSubmit)="!requestPending && createUser(signupForm.valid, signupForm.value)" novalidate>
               <div class="form-content">
-                <div class="form-group">
-                    <input type="text" formControlName="name" class="form-control input-underline input-lg" placeholder="Name">
-                    <div *ngIf="isFormSubmit && signupForm.controls.name.invalid" class="error text-left">
-                        <p *ngIf="signupForm.controls.name.errors.required">Name is required</p>
-                    </div>
-                </div>
                 <div class="form-group">
                     <input type="text" formControlName="userName" class="form-control input-underline input-lg" placeholder="Username">
                     <div *ngIf="isFormSubmit && signupForm.controls.userName.invalid" class="error text-left">
-                    <p *ngIf="signupForm.controls.userName.errors.required">Username is required</p>
-                    <p *ngIf="signupForm.controls.userName.errors.noSpaceAllow">No space allowed between username</p>
+                        <p *ngIf="signupForm.controls.userName.errors.required">Username is required</p>
                     </div>
+                    <p class="error text-left" *ngIf="signupForm.controls.userName.errors?.noSpaceAllow">No space allowed between username</p>
                 </div>
                 <div class="form-group">
                     <input type="password" formControlName="password" class="form-control input-underline input-lg" placeholder="Password">
                     <div *ngIf="isFormSubmit && signupForm.controls.password.invalid" class="error text-left">
-                    <p *ngIf="signupForm.controls.password.errors.required">Password is required</p>
+                        <p *ngIf="signupForm.controls.password.errors.required">Password is required</p>
+                        <p *ngIf="signupForm.controls.password.errors.minlength">Minimum 5 charcters required</p>
+                        <p *ngIf="signupForm.controls.password.errors.maxlength">Maximum 12 charcters allowed</p>
                     </div>
                 </div>
                 <div class="form-group">
-                    <input type="text" maxlength="11" NumericInput formControlName="contactNo" class="form-control input-underline input-lg" placeholder="Mobile No">
-                    <div *ngIf="isFormSubmit && signupForm.controls.contactNo.invalid" class="error text-left">
-                    <p *ngIf="signupForm.controls.contactNo.errors.required">Mobile no is required</p>
+                    <input type="text" maxlength="11" NumericInput formControlName="mobileNo" class="form-control input-underline input-lg" placeholder="Mobile No">
+                    <div *ngIf="isFormSubmit && signupForm.controls.mobileNo.invalid" class="error text-left">
+                        <p *ngIf="signupForm.controls.mobileNo.errors.required">Mobile no is required</p>
+                        <p *ngIf="signupForm.controls.mobileNo.errors.minlength">Invalid mobile no</p>
                     </div>
                 </div>
               </div>
               <p *ngIf="errorMsg" class="error">{{errorMsg}}</p>
                 <button type="submit" class="btn rounded-btn pointer"> 
-                    <i *ngIf="isRequestPending" class="fa fa-spin fa-spinner" aria-hidden="true"></i> Create 
+                    <i *ngIf="requestPending" class="fa fa-spin fa-spinner" aria-hidden="true"></i> Create 
                 </button>
           </form>
       </div>
