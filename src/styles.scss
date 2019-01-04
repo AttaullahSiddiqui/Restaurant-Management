@@ -235,6 +235,9 @@ ngb-typeahead-window{
 .no-outline{
     outline: none;
 }
+.close:focus{
+    outline: none;
+}
 
 //Overide boostrap lg model :: start
 @media only screen and (min-width: 992px) {
