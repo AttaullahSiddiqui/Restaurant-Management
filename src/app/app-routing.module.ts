@@ -1,17 +1,20 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
 
-import { AdminLayoutComponent, AuthLayoutComponent, NotFound404Component } from '@app/core';
+import { AdminLayoutComponent, AuthLayoutComponent, NotFound404Component, AuthService } from '@app/core';
 
 const routes: Routes = [{
     path: '',
     component: AdminLayoutComponent,
+    //canActivate: [AuthService],
     children: [{
       path: '',
-      loadChildren: './featured-modules/private/dashboard/dashboard.module#DashboardModule'
+      loadChildren: './featured-modules/private/dashboard/dashboard.module#DashboardModule',
+     
     },{
       path: 'menu',
-      loadChildren: './featured-modules/private/menu/menu.module#MenuModule'
+      loadChildren: './featured-modules/private/menu/menu.module#MenuModule',
+      //canLoad: [AuthService],
     },{
       path: 'bill',
       loadChildren: './featured-modules/private/bill/bill.module#BillModule'
@@ -29,7 +32,7 @@ const routes: Routes = [{
     path: '',
     component: AuthLayoutComponent,
     children: [{
-      path: 'public',
+      path: '',
       loadChildren: './featured-modules/public/public.module#PublicModule'
     }]
   },{
