@@ -15,6 +15,10 @@ export class UtilityService {
     return localStorage.getItem('Authorization');
   }
 
+  public removeToken(){
+    localStorage.removeItem('Authorization');
+  };
+
   public getUserRoles() {
     const USER_ROLES = [
       {
@@ -32,5 +36,5 @@ export class UtilityService {
       }
     ]
     return USER_ROLES;
-  }
+  };
 }
