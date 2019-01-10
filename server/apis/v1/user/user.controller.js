@@ -3,18 +3,20 @@
 let bcrypt 		= require('bcryptjs');
 let User        = require('./user.model');
 let service     = require('../../../core/app.service');
+let twilio  = require('../../../core/twilio.service.js')
 let errHandler  = require('../../../utils/errorHandler');
 let jwt         = require('../../../core/jwtHelper.service');
 
 
 module.exports = {
-    authUser        : authUser,
-    getUserDetails  : getUserDetails,
-    createUser      : createUser,
-    changePassword  : changePassword,
-    getAllUsers     : getAllUsers,
-    removeUser      : removeUser,
-    updateRole      : updateRole
+    authUser            : authUser,
+    // getUserDetails  : getUserDetails,
+    createUser          : createUser,
+    getNewUsersRequest  : getNewUsersRequest,
+    getAllUsers         : getAllUsers
+    // changePassword  : changePassword,
+    // removeUser      : removeUser,
+    // updateRole      : updateRole
 };
 
 function authUser(req, res){
@@ -35,19 +37,75 @@ function authUser(req, res){
                 }else if(!isMatch){
                     return res.respondError("Wrong password", -3);
                 }
+                if(!fetchedUser.accountStatus){
+                    return res.respondError("Your account request is pending", -3); 
+                }
                 // For local provider login
-                jwt.generateToken({userID : fetchedUser._id, role : fetchedUser.role}, function(jwtErr, jwtSuccess){
+                jwt.generateToken({userID : fetchedUser._id}, function(jwtErr, jwtSuccess){
                     if(jwtErr){
                         return res.respondError("Unexpected Error", -1);
                     }
-                    return res.respondSuccess(jwtSuccess,"User login successfully", 1);
+                    return res.respondSuccess({
+                        token: jwtSuccess,
+                        userRole : fetchedUser.role
+                    },"User login successfully", 1);
                 });
             });
         }
     });
-}
+};
 
-function getUserDetails(req, res){
+function createUser(req, res){
+    var obj = {
+        userName: req.body.userName,
+        password: req.body.password,
+        mobileNo: req.body.mobileNo
+    }
+    var newUser = new User(obj);
+	newUser.save().then(function(result){
+        return res.respondSuccess(null,"User account created successfully", 2);
+    },function(err){
+        var error = errHandler.handle(err);
+        return res.respondError(error[0], (error[1] || -1) );  
+    })
+};
+
+function getNewUsersRequest(req, res){
+    User.find({'accountApproved' : '1'}, {'password' : 0}, function(err, result){
+        if(err){
+            console.log("Error : -------->",err);
+            var error = errHandler.handle(err);
+            return res.respondError(error[0], error[1]); 
+        }
+        return res.respondSuccess(result,"New users request list", 1);
+    })
+};
+
+function getAllUsers(req, res){
+    User.find({'accountStatus' : true}, {'password' : 0}, function(err, result){
+        if(err){
+            console.log("Error : -------->",err);
+            var error = errHandler.handle(err);
+            return res.respondError(error[0], error[1]); 
+        }
+        return res.respondSuccess(result,"User list", 1);
+    });
+
+
+    // var offsetIndex = 0;
+    // if(req.query.offsetIndex && !isNaN(req.query.offsetIndex)){
+    //     offsetIndex = +req.query.offsetIndex;
+    // }
+    // User.find({ role: { $ne: 'owner' } }, {'password' : 0}).skip(offsetIndex).limit(10).then(function(result){
+    //     return res.respondSuccess(result,"Fetched User list", 1);
+    // },function(err){
+    //     console.log("Error : -------->",err);
+    //     var error = errHandler.handle(err);
+    //     return res.respondError(error[0], error[1]);
+    // });
+};
+
+/*function getUserDetails(req, res){
     User.findOne({'_id' : req.loginUserId, 'role' : req.role}, {'password' : 0}, function(err, result){
         if(err){
             console.log("Error : -------->",err);
@@ -61,15 +119,7 @@ function getUserDetails(req, res){
 }
 
 
-function createUser(req, res){
-    var newUser = new User(req.body);
-	newUser.save().then(function(result){
-        return res.respondSuccess(null,"User account created successfully", 2);
-    },function(err){
-        var error = errHandler.handle(err);
-        return res.respondError(error[0], (error[1] || -1) );  
-    })
-}
+
 
 function changePassword(req, res){
     if(!req.body.password || !req.body.newPassword){
@@ -112,19 +162,7 @@ function changePassword(req, res){
     
 }
 
-function getAllUsers(req, res){
-    var offsetIndex = 0;
-    if(req.query.offsetIndex && !isNaN(req.query.offsetIndex)){
-        offsetIndex = +req.query.offsetIndex;
-    }
-    User.find({ role: { $ne: 'owner' } }, {'password' : 0}).skip(offsetIndex).limit(10).then(function(result){
-        return res.respondSuccess(result,"Fetched User list", 1);
-    },function(err){
-        console.log("Error : -------->",err);
-        var error = errHandler.handle(err);
-        return res.respondError(error[0], error[1]);
-    });
-}
+
 
 function removeUser(req, res){
     if(!req.query.userId){

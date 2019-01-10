@@ -2,49 +2,70 @@
 
 let mongoose    	= require('mongoose');
 let bcrypt 			= require('bcryptjs');
-let service 		= require('../../services/app.services');
+let employees    = require('../employee/employee.model');
+
+const USER_ROLES = [
+	'1'			// Owner
+];
+
+const ACCOUNT_APROVED_TYPES = [
+	'1',		// Pending
+	'2',		// Approve
+	'3'			//Reject
+];
 
 var UserSchema = mongoose.Schema({
 	name: {
-		type: String,
-		required: [true, "Employee Name is required should not be null"]
+		type		: String,
+		required	: [function(){
+			return this.role == '1';
+		},"Name is required"]
 	},
-	role: {
-		type: String,
-		required : [true,"Role is required should not be null"],
-		enum: service.userRoles
-	},
-	cnic : {
-		type: Number,
-		required : [function(){
-			var authTypeIndex = service.authTypes.indexOf(this.provider);
-			if(authTypeIndex === -1 || authTypeIndex === 1){
-				return true;
-			}
-			return false
-		},"Password is required should not be null"]
-	},
-	profilePic : {
-		type: String,
-	},
-
-    userName : {
-		type: String,
-		lowercase: true,
-		unique  : true,
-		required : [true, "User Name is required should not be null"]
+	userName : {
+		type		: String,
+		lowercase	: true,
+		unique		: true,
+		required	: [true, "User Name is required"]
     },
 	password: {
-		type: String,
-		required : [true,"Password is required should not be null"]
+		type		: String,
+		minlength	: 5,
+		maxlength	: 12,
+		required 	: [true,"Password is required"]
 	},
-	picture : {
-		type : String
+	role: {
+		type		: String,
+		required	: [function(){
+			return this.role == '1';
+		},"Role is required"],
+		enum		: USER_ROLES
 	},
-	
+	mobileNo : {
+		type		: Number,
+		unique		: true,
+		required	: [true,"Mobile no is required"]
+	},
+	mobileNoVerfied : {
+		type	: Boolean,
+		default	: false
+	},
+	accountApproved: {
+		type 	: String,
+		enum	: ACCOUNT_APROVED_TYPES,
+		default	: ACCOUNT_APROVED_TYPES[0],
+	},
+	accountStatus: {
+		type 	:  Boolean,
+		default	: false
+	},
+	employeeId : {
+		type	: mongoose.Schema.Types.ObjectId,
+		ref		: 'employees',
+		unique	: true
+	},
 	createAt : {
-		type : Date,
-		default : Date.now
+		type 	: Date,
+		default	: Date.now
 	}
 });
 
@@ -53,14 +74,28 @@ var UserSchema = mongoose.Schema({
  * Validations
  */
 
-UserSchema
-	.path('userName')
-	.validate(function (userName) {
-		var isValid = userName.split(' ');
-		if(isValid.length >= 2)
+UserSchema.path('userName').validate(function (userName) {
+	var isValid = userName.split(' ');
+	if(isValid.length >= 2)
 		return false;
+	return true;
+}, "No space allowed between username");
+
+
+UserSchema.path('employeeId').validate(function (value) {
+	if(this.role === 1){
 		return true;
-	}, "No space allowed between username");	
+	}
+	return new Promise(function(resolve, reject){
+		employees.findOne({'_id': value}, function (err, doc) {
+			if (err || !doc) {
+				resolve(false);
+			} 
+			resolve(true);
+		});
+	});
+
+}, "Invalid employee Id");
 
 
 /**

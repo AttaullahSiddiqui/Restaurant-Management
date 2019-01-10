@@ -1,3 +1,62 @@
-<p>
-  user-list works!
-</p>
+<div class="mrt-10">
+    <div class="table-responsive">
+      <table class="table">
+        <thead style="background: #c5bebe;">
+          <tr>
+            <th scope="col" class="text-center bd-tl" style="width: 50px;">S.no</th>
+            <th scope="col" class="text-center bd-top" style="width: 25%">User Name</th>
+            <th scope="col" class="text-center bd-top" style="width: 25%">Mobile No</th>
+            <th scope="col" class="text-center bd-top" style="width: 25%">Bind Employee</th>
+            <th scope="col" class="text-center bd-tr">Request Status</th>
+          </tr>
+        </thead>
+        <!-- <tbody *ngIf="usersRequest.length > 0 ">
+          <tr *ngFor="let user of usersRequest; let i = index;">
+            <td class="text-center bd-left v-align">
+              {{i+1}}
+            </td>
+            <td class="text-center">{{user.userName}}</td>
+            <td class="text-center">{{user.mobileNo}} 
+              <sub class="fa mobile-status" [ngClass]="user.accountStatus ? 'fa-check verify' : 'fa-times not-verify'"></sub>
+            </td>
+            <td class="text-center">
+                [ngClass]="{'select-err' : (isFormSubmit && billForm.controls.itemDetail.errors?.required) }"
+              <div>
+                <select [(ngModel)]="selectedValue" class="form-control selectpicker" data-live-search="true" title="Select...">
+                  <optgroup label="Admin">
+                    <option *ngFor="let emp of dummyEmployee" [value]="emp.id">
+                        {{emp.name | titlecase}}
+                    </option>
+                  </optgroup>
+                </select>
+              </div>
+              <label class="err-label mrb-0">Please select employee</label>
+            </td>
+            <td class="text-center bd-right">
+              <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle acc-type-btn" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    {{user.accountApproved | titlecase}}
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <a class="dropdown-item">Pending</a>
+                  <a class="dropdown-item">Approve</a>
+                  <a class="dropdown-item">Reject</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </tbody> -->
+        <tbody *ngIf="requestPending || (users.length == 0 )">
+          <tr>
+            <td colspan="5" class="text-center" style="padding-top: 60px;">
+              <i *ngIf="requestPending" class="fa fa-spin fa-circle-o-notch fa-4x" aria-hidden="true"></i>
+              <div *ngIf="!requestPending && users.length == 0">
+                <i class="fa fa-smile-o fa-4x" style="font-size: 200px;"></i><br>
+                <label class="no-content">No users found</label>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>

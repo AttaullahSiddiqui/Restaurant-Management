@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { HttpService, AppToastrService } from '@app/core';
+
+declare var $:any;
+
 
 @Component({
   selector: 'app-user-request',
@@ -8,57 +12,47 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 })
 export class UserRequestComponent implements OnInit {
 
-  constructor() { }
+  selectedValue : string;
+  requestPending: boolean;
+  usersRequest = [];
+  acctountType = [{
+    value : '1',
+    text: 'Pending'
+  },{
+    value : '2',
+    text: 'Approve'
+  },{
+    value : '3',
+    text: 'Reject'
+  }]
+  constructor(
+    private http: HttpService
+  ) { }
 
   ngOnInit() {
-  }
-  dummyData = [{
-    userName : 'muhammadmateen02',
-    mobileNo: '03222642342',
-    role: '1',
-    status: 'Pending'
-  },
-  {
-    userName : 'muhammadmateen02',
-    mobileNo: '03222642342',
-    role: '1',
-    status: 'Pending'
-  },{
-    userName : 'muhammadmateen02',
-    mobileNo: '03222642342',
-    role: '1',
-    status: 'Pending'
-  },{
-    userName : 'muhammadmateen02',
-    mobileNo: '03222642342',
-    role: '1',
-    status: 'Pending'
-  },{
-    userName : 'muhammadmateen02',
-    mobileNo: '03222642342',
-    role: '1',
-    status: 'Pending'
-  },{
-    userName : 'muhammadmateen02',
-    mobileNo: '03222642342',
-    role: '1',
-    status: 'Pending'
-  },{
-    userName : 'muhammadmateen02',
-    mobileNo: '03222642342',
-    role: '1',
-    status: 'Pending'
-  },{
-    userName : 'muhammadmateen02',
-    mobileNo: '03222642342',
-    role: '1',
-    status: 'Pending'
-  },{
-    userName : 'muhammadmateen02',
-    mobileNo: '03222642342',
-    role: '1',
-    status: 'Pending'
-  }]
+    this.getUserRequest();
+  };
+
+  getUserRequest(){
+    this.requestPending = true;
+    this.http.get('user/account-requests').subscribe(result => {
+        console.log("New user account request: ",result);
+        this.requestPending = false;
+        this.usersRequest = result.body.data;
+        setTimeout(() => {
+          $('.selectpicker').selectpicker('refresh');
+        }, 0);
+    }, err => {
+        this.requestPending = false;
+        console.log("Error : ",err);
+    });
+  };
+
+  approveRequest(type, index){
+    if(type != this.usersRequest[index].accountApproved){
+      console.log(arguments);
+    }
+  };
 
 }
 

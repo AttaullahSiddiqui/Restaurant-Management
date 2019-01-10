@@ -183,6 +183,12 @@ ngb-typeahead-window{
 .input-err{
     border-color: red !important;
 }
+.rm-underline{
+    text-decoration: none;
+}
+.rm-underline:hover{
+    text-decoration: none;
+}
 .select-err{
     border: 1px solid red;
     border-radius: 4px;
@@ -246,3 +252,10 @@ ngb-typeahead-window{
     }
 }
 //Overide boostrap lg model :: End
+
+//Overide boostrap dropdown :: start
+.dropdown-menu{
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
+//Overide boostrap dropdown :: End

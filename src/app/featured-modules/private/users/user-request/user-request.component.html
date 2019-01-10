@@ -1,26 +1,61 @@
 <div class="mrt-10">
   <div class="table-responsive">
-    <table class="table table-bordered bd-none">
+    <table class="table">
       <thead style="background: #c5bebe;">
         <tr>
           <th scope="col" class="text-center bd-tl" style="width: 50px;">S.no</th>
-          <th scope="col" class="text-center bd-top">User Name</th>
-          <th scope="col" class="text-center bd-top">Mobile No</th>
-          <th scope="col" class="text-center bd-top">Role</th>
+          <th scope="col" class="text-center bd-top" style="width: 25%">User Name</th>
+          <th scope="col" class="text-center bd-top" style="width: 25%">Mobile No</th>
+          <th scope="col" class="text-center bd-top" style="width: 25%">Bind Employee</th>
           <th scope="col" class="text-center bd-tr">Request Status</th>
         </tr>
       </thead>
-      <tbody>
-        <tr *ngFor="let user of dummyData; let i = index;">
+      <tbody *ngIf="usersRequest.length > 0 ">
+        <tr *ngFor="let user of usersRequest; let i = index;">
           <td class="text-center bd-left v-align">
             {{i+1}}
           </td>
           <td class="text-center">{{user.userName}}</td>
           <td class="text-center">{{user.mobileNo}} 
-            <span class="mobile-status">verified</span>
+            <sub class="fa mobile-status" [ngClass]="user.accountStatus ? 'fa-check verify' : 'fa-times not-verify'"></sub>
           </td>
-          <td class="text-center">{{user.role}}</td>
-          <td class="text-center bd-right">{{user.status}}</td>
+          <td class="text-center">
+              <!-- [ngClass]="{'select-err' : (isFormSubmit && billForm.controls.itemDetail.errors?.required) }" -->
+            <div>
+              <select [(ngModel)]="selectedValue" class="form-control selectpicker" data-live-search="true" title="Select...">
+                <optgroup label="Admin">
+                  <option *ngFor="let emp of dummyEmployee" [value]="emp.id">
+                      {{emp.name | titlecase}}
+                  </option>
+                </optgroup>
+              </select>
+            </div>
+            <!-- <label class="err-label mrb-0">Please select employee</label> -->
+          </td>
+          <td class="text-center bd-right">
+            <div class="dropdown">
+              <button class="btn btn-secondary dropdown-toggle acc-type-btn" type="button" id="accountTypeDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  {{user.accountApproved | accountType}}
+              </button>
+              <div class="dropdown-menu" aria-labelledby="accountTypeDropdown">
+                <a class="dropdown-item" *ngFor="let type of acctountType" 
+                (click)="approveRequest(type.value, i)">
+                  {{type.text}}
+                </a>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+      <tbody *ngIf="requestPending || (usersRequest.length == 0 )">
+        <tr>
+          <td colspan="5" class="text-center" style="padding-top: 60px;">
+            <i *ngIf="requestPending" class="fa fa-spin fa-circle-o-notch fa-4x" aria-hidden="true"></i>
+            <div *ngIf="!requestPending && usersRequest.length == 0">
+              <i class="fa fa-smile-o fa-4x" style="font-size: 200px;"></i><br>
+              <label class="no-content">No user request found</label>
+            </div>
+          </td>
         </tr>
       </tbody>
     </table>
