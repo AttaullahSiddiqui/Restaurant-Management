@@ -2,10 +2,8 @@
 
 var bcrypt  = require('bcryptjs');
 
-const USER_ROLES = ['owner', 'manager', 'cashier', 'waiter', 'cook', 'security guard'];
 
 module.exports = {
-    userRoles               : USER_ROLES,
     comparePassword         : comparePassword,
     validateRequiredFeilds  : validateRequiredFeilds,
     getUpdatedHashedObj     : getUpdatedHashedObj,

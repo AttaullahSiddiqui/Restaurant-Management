@@ -2,7 +2,8 @@ let User    = require('../apis/v1/user/user.model');
 let jwt     = require('./jwtHelper.service'); 
 
 module.exports = {
-    isAdmin : isAdmin
+    isAdmin             : isAdmin,
+    isAtleastManager    : isAtleastManager
 };
 
 function isAdmin(req, res, next){
@@ -12,6 +13,19 @@ function isAdmin(req, res, next){
             return next();
         }
         return res.respondError("Unauthorized access", -2);
+        //console.log("Result ----------> : ",req.currentUser);
+    },function(error){
+        return res.respondError("Unauthorized access", -2);
+    });
+};
+
+function isAtleastManager(req, res, next){
+    return validateToken(req, res).then(function(result){
+        if(result.role === '1' || result.role === '2'){
+            req.currentUser = result;
+            return next();
+        }
+        return res.respondError("Unauthorized access",result, -2);
         //console.log("Result ----------> : ",req.currentUser);
     },function(error){
         return res.respondError("Unauthorized access", -2);

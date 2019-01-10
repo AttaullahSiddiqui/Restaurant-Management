@@ -15,7 +15,7 @@ module.exports = function (){
     router.use('/menu', menuRoutes);
     // router.use('/menu', billRoutes);
     router.use('/branch', auth.isAdmin, branchRoutes);
-    router.use('/employee', empCategoryRoutes);
+    router.use('/employee', auth.isAtleastManager, empCategoryRoutes);
     
     return router;
 };
