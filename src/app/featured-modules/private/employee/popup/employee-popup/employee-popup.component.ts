@@ -43,18 +43,42 @@ export class EmployeePopupComponent implements OnInit {
 
   private branches;
   private empCategory;
+  private userRoles = [{
+      name : 'Cashier',
+      value: 3
+    },{
+      name : 'None',
+      value: 4
+    }];
 
+  textAreaClass : string;
   ngOnInit() {
     console.log("Data : ",this.options);
+    this.empCategory = this.options.initalData.empCategory;
+    if(this.options.userRole === 1){
+      this.branches = this.options.initalData.branches;
+      this.userRoles.push({
+        name : 'Manager',
+        value: 2
+      });
+    }
     let formData = this.formMappingData();
     this.createForm(formData);
-    this.getBranchesAndEmpCategory().subscribe(res => {
-      this.branches = res[0].body.data;
-      this.empCategory = res[1].body.data;
-      // console.log("Res: ",res);
-    },err => {
-      // console.log("Erro : ",err);
-    });
+    this.textAreaClass = this.getTextAreaClass();
+  };
+
+  getTextAreaClass() : string{
+    if(this.options.type != 'update'){
+      if(this.options.userRole === 1){
+        return 'col-md-12';
+      }
+      return 'col-md-4';
+    }else{
+      if(this.options.userRole === 1){
+        return 'col-md-8';
+      }
+      return 'col-md-12';
+    }
   };
 
   formMappingData() : ModelData{
@@ -67,8 +91,8 @@ export class EmployeePopupComponent implements OnInit {
         name : this.options.data.name,
         fatherName : this.options.data.fatherName,
         age: this.options.data.age,
-        branch : this.options.data.emp_branch[0]._id,
         type: this.options.data.emp_category[0]._id,
+        role: this.options.data.empRole,
         picture : '',
         joiningDate : {
           day : joinDate.getDate(),
@@ -83,6 +107,9 @@ export class EmployeePopupComponent implements OnInit {
       }
       let picPath = this.options.data.picture;
       picPath ? (this.selectedImage = picPath) : null;
+      if(this.options.userRole === 1){
+        data.branch = this.options.data.emp_branch[0]._id
+      }
     }else{
       data = {
         name : '',
@@ -90,6 +117,7 @@ export class EmployeePopupComponent implements OnInit {
         age : null,
         branch: '',
         type: '',
+        role: null,
         picture : '',
         joiningDate : '',
         salary: null,
@@ -99,12 +127,6 @@ export class EmployeePopupComponent implements OnInit {
       }
     }
     return data;
-  }
-
-  getBranchesAndEmpCategory(){
-    let branches = this.http.get('branch/all');
-    let empCategory = this.http.get('employee/category/all');
-    return forkJoin(branches, empCategory)
   };
 
   createForm(data) {
@@ -114,6 +136,7 @@ export class EmployeePopupComponent implements OnInit {
       age : [data.age, Validators.required],
       branch: [data.branch, Validators.required],
       type: [data.type, Validators.required],      // Type represents employee category
+      role: [data.role, Validators.required],
       picture : [data.picture, Validators.required],
       joiningDate : [data.joiningDate, Validators.required],
       salary: [data.salary, Validators.required],
@@ -149,12 +172,12 @@ export class EmployeePopupComponent implements OnInit {
       return;
     }
 
-    if(this.options.type == 'update'){
-      let result = this.findUpdatedProperty(value);
-      console.log("Result : ",result);
-      result && this.updateEmployeeDetails(result.data);
-      return;
-    };
+    // if(this.options.type == 'update'){
+    //   let result = this.findUpdatedProperty(value);
+    //   console.log("Result : ",result);
+    //   result && this.updateEmployeeDetails(result.data);
+    //   return;
+    // };
 
     this.createNewEmployee(value);
     return;
@@ -167,6 +190,7 @@ export class EmployeePopupComponent implements OnInit {
   };
 
   createNewEmployee(data){
+    console.log("create new employee ",data);
     this.requestPending = true;
     data.joiningDate = new Date(data.joiningDate.month+'/'+data.joiningDate.day+"/"+data.joiningDate.year);
     this.http.post('employee/new', data).subscribe(result => {
@@ -261,21 +285,27 @@ export class EmployeePopupComponent implements OnInit {
 
 export interface Options{
   type: string,
-  data: any
+  userRole : number,
+  data: any,
+  initalData: {
+    empCategory : string,
+    branches? : string
+  }
 }
 
 export interface ModelData{
   employeeId? : string,
   name : string,
-  fatherName : string
-  age: Number
-  branch : string
-  type: string
-  picture: string
+  fatherName : string,
+  age: number,
+  branch? : string,
+  type: string,
+  role: number,
+  picture: string,
   joiningDate: any,
   resigningDate? : string,
-  salary: Number,
+  salary: number,
   reference: string,
-  contactNo: Number,
-  address: string,
+  contactNo: number,
+  address: string
 }

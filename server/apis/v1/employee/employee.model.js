@@ -5,6 +5,13 @@ let mongoose    = require('mongoose');
 let empCategory = require('./employee-category.model');
 let branches    = require('../branch/branch.model');
 
+/* ------ NOTE -----
+ 1 = All rights equal to owner,
+ 2 = Rights equal to Manager,
+ 3 = Rights equal to Cashier or Bill Counter Man
+ 4 = No rights
+*/
+
 var EmployeeSchema = mongoose.Schema({
     name : {
         type : String,
@@ -30,6 +37,13 @@ var EmployeeSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'employee_categories',
         required : [true, "Employee category is required"]
+    },
+    empRole: {
+        type: Number,
+        min: 1,
+        max: 4,
+        required: [true, "Role is required"],
+        default: 4
     },
     picture : {
         type : String,

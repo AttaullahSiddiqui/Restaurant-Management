@@ -5,15 +5,19 @@
     </a>
     <div class="nested-menu">
         <a class="list-group-item" (click)="addExpandClass('menu')">
-            <span><i class="fa" [ngClass]="menuIcon"></i>&nbsp; Menu </span>
+            <span><i class="fa fa-th-list"></i>&nbsp; Menu </span>
         </a>
         <li class="nested" [class.expand]="showMenu === 'menu'">
             <ul class="submenu">
                 <li>
-                    <a href="javascript:void(0)" [routerLink]="['/menu/items']"><span>Items</span></a>
+                    <a href="javascript:void(0)" class="rm-underline" [routerLink]="['/menu/items']">
+                        <span><i class="fa fa-list-alt"></i>&nbsp; Items</span>
+                    </a>
                 </li>
                 <li>
-                    <a href="javascript:void(0)" [routerLink]="['/menu/categories']"><span>Categories</span></a>
+                    <a href="javascript:void(0)" class="rm-underline" [routerLink]="['/menu/categories']">
+                        <span><i class="fa fa-pencil-square-o"></i>&nbsp; Categories</span>
+                    </a>
                 </li>
             </ul>
         </li>
@@ -33,9 +37,12 @@
             </ul>
         </li>
     </div>
-    <div class="nested-menu">
+    <a class="list-group-item" [routerLink]="['/branches']">
+        <i class="fa fa-code-fork"></i>&nbsp; Branches
+    </a>
+    <!-- <div class="nested-menu">
         <a class="list-group-item" (click)="addExpandClass('branch')">
-            <span><i class="fa" [ngClass]="menuIcon"></i>&nbsp; Branch </span>
+            <span><i class="fa fa-code-fork" [ngClass]="menuIcon"></i>&nbsp; Branch </span>
         </a>
         <li class="nested" [class.expand]="showMenu === 'branch'">
             <ul class="submenu">
@@ -44,10 +51,10 @@
                 </li>
             </ul>
         </li>
-    </div>
+    </div> -->
     <div class="nested-menu">
         <a class="list-group-item" (click)="addExpandClass('employees')">
-            <span><i class="fa" [ngClass]="menuIcon"></i>&nbsp; Employees </span>
+            <span><i class="fa fa-child"></i>&nbsp; Employees </span>
         </a>
         <li class="nested" [class.expand]="showMenu === 'employees'">
             <ul class="submenu">
@@ -60,7 +67,23 @@
             </ul>
         </li>
     </div>
-    <a class="list-group-item">
+    <div class="nested-menu">
+        <a class="list-group-item" (click)="addExpandClass('users')">
+            <span><i class="fa fa-users"></i>&nbsp; Users </span>
+        </a>
+        <li class="nested" [class.expand]="showMenu === 'users'">
+            <ul class="submenu">
+                <li>
+                    <a href="javascript:void(0)" [routerLink]="['/user']"><span>List</span></a>
+                </li>
+                <li>
+                    <a href="javascript:void(0)" [routerLink]="['/user/new-request']"><span>New Request</span></a>
+                </li>
+            </ul>
+        </li>
+    </div>
+
+    <!-- <a class="list-group-item">
         <i class="fa fa-fw fa-bar-chart-o"></i>&nbsp; Expenses
     </a>
     <div class="nested-menu">
@@ -97,7 +120,7 @@
                 </li>
             </ul>
         </li>
-    </div>
+    </div> -->
     <!-- <a class="list-group-item">
         <i class="fa fa-fw fa-table"></i>&nbsp; Tables
     </a>

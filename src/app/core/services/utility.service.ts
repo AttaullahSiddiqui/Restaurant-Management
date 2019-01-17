@@ -20,11 +20,7 @@ export class UtilityService {
   };
 
   public getUserRoles() {
-    const USER_ROLES = [
-      {
-        name: 'Admin',
-        value: 1,
-      },{
+    const USER_ROLES = [{
         name: 'Manager',
         value: 2,
       },{
@@ -37,4 +33,20 @@ export class UtilityService {
     ]
     return USER_ROLES;
   };
+
+  public findUpdatedProperty(updatedData, oldData){
+    let isUpdated = false;
+    let finalUpdatedObj = {};
+    Object.keys(updatedData).forEach( key => {
+      if(oldData[key] != updatedData[key]){
+        isUpdated = true;
+        finalUpdatedObj[key] = updatedData[key];
+      }
+    })
+    return {
+      isUpdated : isUpdated,
+      data : finalUpdatedObj
+    };
+  };
+
 }

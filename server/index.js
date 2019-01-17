@@ -23,14 +23,13 @@ let CONFIG          = require('./app.config');
 */
 
 mongoose.connect(CONFIG.db['development'], { useNewUrlParser: true, useCreateIndex : true });
-mongoose.connection.on('error', function(err){
-  console.error("Connection Error on "+'development'+ " mode ",err);
+mongoose.connection.on('error', (err)=> {
+  console.log(`Connection Error on ${mode} ${err}`);
   process.exit(-1);
 });
-mongoose.connection.on('connected', function() {
-  console.log('MongoDB connected on '+'development'+ " mode");
+mongoose.connection.on('connected', () => {
+  console.log(`MongoDB connected on development mode`);
 });
-
 
 
 
@@ -101,9 +100,9 @@ function onError(){
 
 function onListening(){
     let addr = server.address();
-    console.log("Address : ",addr);
+    console.log(`Address : ${addr}`)
     let bind = typeof addr === 'string'
       ? 'pipe ' + addr
       : 'port ' + addr.port;
-      console.log("listening on port %o in %s settings env", addr, app.settings.env);
+      console.log(`listening on por %o in ${app.settings.env} settings env`,addr)
 }

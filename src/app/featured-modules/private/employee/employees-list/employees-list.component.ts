@@ -13,6 +13,10 @@ import { ConfirmationPopupComponent } from '@app/shared/popup/confirmation-popup
 })
 export class EmployeesListComponent implements OnInit {
 
+  //TODO ::START:: Need to remove
+  userRole : number = 1;
+   //TODO ::START:: Need to remove
+
   employeeList : EmployeeDetail[] = [];
   page : number = 1;
   pageSize: number = 5;
@@ -29,28 +33,37 @@ export class EmployeesListComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+
+    if(this.userRole === 1){
+      forkJoin(this.getAllBranches(), this.getEmpCategory()).subscribe(res => {
+        this.branches = res[0].body.data;
+        this.empCategory = res[1].body.data;
+         //console.log("Res of branches and employees: ",res);
+      },err => {
+        //console.log("Err in branches and employees: ",err);
+      });
+    }else{
+      this.getEmpCategory().subscribe(res => {
+        this.empCategory = res.body.data;
+        console.log("Res of employee categories: ",res);
+      },err => {
+        console.log("Err in employee categories: ",err);
+      })
+    }
+
+    // TODO :: add contion for user base role
     this.getAllEmployeeDetail();
-    this.getBranchesAndEmpCategory().subscribe(res => {
-      this.branches = res[0].body.data;
-      this.empCategory = res[1].body.data;
-      // console.log("Res: ",res);
-    },err => {
-      // console.log("Erro : ",err);
-    });
   }
 
-  getBranchesAndEmpCategory(){
-    let branches = this.http.get('branch/all');
-    let empCategory = this.http.get('employee/category/all');
-    return forkJoin(branches, empCategory)
-  };
 
+  
   getAllEmployeeDetail(){
     this.requestPending = true;
     this.http.get('employee/all').subscribe(result => {
-      console.log("Result : ",result.body.data);
+      //console.log("Result : ",result.body.data);
         this.requestPending = false;
         this.employeeList = result.body.data;
+        console.log("Result : ",result);
     }, err => {
       this.requestPending = false;
       console.log("Error : ",err);
@@ -58,9 +71,25 @@ export class EmployeesListComponent implements OnInit {
   };
 
 
+  getAllBranches(){
+    return this.http.get('branch/all');
+  };
+
+  getEmpCategory(){
+    return this.http.get('employee/category/all');
+  };
+
+
   openDialog(type, data?){
     let modelData = {
-      type : type
+      type : type,
+      userRole : this.userRole,
+      initalData : {
+        empCategory : this.empCategory
+      }
+    }
+    if(this.userRole === 1){
+      modelData.initalData['branches'] = this.branches;
     }
     if(type == 'update' && data){
       modelData['data'] = data;

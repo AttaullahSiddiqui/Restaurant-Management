@@ -3,6 +3,7 @@
 var empCategory = require('./employee-category.model');
 var employee    = require('./employee.model');
 var errHandler  = require('../../../utils/errorHandler');
+var helper      = require('../../../utils/helper');
 
 module.exports = {
     createCategory      : createCategory,
@@ -11,17 +12,8 @@ module.exports = {
     removeCategory      : removeCategory
 };
 
-// Only access manager or owner
 function getAllCategories(req, res){
-    let query = {};
-    if(req.body.userRole == 1){ //:: owner block
-        if(req.body.branchId){ // :: If id not provided fetch all categories, If id provided fetch by against provided id
-            query = { 'branchId' : req.body.branchId };
-        }
-    }else{ //:: manager block
-        query = { 'branchId' : req.body.branchId };
-    }
-    empCategory.find(query, function(err, result){
+    empCategory.find({}, function(err, result){
         if(err){
             var error = errHandler.handle(err);
             return res.respondError(error[0], error[1]);
@@ -32,9 +24,7 @@ function getAllCategories(req, res){
 
 function createCategory(req, res){
     var newEmpCategory = new empCategory({
-        branchId: req.body.branchId,    // if Owner provide from client side if manager fetch from json Web token
-        categoryName : req.body.name, 
-        accessType : req.body.type
+        categoryName : req.body.name
     });
 	newEmpCategory.save().then(function(result){
         return res.respondSuccess(null,"Employee Category created successfully", 2);
@@ -48,17 +38,7 @@ function updateCategory(req, res){
     if(!req.body.empCategoryId){
         return res.respondError("Employee category id is required", -4);
     }
-    let updateModel = {
-        branchId: 'branchId',  // if Owner provide from client side if manager fetch from json Web token
-        name : 'categoryName',
-        type : 'accessType'
-    }
-    let hashData = helper.mappingModel(req.body, updateModel);
-    if(Object.keys(hashData).length === 0){
-        return res.respondError("Minimum 1 feild is required for update", -4);
-    }
-
-    empCategory.updateOne({'_id': req.body.empCategoryId}, {$set : updateModel } ,
+    empCategory.updateOne({'_id': req.body.empCategoryId}, {$set : {'categoryName' : req.body.name } } ,
                 { runValidators: true }, function(err, success){
                     if(err){
                         var error = errHandler.handle(err);
@@ -72,7 +52,6 @@ function updateCategory(req, res){
 
 }
 
-// Need to update remove api for owner and manager
 function removeCategory(req, res){
     if(!req.query.empCategoryId){
         return res.respondError("Employee category id is required", -4);

@@ -28,13 +28,6 @@ export class EmployeeCategoryComponent implements OnInit {
 
   ngOnInit() {
     this.getEmployeeCategories();
-    // this.getBranchesAndEmpCategory().subscribe(res => {
-    //   this.branches = res[0].body.data;
-    //   this.empCategory = res[1].body.data;
-    //   // console.log("Res: ",res);
-    // },err => {
-    //   // console.log("Erro : ",err);
-    // });
   }
 
   getEmployeeCategories(){
@@ -48,12 +41,6 @@ export class EmployeeCategoryComponent implements OnInit {
       console.log("Error in employee/category: ",err);
     })
   };
-
-  // getBranchesAndEmpCategory(){
-  //   let branches = this.http.get('branch/all');
-  //   let empCategory = this.http.get('employee/category/all');
-  //   return forkJoin(branches, empCategory)
-  // };
 
   openDialog(type, data?){
     let modelData = {

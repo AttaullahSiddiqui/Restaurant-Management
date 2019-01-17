@@ -28,6 +28,7 @@ export class BranchPopupComponent implements OnInit {
   constructor(
     public activeModal: NgbActiveModal,
     private modalConfig: NgbModalConfig,
+    private toast : AppToastrService,
     private fb: FormBuilder,
     public http : HttpService
   ) { 
@@ -36,28 +37,36 @@ export class BranchPopupComponent implements OnInit {
   }
 
   ngOnInit() {
-    let isUpdate :boolean = (this.options.type == 'update');
-    let data: ModelData = {
-      branchName : isUpdate ? this.options.data.branchName : '',
-      branchAddress : isUpdate ? this.options.data.branchAddress : '',
-      city : isUpdate ? this.options.data.city : '',
-      openingDate : '',
-    }
-    if(isUpdate){
-      data['branchId'] = this.options.data['_id'];
-      let date = new Date(this.options.data.openingDate);
-      let dateObj = {
-        day: date.getDate(),
-        month: date.getMonth(),
-        year: date.getFullYear() 
-      }
-      data.openingDate = dateObj;
+    let formData = this.formMappingData();
+    this.createForm(formData);
+  };
 
+  formMappingData() : ModelData{
+    let isUpdate :boolean = (this.options.type == 'update');
+    let data : ModelData;
+    if(isUpdate){
+      let date = new Date(this.options.data.openingDate);
+      data = {
+        branchId : this.options.data['_id'],
+        branchName : this.options.data.branchName,
+        branchAddress: this.options.data.branchAddress,
+        city: this.options.data.city,
+        openingDate: {
+          day: date.getDate(),
+          month: date.getMonth()+1,
+          year: date.getFullYear()
+        }
+      }
+    }else{
+      data = {
+        branchName : '',
+        branchAddress: '',
+        city: '',
+        openingDate: ''
+      }
     }
-    this.createForm(data);
-    //console.log("Options : ---",this.options);
-    //console.log("Data : ---",data);
-  }
+    return data;
+  };
 
   createForm(data) {
     this.branchForm = this.fb.group({
@@ -101,6 +110,7 @@ export class BranchPopupComponent implements OnInit {
     .subscribe(success => {
       this.requestPending = false;
       this.activeModal.close(true);
+      this.toast.success('Branch created successfully');
       //console.log("Success call----",success);
     },err => {
       this.requestPending = false;
@@ -123,6 +133,7 @@ export class BranchPopupComponent implements OnInit {
     .subscribe(success => {
       this.requestPending = false;
       this.activeModal.close(true);
+      this.toast.success('Branch updated successfully');
       //console.log("Success call----",success);
     },err => {
       this.requestPending = false;

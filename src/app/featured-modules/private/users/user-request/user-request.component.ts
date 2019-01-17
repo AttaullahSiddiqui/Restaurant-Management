@@ -12,10 +12,10 @@ declare var $:any;
 })
 export class UserRequestComponent implements OnInit {
 
-  selectedValue : string;
-  requestPending: boolean;
-  usersRequest = [];
-  acctountType = [{
+  private selectedValue : string;
+  private requestPending: boolean;
+  private usersRequest = [];
+  private acctountType = [{
     value : '1',
     text: 'Pending'
   },{
@@ -24,7 +24,7 @@ export class UserRequestComponent implements OnInit {
   },{
     value : '3',
     text: 'Reject'
-  }]
+  }];
   constructor(
     private http: HttpService
   ) { }

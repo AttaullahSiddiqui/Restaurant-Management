@@ -21,7 +21,6 @@ export class EmployeeCategoryPopupComponent implements OnInit {
   };
 
   employeeCategoryForm: FormGroup;
-  userRoles = [];
   requestPending: boolean = false;
   isFormSubmit : boolean = false;
   serverErr : boolean = false;
@@ -38,11 +37,9 @@ export class EmployeeCategoryPopupComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.userRoles = this.utilityService.getUserRoles();
     let isUpdate :boolean = (this.options.type == 'update');
     let data: ModelData = {
-      categoryName : isUpdate ? this.options.data.categoryName : '',
-      role : isUpdate ? this.options.data.accessType : this.userRoles[0].value
+      categoryName : isUpdate ? this.options.data.categoryName : ''
     }
     isUpdate && (data['empCategoryId'] = this.options.data['_id']);
     this.createForm(data);
@@ -51,8 +48,7 @@ export class EmployeeCategoryPopupComponent implements OnInit {
 
   createForm(data) {
     this.employeeCategoryForm = this.fb.group({
-      categoryName : [data.categoryName, Validators.required],
-      role: [data.role, Validators.required]
+      categoryName : [data.categoryName, Validators.required]
     });
     if(this.options.type == 'update'){
       let empCategoryIdcontrol: FormControl = new FormControl(data['empCategoryId'], Validators.required)
@@ -69,19 +65,19 @@ export class EmployeeCategoryPopupComponent implements OnInit {
     this.isFormSubmit = true;
     if(!valid){
       return;
-    }
-    this.requestPending = true;
+    }    
     this.serverErr = false;
     if(this.options.type == 'update'){
       return this.updateEmpCategory(value);
+    }else{
+      this.requestPending = true;
+      this.createNewEmpCategory(value);
     }
-    this.createNewEmpCategory(value);
   }
 
   createNewEmpCategory(data){
     let obj = {
-      name : data.categoryName,
-      type : data.role,
+      name : data.categoryName
     };
     this.http.post('employee/category/new', obj)
     .subscribe(success => {
@@ -100,9 +96,13 @@ export class EmployeeCategoryPopupComponent implements OnInit {
   updateEmpCategory(data){
     let obj = {
       empCategoryId: data.empCategoryId,
-      name : data.categoryName,
-      type : data.role
+      name : data.categoryName
     };
+    let result = this.utilityService.findUpdatedProperty({name: data.categoryName}, {name : this.options.data.categoryName});
+    if(!result.isUpdated){
+      return;
+    }
+    this.requestPending = true;
     this.http.put('employee/category/update', obj)
     .subscribe(success => {
       this.requestPending = false;
@@ -128,6 +128,5 @@ export interface Options{
 
 export interface ModelData{
   categoryName: string,
-  role: number
   branchId? : string
 }

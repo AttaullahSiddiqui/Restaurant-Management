@@ -11,3 +11,4 @@ export * from './services/http.service';
 export * from './services/utility.service';
 export * from './services/app-toastr.service';
 export * from './services/upload-image.service';
+export * from './services/auth.service';

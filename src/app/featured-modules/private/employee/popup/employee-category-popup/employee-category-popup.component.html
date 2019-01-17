@@ -10,20 +10,9 @@
 
       <div class="form-group">
         <label for="categoryName">Category Name</label>
-        <input type="text" formControlName="categoryName" class="form-control" id="categoryName" [ngClass]="{'input-err' : (serverErr || (isFormSubmit && employeeCategoryForm.controls.categoryName.errors?.required)) }">
-        <label class="err-label" *ngIf="isFormSubmit && employeeCategoryForm.controls.categoryName.errors?.required">Please enter branch name</label>
+        <input type="text" formControlName="categoryName" class="form-control" id="categoryName" [ngClass]="{'input-err' : (serverErr || (isFormSubmit && employeeCategoryForm.controls.categoryName.errors?.required)) }" autocomplete="off">
+        <label class="err-label" *ngIf="isFormSubmit && employeeCategoryForm.controls.categoryName.errors?.required">Please enter category name</label>
       </div>
-      
-      <div class="form-group">
-        <label for="role">Select Role</label>
-        <select formControlName="role" class="form-control" id="role" [ngClass]="{'input-err' : isFormSubmit && employeeCategoryForm.controls.role.errors?.required}">
-          <option *ngFor="let userRole of userRoles" [value]="userRole.value">{{userRole.name}}</option>
-        </select>
-        <label class="err-label" *ngIf="isFormSubmit && employeeCategoryForm.controls.role.errors?.required">Please select role</label>
-      </div>
-
-
-
 
       <div *ngIf="serverErr" class="text-center mrb-10">
         <label class="err-label">Category name is already in use.</label>

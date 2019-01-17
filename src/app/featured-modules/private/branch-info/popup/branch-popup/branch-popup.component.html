@@ -10,7 +10,7 @@
   
         <div class="form-group">
           <label for="branchName">Branch Name</label>
-          <input type="text" formControlName="branchName" class="form-control" id="branchName" [ngClass]="{'input-err' : (serverErr || (isFormSubmit && branchForm.controls.branchName.errors?.required)) }">
+          <input type="text" formControlName="branchName" class="form-control" id="branchName" [ngClass]="{'input-err' : (serverErr || (isFormSubmit && branchForm.controls.branchName.errors?.required)) }" autocomplete="off">
           <label class="err-label" *ngIf="isFormSubmit && branchForm.controls.branchName.errors?.required">Please enter branch name</label>
         </div>
   

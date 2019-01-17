@@ -1,14 +1,5 @@
 <div class="container">
   <div class="text-right mrb-10">
-    <div ngbDropdown class="d-inline-block">
-      <button class="btn btn-primary app-btn" id="dropdownBranch" ngbDropdownToggle>Select Branch</button>
-      <div ngbDropdownMenu aria-labelledby="dropdownBranch">
-        <button class="dropdown-item">Manager</button>
-        <button class="dropdown-item">Chef</button>
-        <button class="dropdown-item">Waiter</button>
-      </div>
-    </div>
-
     <button class="btn btn-primary app-btn ml-15" (click)="openDialog('new')">
       <i class="fa fa-plus pd-r-5"></i>
       New Category
@@ -20,7 +11,6 @@
         <tr>
           <th scope="col" class="text-center fit-col-content">S.No</th>
           <th scope="col">Employee Category</th>
-          <th scope="col">Role</th>
           <th scope="col" class="text-center fit-col-content" style="width: 90px;">Action</th>
         </tr>
       </thead>
@@ -28,7 +18,6 @@
         <tr *ngFor="let empCategory of empCategoryList; let i = index;">
           <td class="text-center v-align">{{i+1}}</td>
           <td class="v-align">{{empCategory.categoryName | titlecase}}</td>
-          <td class="v-align">{{empCategory.accessType | roles}}</td>
           <td class="text-center v-align">
             <button type="button" (click)="openDialog('update', empCategory)" class="fa fa-pencil-square-o icon-btn" placement="bottom" ngbTooltip="Edit"></button>
             <button type="button" (click)="removeConfirmDialog(empCategory)" class="fa fa-times icon-btn" placement="bottom" ngbTooltip="Remove"></button>

@@ -30,11 +30,9 @@
             </div>
 
             <div class="form-group col-md-6">
-              <label for="branch">*Select Branch</label>
-              <select formControlName="branch" class="form-control" id="branch" [ngClass]="{'input-err' : isFormSubmit && employeeForm.controls.branch.errors?.required}">
-                <option *ngFor="let branch of branches; let i=index;" [value]="branch._id">{{branch.branchName | titlecase}}</option>
-              </select>
-              <label class="err-label" *ngIf="isFormSubmit && employeeForm.controls.branch.errors?.required">Please select branch</label>
+              <label for="salary">*Salary</label>
+              <input type="number" formControlName="salary" class="form-control" id="salary" min="0"  [ngClass]="{'input-err' : isFormSubmit && employeeForm.controls.salary.errors?.required}"/>
+              <label class="err-label" *ngIf="isFormSubmit && employeeForm.controls.salary.errors?.required">Please enter salary</label>
             </div>
 
           </div>
@@ -69,10 +67,12 @@
           </div>
         </div>
 
-        <div class="form-group col-md-4">
-          <label for="salary">*Salary</label>
-          <input type="number" formControlName="salary" class="form-control" id="salary" min="0"  [ngClass]="{'input-err' : isFormSubmit && employeeForm.controls.salary.errors?.required}"/>
-          <label class="err-label" *ngIf="isFormSubmit && employeeForm.controls.salary.errors?.required">Please enter salary</label>
+        <div class="form-group col-md-4" *ngIf="options.userRole === 1">
+          <label for="branch">*Select Branch</label>
+          <select formControlName="branch" class="form-control" id="branch" [ngClass]="{'input-err' : isFormSubmit && employeeForm.controls.branch.errors?.required}">
+            <option *ngFor="let branch of branches; let i=index;" [value]="branch._id">{{branch.branchName | titlecase}}</option>
+          </select>
+          <label class="err-label" *ngIf="isFormSubmit && employeeForm.controls.branch.errors?.required">Please select branch</label>
         </div>
 
         <div class="form-group col-md-4">
@@ -84,6 +84,14 @@
         </div>
 
         <div class="form-group col-md-4">
+          <label for="type">*Select Employee Role</label>
+          <select formControlName="role" class="form-control" id="type" [ngClass]="{'input-err' : isFormSubmit && employeeForm.controls.role.errors?.required}">
+            <option *ngFor="let role of userRoles;" [value]="role.value">{{role.name}}</option>
+          </select>
+          <label class="err-label" *ngIf="isFormSubmit && employeeForm.controls.role.errors?.required">Please select employee role</label>
+        </div>
+
+        <div class="form-group col-md-4">
           <label for="reference">Reference</label>
           <input type="text" formControlName="reference" class="form-control" id="reference" />
         </div>
@@ -92,8 +100,7 @@
           <label for="contactNo">Contact No</label>
           <input type="number" formControlName="contactNo" class="form-control" id="contactNo"/>
         </div>
-
-        <div class="form-group" [ngClass]="(options.type == 'update') ? 'col-md-12' : 'col-md-4'">
+        <div class="form-group" [ngClass]="textAreaClass">
           <label for="address">*Address</label>
           <textarea formControlName="address" maxlength="200" class="form-control" [ngClass]="{'input-err' : isFormSubmit && employeeForm.controls.address.errors?.required}" id="address" rows="3"></textarea>
           <label class="err-label" *ngIf="isFormSubmit && employeeForm.controls.address.errors?.required">Please enter address</label>

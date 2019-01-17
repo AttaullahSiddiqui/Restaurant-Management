@@ -1,6 +1,6 @@
 <div class="container">
   <div class="text-right mrb-10">
-    <div ngbDropdown class="d-inline-block">
+    <div *ngIf="userRole === 1" ngbDropdown class="d-inline-block">
       <button class="btn btn-primary app-btn" id="dropdownBranch" ngbDropdownToggle>Select Branch</button>
       <div ngbDropdownMenu aria-labelledby="dropdownBranch">  
         <button class="dropdown-item">All</button>
@@ -55,7 +55,8 @@
               <img src="./assets/default-profile.png" style="width: 50px;border-radius: 50%;">
           </td>
           <td class="text-center v-align">{{emp.name}}</td>
-          <td class="text-center v-align">{{emp.emp_category[0].categoryName | titlecase}}</td>
+          <td></td>
+          <!-- <td class="text-center v-align">{{emp.emp_category[0].categoryName | titlecase}}</td> -->
           <td class="text-center v-align">{{emp.status ? 'Active' : 'Not Active'}}</td>
           <td class="text-center v-align">
             <button type="button" (click)="openDialog('update', emp)" class="fa fa-pencil-square-o icon-btn" placement="bottom" ngbTooltip="Add"></button>
