@@ -12,7 +12,8 @@ module.exports = {
     toLower                 : toLower,
     validateArray           : validateArray,
     MongooseErrorMessages   : MongooseErrorMessages,
-    mappingModel            : mappingModel
+    mappingModel            : mappingModel,
+    isNullOrUndefined       : isNullOrUndefined
 }
 
 function extendObject(targetObj, sourceObj){
@@ -66,4 +67,11 @@ function mappingModel(obj, model){
         }
     });
     return hashObj;
+};
+
+function isNullOrUndefined(value){
+    if(value === undefined || value === null){
+        return true;
+    }
+    return false;
 };

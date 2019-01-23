@@ -60,7 +60,8 @@ var UserSchema = mongoose.Schema({
 	},
 	employeeId : {
 		type	: mongoose.Schema.Types.ObjectId,
-		ref		: 'employees'
+		ref		: 'employees',
+		unique	: true
 	},
 	createAt : {
 		type 	: Date,
@@ -68,6 +69,8 @@ var UserSchema = mongoose.Schema({
 	}
 });
 
+//  :: Run script when collection created ::
+// db.users.createIndex( { employeeId : 1 }, { unique: true, sparse: true } )
 
 /**
  * Validations
@@ -82,11 +85,11 @@ UserSchema.path('userName').validate(function (userName) {
 
 
 UserSchema.path('employeeId').validate(function (value) {
-	if(this.role === 1){
-		return true;
-	}
+	// if(this.role === 1){
+	// 	return true;
+	// }
 	return new Promise(function(resolve, reject){
-		employees.findOne({'_id': value}, function (err, doc) {
+		employees.findOne({'_id': value}, (err, doc) => {
 			if (err || !doc) {
 				resolve(false);
 			} 

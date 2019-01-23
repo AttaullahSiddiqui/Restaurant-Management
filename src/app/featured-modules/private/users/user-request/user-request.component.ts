@@ -36,7 +36,7 @@ export class UserRequestComponent implements OnInit {
 
   getUserRequest(){
     this.requestPending = true;
-    this.http.get('user/account-requests').subscribe(result => {
+    this.http.get('user/requests').subscribe(result => {
         console.log("New user account request: ",result);
         this.usersRequest = result.body.data;
         if(this.usersRequest){

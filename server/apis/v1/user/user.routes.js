@@ -14,12 +14,14 @@ module.exports = function (){
     //router.post('/auth/me',        service.validateToken, userCtrl.getUserDetails)
     router.post('/new',             userCtrl.createUser);
     router.post('/login',           userCtrl.authUser);
-    router.get('/account-requests', userCtrl.getNewUsersRequest);
+    router.get('/requests', userCtrl.getNewUsersRequest);
     router.get('/all',             userCtrl.getAllUsers);
     //router.put('/changepassword',  service.validateToken, userCtrl.changePassword);
     // router.put('/updaterole',      userCtrl.updateRole);
     
     // router.delete('/remove',       userCtrl.removeUser);
+    router.put('/update/request', userCtrl.updateUserRequest);
+    router.purge('/update/status', userCtrl.updateUserStatus);
    
     return router;
 };

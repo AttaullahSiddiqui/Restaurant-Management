@@ -2,9 +2,11 @@
 
 let bcrypt 		= require('bcryptjs');
 let User        = require('./user.model');
+let employees   = require('../employee/employee.model');
 let service     = require('../../../core/app.service');
-let twilio  = require('../../../core/twilio.service.js')
+let twilio      = require('../../../core/twilio.service.js')
 let errHandler  = require('../../../utils/errorHandler');
+var helper      = require('../../../utils/helper');
 // let jwt         = require('../../../core/jwtHelper.service');
 
 
@@ -13,10 +15,69 @@ module.exports = {
     // getUserDetails  : getUserDetails,
     createUser          : createUser,
     getNewUsersRequest  : getNewUsersRequest,
-    getAllUsers         : getAllUsers
+    getAllUsers         : getAllUsers,
+    updateUserRequest   : updateUserRequest,
+    updateUserStatus    : updateUserStatus
     // changePassword  : changePassword,
     // removeUser      : removeUser,
     // updateRole      : updateRole
+};
+
+const ACCOUNT_APROVED_TYPES = [
+	'1',		// Pending
+	'2',		// Approve
+	'3'			//Reject
+];
+
+function updateUserStatus(req, res){
+    if(!req.body.userId || helper.isNullOrUndefined(req.body.status) ){
+        return res.respondError("User Id & Action is required", -4);
+    }
+    updateUserData(req.body.userId, {accountStatus : req.body.status}).then(success => {
+        return res.respondSuccess(success,"User status updated successfully", 1);
+    }, error => {
+        return res.respondError(error[0], error[1]);
+    });
+};
+
+function updateUserRequest(req, res){
+    if(!req.body.userId || !req.body.actionType){
+        return res.respondError("User Id & Action is required", -4);
+    }
+    if(req.body.actionType != 2 || req.body.actionType != 3){
+        return res.respondError("Invalid action value", -4);
+    }
+    var updateModel = {};
+    if(req.body.actionType == 3){
+        updateModel.accountApproved = 3;
+    }else{
+        if(!req.body.empId){
+            return res.respondError("Employee Id is required", -4);
+        }
+        updateModel.accountStatus = true;
+        updateModel.accountApproved = 2;
+        updateModel.employeeId = req.body.empId;
+    }
+    updateUserData(req.body.userId, updateModel).then(success => {
+        return res.respondSuccess(success,"User status updated successfully", 1);
+    }, error => {
+        return res.respondError(error[0], error[1]);
+    });
+};
+
+
+function updateUserData(userId, modelData){
+    return new Promise(function(resolve, reject){
+		User.updateOne({'_id': userId}, {$set : modelData} ,{ runValidators: true }, (err, success) => {
+            if(err){
+                var error = errHandler.handle(err);
+                return reject(error[0], error[1]);
+            }else if(success.n){
+                return resolve(success);
+            }
+            return reject("Failed to update user details", -3);
+        });
+	});   
 };
 
 function authUser(req, res){
