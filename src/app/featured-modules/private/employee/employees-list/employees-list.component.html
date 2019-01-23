@@ -3,7 +3,7 @@
     <div *ngIf="userRole === 1" ngbDropdown class="d-inline-block">
       <button class="btn btn-primary app-btn" id="dropdownBranch" ngbDropdownToggle>Select Branch</button>
       <div ngbDropdownMenu aria-labelledby="dropdownBranch">  
-        <button class="dropdown-item">All</button>
+        <button class="dropdown-item selected-item">All</button>
         <button class="dropdown-item" *ngFor="let branch of branches">
           {{branch.branchName | titlecase}}
         </button>
@@ -13,7 +13,7 @@
     <div ngbDropdown class="d-inline-block ml-15">
       <button class="btn btn-primary app-btn" id="dropdownEmpCategory" ngbDropdownToggle>Select Employee Category</button>
       <div ngbDropdownMenu aria-labelledby="dropdownEmpCategory">
-          <button class="dropdown-item">All</button>
+          <button class="dropdown-item selected-item">All</button>
         <button class="dropdown-item" *ngFor="let category of empCategory">
             {{category.categoryName | titlecase}}
         </button>
@@ -55,7 +55,7 @@
               <img src="./assets/default-profile.png" style="width: 50px;border-radius: 50%;">
           </td>
           <td class="text-center v-align">{{emp.name}}</td>
-          <td></td>
+          <td class="text-center v-align">{{emp.emp_category[0].categoryName | titlecase}}</td>
           <!-- <td class="text-center v-align">{{emp.emp_category[0].categoryName | titlecase}}</td> -->
           <td class="text-center v-align">{{emp.status ? 'Active' : 'Not Active'}}</td>
           <td class="text-center v-align">

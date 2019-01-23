@@ -62,7 +62,7 @@ function removeCategory(req, res){
             return res.respondError(error[0], error[1]);
         }
         else if(result) {
-            return res.respondError("Category not be removed its used as a refernce in other collections", -1);
+            return res.respondError("Category not be removed its used as a refernce in other collections", -3);
         }else{
             return empCategory.deleteOne({'_id' : req.query.empCategoryId}).then(function(success){
                 if( (success.n == 1) && (success.ok == 1) ){

@@ -23,9 +23,14 @@
               <!-- [ngClass]="{'select-err' : (isFormSubmit && billForm.controls.itemDetail.errors?.required) }" -->
             <div>
               <select [(ngModel)]="selectedValue" class="form-control selectpicker" data-live-search="true" title="Select...">
-                <optgroup label="Admin">
-                  <option *ngFor="let emp of dummyEmployee" [value]="emp.id">
-                      {{emp.name | titlecase}}
+                <optgroup label="Manager">
+                  <option *ngFor="let emp of empRoles.manager" [value]="emp.id">
+                      {{emp.name}}
+                  </option>
+                </optgroup>
+                <optgroup label="Cashier">
+                  <option *ngFor="let emp of empRoles.cashier" [value]="emp.id">
+                      {{emp.name}}
                   </option>
                 </optgroup>
               </select>

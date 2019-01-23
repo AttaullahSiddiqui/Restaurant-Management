@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { HttpService, AppToastrService } from '@app/core';
+import { ItemPopupComponent } from '@app/featured-modules/private/menu/popup/item-popup/item-popup.component';
 
 declare var $:any;
 
@@ -37,8 +38,35 @@ export class UserRequestComponent implements OnInit {
     this.requestPending = true;
     this.http.get('user/account-requests').subscribe(result => {
         console.log("New user account request: ",result);
-        this.requestPending = false;
         this.usersRequest = result.body.data;
+        if(this.usersRequest){
+          return this.getUserRoles();
+        }
+        this.requestPending = false;
+    }, err => {
+        this.requestPending = false;
+        console.log("Error : ",err);
+    });
+  };
+
+  empRoles = {
+    manager : [],
+    cashier: []
+  };
+
+  getUserRoles(){
+    this.http.get('employee/roles').subscribe(result => {
+        console.log("New user account request: ",result);
+        this.requestPending = false;
+        var roles = result.body.data;
+        roles.forEach(item => {
+          if(item.empRole === 2){
+            this.empRoles.manager.push(item);
+          }else{
+            this.empRoles.cashier.push(item);
+          }
+        });
+        console.log("Employee Roles", this.empRoles);
         setTimeout(() => {
           $('.selectpicker').selectpicker('refresh');
         }, 0);
@@ -46,13 +74,14 @@ export class UserRequestComponent implements OnInit {
         this.requestPending = false;
         console.log("Error : ",err);
     });
-  };
+  }
 
   approveRequest(type, index){
     if(type != this.usersRequest[index].accountApproved){
       console.log(arguments);
     }
   };
+
 
 }
 

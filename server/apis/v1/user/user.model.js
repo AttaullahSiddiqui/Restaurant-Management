@@ -60,8 +60,7 @@ var UserSchema = mongoose.Schema({
 	},
 	employeeId : {
 		type	: mongoose.Schema.Types.ObjectId,
-		ref		: 'employees',
-		unique	: true
+		ref		: 'employees'
 	},
 	createAt : {
 		type 	: Date,

@@ -8,9 +8,20 @@ module.exports = {
     createEmployee  : createEmployee,
     updateEmployee  : updateEmployee,
     getAllEmployee  : getAllEmployee,
-    removeEmployee  : removeEmployee
+    removeEmployee  : removeEmployee,
+    getManagerAndCashierRoles : getManagerAndCashierRoles
 };
 
+function getManagerAndCashierRoles(req, res){
+    employee.find({'empRole': {$in: [2,3]} }, {'name' : 1, 'empRole' : 1}, (err, result)=>{
+        if(err){
+            console.log("Error : -------->",err);
+            var error = errHandler.handle(err);
+            return res.respondError(error[0], error[1]); 
+        }
+        return res.respondSuccess(result,"Manager and cashier roles employees", 1);
+    })
+};
 
 function getAllEmployee(req, res){
 

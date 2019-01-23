@@ -23,6 +23,7 @@ module.exports = function (){
     router.post('/new',            employeeCtrl.createEmployee);
     router.put('/update',          employeeCtrl.updateEmployee);
     router.delete('/remove',       employeeCtrl.removeEmployee);
+    router.get('/roles',             employeeCtrl.getManagerAndCashierRoles);
    
     return router;
 };

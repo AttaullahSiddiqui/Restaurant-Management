@@ -5,7 +5,7 @@ let User        = require('./user.model');
 let service     = require('../../../core/app.service');
 let twilio  = require('../../../core/twilio.service.js')
 let errHandler  = require('../../../utils/errorHandler');
-let jwt         = require('../../../core/jwtHelper.service');
+// let jwt         = require('../../../core/jwtHelper.service');
 
 
 module.exports = {
@@ -41,15 +41,15 @@ function authUser(req, res){
                     return res.respondError("Your account request is pending", -3); 
                 }
                 // For local provider login
-                jwt.generateToken({userID : fetchedUser._id}, function(jwtErr, jwtSuccess){
-                    if(jwtErr){
-                        return res.respondError("Unexpected Error", -1);
-                    }
-                    return res.respondSuccess({
-                        token: jwtSuccess,
-                        userRole : fetchedUser.role
-                    },"User login successfully", 1);
-                });
+                // jwt.generateToken({userID : fetchedUser._id}, function(jwtErr, jwtSuccess){
+                //     if(jwtErr){
+                //         return res.respondError("Unexpected Error", -1);
+                //     }
+                //     return res.respondSuccess({
+                //         token: jwtSuccess,
+                //         userRole : fetchedUser.role
+                //     },"User login successfully", 1);
+                // });
             });
         }
     });

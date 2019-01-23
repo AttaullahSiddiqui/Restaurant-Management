@@ -6,7 +6,7 @@
 let helper = require('./helper');
 
 let httpCodeMap = {
-	'-3': 403,			//The request was valid, but the server is refusing action
+	'-7': 403,			//The request was valid, but the server is refusing action
 	'-6': 409,          //Name already exists (Conflict)
 	'-5': 503,          //database connection error(Service Unavailable)
 	'-4': 400,          //incomplete arguments (Bad Request)

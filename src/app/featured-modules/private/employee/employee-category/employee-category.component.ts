@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { forkJoin } from 'rxjs';
 
-import { HttpService } from '@app/core';
+import { HttpService, AppToastrService } from '@app/core';
 import { EmployeeCategoryPopupComponent } from '@app/featured-modules/private/employee/popup/employee-category-popup/employee-category-popup.component';
 import { ConfirmationPopupComponent } from '@app/shared/popup/confirmation-popup/confirmation-popup.component';
 
@@ -23,7 +23,8 @@ export class EmployeeCategoryComponent implements OnInit {
   
   constructor(
     public http : HttpService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private toast : AppToastrService
   ) { }
 
   ngOnInit() {
@@ -71,9 +72,14 @@ export class EmployeeCategoryComponent implements OnInit {
             this.requestPending = false;
             console.log("Success call----",success);
             this.getEmployeeCategories();
+            this.toast.success('Category remove successfully');
           },err => {
             this.requestPending = false;
             console.log("Error call----",err);
+            if(err.status == 403){
+              return this.toast.error('Category not be remove using in employee reference');
+            }
+            return this.toast.error('Unexpected error');
           });
       }
     }, (reason) => {});

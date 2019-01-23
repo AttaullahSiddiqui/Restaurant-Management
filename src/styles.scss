@@ -244,6 +244,9 @@ ngb-typeahead-window{
 .close:focus{
     outline: none;
 }
+.selected-item{
+    background: red !important;
+}
 
 //Overide boostrap lg model :: start
 @media only screen and (min-width: 992px) {
