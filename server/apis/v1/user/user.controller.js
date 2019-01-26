@@ -34,9 +34,12 @@ function updateUserStatus(req, res){
         return res.respondError("User Id & Action is required", -4);
     }
     updateUserData(req.body.userId, {accountStatus : req.body.status}).then(success => {
-        return res.respondSuccess(success,"User status updated successfully", 1);
+        if(result.success){
+            return res.respondSuccess(null,"User status updated successfully", 1);
+        }
+        return res.respondError(result.msg, result.statusCode);
     }, error => {
-        return res.respondError(error[0], error[1]);
+        return res.respondError(error.message, 500);
     });
 };
 
@@ -44,40 +47,53 @@ function updateUserRequest(req, res){
     if(!req.body.userId || !req.body.actionType){
         return res.respondError("User Id & Action is required", -4);
     }
-    if(req.body.actionType != 2 || req.body.actionType != 3){
-        return res.respondError("Invalid action value", -4);
-    }
-    var updateModel = {};
-    if(req.body.actionType == 3){
-        updateModel.accountApproved = 3;
-    }else{
-        if(!req.body.empId){
-            return res.respondError("Employee Id is required", -4);
+    if(req.body.actionType == 2 || req.body.actionType == 3){
+        var updateModel = {};
+        if(req.body.actionType == 3){
+            updateModel.accountApproved = 3;
+        }else{
+            if(!req.body.empId){
+                return res.respondError("Employee Id is required", -4);
+            }
+            updateModel.accountStatus = true;
+            updateModel.accountApproved = 2;
+            updateModel.employeeId = req.body.empId;
         }
-        updateModel.accountStatus = true;
-        updateModel.accountApproved = 2;
-        updateModel.employeeId = req.body.empId;
+        return updateUserData(req.body.userId, updateModel).then(result => {
+            if(result.success){
+                return res.respondSuccess(null,"User status updated successfully", 1);
+            }
+            return res.respondError(result.msg, result.statusCode);
+        }, error => {
+            return res.respondError(error.message, 500);
+        });
     }
-    updateUserData(req.body.userId, updateModel).then(success => {
-        return res.respondSuccess(success,"User status updated successfully", 1);
-    }, error => {
-        return res.respondError(error[0], error[1]);
-    });
+    return res.respondError("Invalid action value", -4);
 };
 
 
 function updateUserData(userId, modelData){
-    return new Promise(function(resolve, reject){
-		User.updateOne({'_id': userId}, {$set : modelData} ,{ runValidators: true }, (err, success) => {
+    return new Promise((resolve, reject) => {
+		return User.updateOne({'_id': userId}, {$set : modelData} ,{ runValidators: true }, (err, success) => {
             if(err){
                 var error = errHandler.handle(err);
-                return reject(error[0], error[1]);
-            }else if(success.n){
-                return resolve(success);
+                return resolve({
+                    success : false,
+                    msg: error[0],
+                    statusCode: error[1]
+                })
+            }else if(success.n && success.nModified){
+                return resolve({ success : true, data : success })
             }
-            return reject("Failed to update user details", -3);
+            return resolve({
+                success : false,
+                msg: "Failed to update user details",
+                statusCode: -3
+            })
         });
-	});   
+	}).catch(error => {
+        throw new Error(error);
+    });   
 };
 
 function authUser(req, res){

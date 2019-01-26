@@ -17,7 +17,7 @@ const ACCOUNT_APROVED_TYPES = [
 var UserSchema = mongoose.Schema({
 	name: {
 		type		: String,
-		required	: [function(){
+		required	: [() => {
 			return this.role == '1';
 		},"Name is required"]
 	},
@@ -35,7 +35,7 @@ var UserSchema = mongoose.Schema({
 	},
 	role: {
 		type		: String,
-		required	: [function(){
+		required	: [() => {
 			return this.role == '1';
 		},"Role is required"],
 		enum		: USER_ROLES
@@ -76,7 +76,7 @@ var UserSchema = mongoose.Schema({
  * Validations
  */
 
-UserSchema.path('userName').validate(function (userName) {
+UserSchema.path('userName').validate( (userName) => {
 	var isValid = userName.split(' ');
 	if(isValid.length >= 2)
 		return false;
@@ -84,11 +84,11 @@ UserSchema.path('userName').validate(function (userName) {
 }, "No space allowed between username");
 
 
-UserSchema.path('employeeId').validate(function (value) {
+UserSchema.path('employeeId').validate( (value) => {
 	// if(this.role === 1){
 	// 	return true;
 	// }
-	return new Promise(function(resolve, reject){
+	return new Promise( (resolve, reject) => {
 		employees.findOne({'_id': value}, (err, doc) => {
 			if (err || !doc) {
 				resolve(false);
@@ -105,12 +105,12 @@ UserSchema.path('employeeId').validate(function (value) {
  */
 var SALT_FACTOR = 10;
 
-UserSchema.pre("save", function (next) {
+UserSchema.pre("save", (next) => {
 	var user = this;
     if (!this.isModified("password")) {
         return next();
 	}
-	bcrypt.hash(user.password, SALT_FACTOR, function(err, hash) {
+	bcrypt.hash(user.password, SALT_FACTOR, (err, hash) => {
 		if (err) {
 			var hashError = new Error("Unexpcted error")
 			next(hashError);
