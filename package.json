@@ -8,6 +8,7 @@
     "start": "node ./server/index.js",
     "postinstall": "ng build --prod --build-optimizer",
     "server": "nodemon ./server/index.js",
+    "server-debug": "node --inspect ./server/index.js",
     "start-build": "ng build --watch",
     "start-frontend": "ng serve --proxy-config proxy.config.json -o",
     "app": "npm run start-server && npm run start-build && npm run start-frontend",
