@@ -69,8 +69,6 @@ var UserSchema = mongoose.Schema({
 	}
 });
 
-//  :: Run script when collection created ::
-// db.users.createIndex( { employeeId : 1 }, { unique: true, sparse: true } )
 
 /**
  * Validations
