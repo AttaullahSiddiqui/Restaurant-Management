@@ -1,4 +1,5 @@
 <div class="container">
+<form [formGroup]="billForm" (ngSubmit)="addItem(billForm.valid, billForm.value)">   
   <div class="table-responsive" style="max-height: 400px;">
     <table class="table table-bordered bd-none">
       <thead style="background: #c5bebe;">
@@ -11,17 +12,18 @@
         </tr>
       </thead>
       <tbody>
-        <tr [formGroup]="billForm">
+        <tr>
           <td class="text-center bd-tl v-align">
-            <button type="button" class="fa fa-plus icon-btn"(click)="addItem(billForm.valid, billForm.value)" placement="bottom" ngbTooltip="Add"></button>
+            <button type="submit" class="fa fa-plus icon-btn" placement="bottom" ngbTooltip="Add"></button>
           </td>
           <td>
             <div [ngClass]="{'select-err' : (isFormSubmit && billForm.controls.itemDetail.errors?.required) }">
-              <select formControlName="itemDetail" class="form-control selectpicker" id="categoryName" data-live-search="true" title="Select...">
+              <select class="form-control" id="categoryName">
+                <option></option>
                 <optgroup *ngFor="let category of restaurantMenu" label="{{category.categoryName | titlecase}}">
-                    <option *ngFor="let item of category.categoryItems; let itemIndex = index;" value="{{item | json}}">
-                        {{item.itemName | titlecase}}
-                    </option>
+                  <option *ngFor="let item of category.categoryItems; let itemIndex = index;" value="{{item | json}}">
+                    {{item.itemName | titlecase}}
+                </option>
                 </optgroup>
               </select>
             </div>
@@ -132,6 +134,7 @@
       </tbody>
     </table>
   </div>
+</form>
   <div class="text-right mt-15" style="padding-right: 70px;">
     <div>
       <label style="font-size: 20px;font-weight: 600;">Total Items : </label>

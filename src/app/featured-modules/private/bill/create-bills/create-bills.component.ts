@@ -51,7 +51,6 @@ export class CreateBillsComponent implements OnInit, OnDestroy {
     this.formSubscriber.detail = this.billForm.get('itemDetail').valueChanges.pipe(
         distinctUntilChanged()
       ).subscribe((data) => {
-        data = JSON.parse(data);
         if(data){
           this.itemCost = data.price +'/'+data.unit;
         }
@@ -79,15 +78,32 @@ export class CreateBillsComponent implements OnInit, OnDestroy {
     console.log("unsubscribe call : ",this.formSubscriber);
   }
 
+  menuDropdownChange(){
+    $('#categoryName').on('change', (event) => {
+      var val = $("#categoryName").select2("val");
+      if(val){
+        val = JSON.parse(val);
+      }
+      this.billForm.patchValue({
+        itemDetail: val,
+      });
+    });
+  }
+
   getMenu(){
     this.requestPending = true;
     this.http.get('menu').subscribe(result => {
         console.log("Menu Fetch : ",result);
         this.requestPending = false;
         this.restaurantMenu = result.body.data;
-        setTimeout(() => {
-          $('.selectpicker').selectpicker('refresh');
-        }, 0);
+        $('#categoryName').select2({
+          placeholder: "Select...",
+          allowClear: true
+        });
+        this.menuDropdownChange();
+        // setTimeout(() => {
+        //   $('.selectpicker').selectpicker('refresh');
+        // }, 0);
     }, err => {
         this.requestPending = false;
         console.log("Error : ",err);

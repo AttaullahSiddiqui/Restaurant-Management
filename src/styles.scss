@@ -262,3 +262,16 @@ ngb-typeahead-window{
     padding-bottom: 0 !important;
 }
 //Overide boostrap dropdown :: End
+
+//Overide Select2 Dropdown :: Start
+.select2-selection--single{
+    height: 33px !important;
+}
+.select2-selection__arrow{
+    height: 30px !important;
+}
+.select2-selection__rendered{
+    line-height: 31px !important;
+}
+
+//Overide Select2 Dropdown :: END
