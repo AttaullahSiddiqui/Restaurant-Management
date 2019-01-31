@@ -11,7 +11,8 @@ module.exports = function (){
     // :: Prefix Path --- '/api/v1/user' 
 
     /* Users API*/
-    //router.post('/auth/me',        service.validateToken, userCtrl.getUserDetails)
+    // router.get('/auth/me',        service.validateToken, userCtrl.getUserDetails)
+    router.get('/auth/me',          service.validateToken, userCtrl.getUserDetails)
     router.post('/new',             userCtrl.createUser);
     router.post('/login',           userCtrl.authUser);
     router.get('/requests', userCtrl.getNewUsersRequest);
@@ -21,7 +22,7 @@ module.exports = function (){
     
     // router.delete('/remove',       userCtrl.removeUser);
     router.put('/update/request', userCtrl.updateUserRequest);
-    router.purge('/update/status', userCtrl.updateUserStatus);
+    router.put('/update/status', userCtrl.updateUserStatus);
    
     return router;
 };

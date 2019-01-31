@@ -55,16 +55,15 @@ function getUpdatedHashedObj(arr, body, isNested, name){
 }
 
 function validateToken(req, res, next){
-    if(!req.headers.authorization || !req.body.token){
+    var token = req.headers.authorization;
+    if(!token){
         return res.respondError("Authorization token is required", -2); 
     }
-    var token = req.headers.authorization || !req.body.token;
     return jwt.verifyToken(token, function(err, data){
         if(err){
             return res.respondError("Invalid token", -2); 
         }
         req.loginUserId = data.userID;
-        req.role        = data.role;
         next();
     })
 }
