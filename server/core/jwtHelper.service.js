@@ -17,6 +17,8 @@ function generateToken(payload, cb){
     });
 }
 
+
+
 function verifyToken(token, cb) {
     jwt.verify(token, config.JWT.secretKey, function(err, decoded) {
         if(err) {

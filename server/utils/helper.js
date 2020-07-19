@@ -1,6 +1,4 @@
-/**
- * Created by Muhammad Mateen on 05/07/2018.
- */
+
 'use strict';
 
 

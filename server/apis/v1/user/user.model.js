@@ -13,7 +13,7 @@ const ACCOUNT_APROVED_TYPES = [
 	'2',		// Approve
 	'3'			//Reject
 ];
-
+mongoose
 var UserSchema = mongoose.Schema({
 	name: {
 		type		: String,
